@@ -218,8 +218,6 @@ class TargetController extends Controller
 
             // Persist completeness figures too
             $targettypeform = $request->request->get('hris_indicatorbundle_targettype');
-            echo print_r($targettypeform);
-            echo "<br />";
             $fieldOptions = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findBy(array('field'=>$targettypeform['fields']));
             echo print_r($fieldOptions);
             echo "<br />";
