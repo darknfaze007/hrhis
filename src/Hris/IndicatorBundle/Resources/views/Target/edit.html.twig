@@ -18,6 +18,7 @@
                     'fieldid': $('#hris_indicatorbundle_targettype_fields').val(),
                     'targetid': {{ entity.id }}
                 };
+                alert("Url:" + fieldOptionTargetUrl);
                 $.post(fieldOptionTargetUrl,postData , function( fieldOptionTargets ){
                     if (jQuery.isEmptyObject(fieldOptionTargets)){
                         //Alert on absence of options for the field
@@ -26,9 +27,16 @@
                         $( fieldOptionSection ).addClass( "highlight" );
                         // Loop accross the field options constructing inputbox and it's value
                         $.each(fieldOptionTargets, function(targetFieldOptionIndex, targetFieldOption) {
+                            var maxValue = targetFieldOption['maxValue'];
+                            if(targetFieldOption['maxValue']){
+                                maxValue = "";
+                            }
                             $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+']"'
-                                    + 'value="'+ targetFieldOption['value']+'"'
-                                    + 'id="' + fieldOptionTargetNames + targetFieldOption['id'] + '" />');
+                                + 'value="'+ maxValue+'"'
+                                + 'placeholder="Max" id="' + fieldOptionTargetNames + targetFieldOption['id'] + '" />');
+                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+']"'
+                                + 'value="'+ targetFieldOption['value']+'"'
+                                + 'placeholder="Min" id="' + fieldOptionTargetNames + targetFieldOption['id'] + '" />');
                             // Create label and inputbox
                             $(fieldOptionSection).prepend('<label for="'+fieldOptionTargetNames + targetFieldOption['id']+'">'+targetFieldOption['name']+'</label>');
                         });

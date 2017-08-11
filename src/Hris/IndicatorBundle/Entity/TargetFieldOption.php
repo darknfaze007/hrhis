@@ -49,7 +49,7 @@ class TargetFieldOption
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $target;
-    
+
     /**
      * @var FieldOption $fieldOption
      *
@@ -68,12 +68,20 @@ class TargetFieldOption
      * @ORM\Column(name="value", type="integer")
      */
     private $value;
-    
-    public function __construct($target=NULL,$fieldOption=NULL,$value=NULL)
+
+    /**
+     * @var integer $value
+     *
+     * @ORM\Column(name="max_value", type="integer")
+     */
+    private $maxValue;
+
+    public function __construct($target=NULL,$fieldOption=NULL,$value=NULL,$maxValue=NULL)
     {
-    	if(!empty($target)) $this->target = $target;
-    	if(!empty($fieldOption)) $this->fieldOption = $fieldOption;
-    	if(!empty($value)) $this->value = $value;
+        if(!empty($target)) $this->target = $target;
+        if(!empty($fieldOption)) $this->fieldOption = $fieldOption;
+        if(!empty($value)) $this->value = $value;
+        if(!empty($maxValue)) $this->maxValue = $maxValue;
     }
 
     /**
@@ -85,18 +93,41 @@ class TargetFieldOption
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 
     /**
      * Get value
      *
-     * @return integer 
+     * @return integer
      */
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Set maxValue
+     *
+     * @param integer $maxValue
+     * @return TargetFieldOption
+     */
+    public function setMaxValue($maxValue)
+    {
+        $this->maxValue = $maxValue;
+
+        return $this;
+    }
+
+    /**
+     * Get maxValue
+     *
+     * @return integer
+     */
+    public function getMaxValue()
+    {
+        return $this->maxValue;
     }
 
     /**
@@ -108,7 +139,7 @@ class TargetFieldOption
     public function setTarget(Target $target)
     {
         $this->target = $target;
-    
+
         return $this;
     }
 
@@ -131,7 +162,7 @@ class TargetFieldOption
     public function setFieldOption(FieldOption $fieldOption)
     {
         $this->fieldOption = $fieldOption;
-    
+
         return $this;
     }
 
