@@ -30,10 +30,10 @@
                             if(!targetFieldOption['maxValue']){
                                 maxValue = "";
                             }
-                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][maxValue]"'
+                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'maxValue\']"'
                                 + 'value="'+ maxValue+'"'
                                 + 'placeholder="Max" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />');
-                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][value]"'
+                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'value\']"'
                                 + 'value="'+ targetFieldOption['value']+'"'
                                 + 'placeholder="Min" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'value" />');
                             // Create label and inputbox
