@@ -95,7 +95,8 @@ class TargetController extends Controller
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
                     $fieldOptionTarget->setTarget($entity);
-                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]);
+                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]['value']);
+                    $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['maxValue']);
                     $entity->addTargetFieldOption($fieldOptionTarget);
                     unset($fieldOptionTarget);
                 }
@@ -220,19 +221,18 @@ class TargetController extends Controller
             $targettypeform = $request->request->get('hris_indicatorbundle_targettype');
             $fieldOptions = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findBy(array('field'=>$targettypeform['fields']));
             $fieldOptionTargets = $request->request->get('hris_indicatorbundle_targettype_fieldoptiontarget');
-            echo json_encode ($fieldOptions);
-            exit();
+
             foreach($fieldOptions as $fieldOptionKey=>$fieldOption) {
                 if(isset($fieldOptionTargets[$fieldOption->getId()]) && !empty($fieldOptionTargets[$fieldOption->getId()])) {
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
                     $fieldOptionTarget->setTarget($entity);
-                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]);
+                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]['value']);
+                    $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['maxValue']);
                     $entity->addTargetFieldOption($fieldOptionTarget);
                     unset($fieldOptionTarget);
                 }
             }
-
             $em->persist($entity);
             $em->flush();
 
@@ -279,7 +279,8 @@ class TargetController extends Controller
                     $fieldOptionTargetNodes[$targetFieldOption->getFieldOption()->getId()] = Array(
                         'name' => $targetFieldOption->getFieldOption()->getValue(),
                         'id' => $targetFieldOption->getFieldOption()->getId(),
-                        'value' => $targetFieldOption->getValue()
+                        'value' => $targetFieldOption->getValue(),
+                        'maxValue' => $targetFieldOption->getMaxValue()
                     );
                 }
             }
@@ -289,7 +290,8 @@ class TargetController extends Controller
                 $fieldOptionTargetNodes[] = Array(
                     'name' => $fieldOption->getValue(),
                     'id' => $fieldOption->getId(),
-                    'value' => ''
+                    'value' => '',
+                    'maxValue' => ''
                 );
             }
         }
