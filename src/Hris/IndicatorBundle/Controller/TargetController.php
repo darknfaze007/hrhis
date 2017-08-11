@@ -91,7 +91,7 @@ class TargetController extends Controller
             $fieldOptions = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findBy(array('field'=>$targettypeform['fields']));
             $fieldOptionTargets = $request->request->get('hris_indicatorbundle_targettype_fieldoptiontarget');
             foreach($fieldOptions as $fieldOptionKey=>$fieldOption) {
-                if(isset($fieldOptionTargets[$fieldOption->getId()]) && !empty($fieldOptionTargets[$fieldOption->getId()])) {
+                if(isset($fieldOptionTargets[$fieldOption->getId()]) && !empty($fieldOptionTargets[$fieldOption->getId()]['value']) && !empty($fieldOptionTargets[$fieldOption->getId()]['maxValue'])) {
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
                     $fieldOptionTarget->setTarget($entity);
