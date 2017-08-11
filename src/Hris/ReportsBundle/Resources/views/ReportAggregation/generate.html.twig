@@ -1,0 +1,46 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/obhighcharts/js/highcharts/highcharts.js') }}"></script>
+    <script src="{{ asset('bundles/obhighcharts/js/highcharts/modules/exporting.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery-migrate-1.2.1.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery-ui-personalized-1.6rc2.min.js') }}"></script>
+    <script type="text/javascript">
+        {{ chart(chart) }}
+        $( '.tab-content').resizable();
+        $( ".tab-content" ).mouseout(function() {
+            $(window).trigger('resize');
+        });
+    </script>
+{%  endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('commons/css/jquery-ui.css') }}" />
+    <style type="text/css">
+        .tab-content {
+            width: 100%;
+            height: 100%;
+            border-right-width:1px;
+            border-right-style:solid;
+            border-right-color:#DEDEDE;
+            border-bottom-width:1px;
+            border-bottom-style:solid;
+            border-bottom-color:#DEDEDE;
+            overflow: visible;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block right_content -%}
+    <div class="tab-content" id="chart_placeholder" style="min-width: 400px; height: 700px; margin: 0 auto"></div>
+    <div style="text-align: right">
+        <a class="btn" href="{{ path('report_aggregation_download', { 'organisationUnit': organisationUnit.id, 'formsId': formsId, 'organisationunitGroupsId': organisationunitGroupId, 'withLowerLevels': withLowerLevels, 'fields': fields.id, 'fieldsTwo': fieldsTwo.id }) }}">
+            Export Statistics to Excel
+        </a>
+        <a class="btn" href="{{ path('report_aggregation_download_records', { 'organisationUnit': organisationUnit.id, 'formsId': formsId, 'organisationunitGroupsId': organisationunitGroupId, 'withLowerLevels': withLowerLevels, 'fields': fields.id, 'fieldsTwo': fieldsTwo.id }) }}">
+            Export Records By Cadre
+        </a>
+    </div>
+{% endblock %}

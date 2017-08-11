@@ -1,0 +1,3 @@
+target:
+    resource: "@HrisIndicatorBundle/Controller/TargetController.php"
+    type: annotation

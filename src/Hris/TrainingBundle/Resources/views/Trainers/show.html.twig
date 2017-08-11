@@ -1,0 +1,159 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.ZeroClipboard.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.TableTools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/dt_settings.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.trainers').dataTable( {
+                "sDom": "<'row'<'span6'TRl><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                "oTableTools": {
+                    "aButtons": [
+                        {"sExtends":"copy","mColumns":"visible"},
+                        {"sExtends":"xls","mColumns":"visible"},
+                        {"sExtends":"pdf","mColumns":"visible"}
+                    ],
+                    "sSwfPath": "{{ asset('commons/swf/copy_cvs_xls_pdf.swf') }}"
+                },
+                "sPdfOrientation": "landscape",
+                "sPaginationType": "bootstrap",
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ records per page"
+                },
+                "aLengthMenu": [[-1], ["All"]]
+            } );
+
+
+            //submit each form in a row
+            $(".is_trainer").hide();
+            $("table.trainers tbody tr").each(function(){
+
+                $(this).find("td span button").click(function(){
+                    var btn = $(this);
+                    var trainer_id = $(this).parent().parent().find("input.trainer_id").val();
+                    var instance_id = $(this).parent().parent().find("input.instance_id").val();
+                    var url = "{{ path('trainer_add_to_event') }}";
+                    $.ajax({
+                        type:"POST",
+                        url:url,
+                        data: {"trainer_id":trainer_id,"instance_id":instance_id}
+                    }).done(function (data) {
+
+                           btn.hide();
+                           btn.parent().parent().find(".is_trainer").show();
+
+                    }).fail(function (jqXHR, textStatus) {
+
+                    });
+                });
+            });
+
+
+        } );
+    </script>
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('commons/css/dt_bootstrap.css') }}" />
+{% endblock stylesheets %}
+{% block right_content -%}
+    {% set queryParams = app.request.query.all %}
+    <div class="container">
+        <h1><small>Trainers Lists</small></h1>
+
+        <ul class="inline">
+            <li>
+                <a  href="{{ path("trainers_new") }}" class="btn btn-default">add trainer</a>
+            </li>
+        </ul>
+
+    <table class="table trainers table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+      <th>#</th>
+        <th>Trainers Name</th>
+        <th>Profession</th>
+        <th>Experience</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+<?php $count = 0 ?>
+{% set incr=0 %}
+{% for trainer in trainers %}
+    {% set incr = incr+1 %}
+                 <tr>
+                     <td>{{ incr }}</td>
+                     <td><a href="{{ path("trainer_details",{'id':trainer.id} ) }}">{{ trainer.firstname}} {{ trainer.middlename}} {{ trainer.lastname}} </a></td>
+                     <td>{{ trainer.profession }}</td>
+                     <td>{{ trainer.experience }}</td>
+                     <td>
+
+
+                       <a  href="{{ path("trainer_details",{'id':trainer.id}) }}" class="" ><i class="icon-circle-info icon-large" title="Show"></i>&nbsp;<!--show--></a>
+                       <a data-toggle="modal" href="#deleteModalFor{{ trainer.id }}" class="" ><i class="icon-remove-sign icon-large" title="Delete"></i>&nbsp;<!--edit--></a>
+                                   <!-- Modal -->
+                       <div class="modal fade" id="deleteModalFor{{ trainer.id }}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                    <h4 class="modal-title"><i class="icon-circle-remove icon-largest" title="Delete"></i>Deleting {{ trainer.firstname | capitalize }}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete <strong>{{ trainer.firstname | capitalize }}</strong> who's  was created on <em>{{ trainer.datecreated|date('d/m/Y') }}</em>
+                                                    {% if trainer.lastupdated %}
+
+                                                        </br> and last updated on <em>{{ trainer.lastupdated|date('d/m/Y') }}</em>
+
+                                                    {% endif %}
+
+                                                    {% if AssociateArray[trainer.id]|length > 0 %}
+
+                                                        </br><em>RELATED TO THE FOLLOWING TRAINING SESSIONS</em></br></br>
+                                                        <table class="table table-condensed table-striped">
+                                                            <thead>
+                                                            <th>Course</th>
+                                                            <th>Region</th>
+                                                            <th>District</th>
+                                                            <th>Venue</th>
+                                                            <th>Start Date</th>
+                                                            <th>End Date</th>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for associate in AssociateArray[trainer.id] %}
+                                                                <tr><td>{{ associate.coursename }}</td><td>{{ associate.region }}</td><td>{{ associate.district }}</td><td>{{ associate.venue }}</td><td>{{ associate.startdate }}</td><td>{{ associate.enddate }}</td></tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    {% endif %}
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="{{ path('trainers_delete', { 'id': trainer.id }) }}" method="post">
+                                                        <input type="hidden" name="_method" value="DELETE" />
+                                                        {{ form_widget(delete_forms[trainer.id]) }}
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+
+
+
+                    </td>
+                    </tr>
+
+        {% endfor %}
+</tbody>
+    </table>
+    </div>
+
+{% endblock %}

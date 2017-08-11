@@ -1,0 +1,14 @@
+parameters:
+#    hris_form.example.class: Hris\FormBundle\Example
+
+services:
+    admin.input_type:
+        class: Hris\FormBundle\Admin\InputTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Forms, label: Forms }
+        arguments: [ null, Hris\FormBundle\Entity\InputType, SonataAdminBundle:CRUD ]
+
+    hris_form.configure_menu_listener:
+                class: Hris\FormBundle\EventListener\ConfigureMenuListener
+                tags:
+                    - { name: kernel.event_listener, event: hris_form.menu_configure, method: onMenuConfigure }

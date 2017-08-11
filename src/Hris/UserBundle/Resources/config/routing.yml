@@ -1,0 +1,26 @@
+fos_user_security:
+    resource: "@HrisUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@HrisUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@HrisUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@HrisUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@HrisUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+    
+user:
+    resource: "@HrisUserBundle/Controller/UserController.php"
+    type: annotation
+
+user_group:
+    resource: "@HrisUserBundle/Controller/GroupController.php"
+    type: annotation

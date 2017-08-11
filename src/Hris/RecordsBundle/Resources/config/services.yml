@@ -1,0 +1,12 @@
+parameters:
+#    hris_records.example.class: Hris\RecordsBundle\Example
+
+services:
+    hris_records.configure_menu_listener:
+            class: Hris\RecordsBundle\EventListener\ConfigureMenuListener
+            tags:
+                - { name: kernel.event_listener, event: hris_records.menu_configure, method: onMenuConfigure }
+    hris.twig.calculate_field_expression:
+        class: Hris\RecordsBundle\Twig\Extension\CalculateFieldExpressionExtension
+        tags:
+            - { name: twig.extension}

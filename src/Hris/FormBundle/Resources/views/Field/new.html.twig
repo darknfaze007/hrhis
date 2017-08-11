@@ -1,0 +1,161 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.quicksearch.js') }}"></script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#hris_formbundle_fieldtype_childField').multiSelect({
+                selectableHeader: "<input type='text' class='search-input' style=\"width:150px;\" autocomplete='off' placeholder='Search available Fields'>",
+                selectionHeader: "<input type='text' class='search-input' style=\"width:150px;\" autocomplete='off' placeholder='Search selected Fields'>",
+                afterInit: function(ms) {
+                    var that = this,
+                            $selectableSearch = that.$selectableUl.prev(),
+                            $selectionSearch = that.$selectionUl.prev(),
+                            selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                            selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                            .on('keydown', function(e) {
+                                if (e.which === 40) {
+                                    that.$selectableUl.focus();
+                                    return false;
+                                }
+                            });
+
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                            .on('keydown', function(e) {
+                                if (e.which == 40) {
+                                    that.$selectionUl.focus();
+                                    return false;
+                                }
+                            });
+                }
+            });
+            $( 'input[required="required"],select[required="required"]').closest(".control-group").children("label").prepend('<em class="required-asterisk">*</em>');
+        });
+    </script>
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" media="all" href="{{ asset('commons/css/multi-select.css') }}">
+{% endblock stylesheets %}
+
+{% block right_content -%}
+    <h1><small>Field creation</small></h1>
+
+    <form class="form-horizontal action="{{ path('field_create') }}" method="post" {{ form_enctype(form) }}>
+    <div class="control-group">
+        {{ form_label( form.name,'Name', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.name ) }}
+            {{ form_widget( form.name ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.dataType,'Data Type', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.dataType ) }}
+            {{ form_widget( form.dataType ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.inputType,'Input Type', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.inputType ) }}
+            {{ form_widget( form.inputType ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.caption,'Caption', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.caption ) }}
+            {{ form_widget( form.caption ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.description,'Description', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.description ) }}
+            {{ form_widget( form.description ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.compulsory,'Compulsory in Data Entry', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.compulsory ) }}
+            {{ form_widget( form.compulsory ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.isUnique,'Captures unique record', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.isUnique ) }}
+            {{ form_widget( form.isUnique ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.hashistory,'Has History data', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.hashistory ) }}
+            {{ form_widget( form.hashistory ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.hastarget,'Has Indicator Target', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.hastarget ) }}
+            {{ form_widget( form.hastarget ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.skipInReport,'Ignore/Skip in Reports', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.skipInReport ) }}
+            {{ form_widget( form.skipInReport ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.isCalculated,'Deduced through calculation', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.isCalculated ) }}
+            {{ form_widget( form.isCalculated ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.fieldrelation,'Has Relation to other fields', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.fieldrelation ) }}
+            {{ form_widget( form.fieldrelation ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.calculatedExpression,'Relations to other fields', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.calculatedExpression ) }}
+            {{ form_widget( form.calculatedExpression ) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label( form.childField,'Child Fields', {'label_attr': {'class': 'control-label'} } ) }}
+        <div class="controls">
+            {{ form_errors( form.childField ) }}
+            {{ form_widget( form.childField ) }}
+        </div>
+    </div>
+    {{ form_widget(form) }}
+        <br/>
+        <ul class="record_actions inline" style="float:left;">
+            <li>
+                <button type="submit" class="btn">Create</button>
+            </li>
+            <li>
+                <a href="{{ path('field') }}" class="btn">
+                    Back to the list
+                </a>
+            </li>
+        </ul>
+    </form>
+{% endblock %}

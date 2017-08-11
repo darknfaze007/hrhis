@@ -1,0 +1,14 @@
+parameters:
+    hris_user.model.user.class:
+
+services:
+    admin.user:
+        class: Hris\UserBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Users, label: Users }
+        arguments: [ null, Hris\UserBundle\Entity\User, SonataAdminBundle:CRUD ]
+
+    hris_user.configure_menu_listener:
+        class: Hris\UserBundle\EventListener\ConfigureMenuListener
+        tags:
+            - { name: kernel.event_listener, event: hris_user.menu_configure, method: onMenuConfigure }

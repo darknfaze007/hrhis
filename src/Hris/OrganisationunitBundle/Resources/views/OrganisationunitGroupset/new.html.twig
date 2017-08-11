@@ -1,0 +1,38 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#hris_organisationunitbundle_organisationunitgroupsettype_organisationunitGroup').multiSelect({
+                selectableHeader: "<div class=''>Avaiable Groups</div>",
+                selectionHeader: "<div class=''>Selected Groups</div>"
+            });
+        });
+    </script>
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" media="all" href="{{ asset('commons/css/multi-select.css') }}">
+{% endblock stylesheets %}
+
+{% block right_content -%}
+    <h1><small>OrganisationunitGroupset creation</small></h1>
+
+    <form action="{{ path('organisationunitgroupset_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <br/>
+        <ul class="record_actions inline" style="float:left;">
+            <li>
+                <button type="submit" class="btn">Create</button>
+            </li>
+            <li>
+                <a href="{{ path('organisationunitgroupset') }}" class="btn">
+                    Back to the list
+                </a>
+            </li>
+        </ul>
+    </form>
+{% endblock %}

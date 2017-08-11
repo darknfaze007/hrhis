@@ -1,0 +1,133 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.ZeroClipboard.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.TableTools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/dt_settings.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.records_list').dataTable( {
+                "sDom": "<'row'<'span6'TRl><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                "oTableTools": {
+                    "aButtons": [
+                        {"sExtends":"copy","mColumns":"visible"},
+                        {"sExtends":"xls","mColumns":"visible"},
+                        {"sExtends":"pdf","mColumns":"visible"}
+                    ],
+                    "sSwfPath": "{{ asset('commons/swf/copy_cvs_xls_pdf.swf') }}"
+                },
+                "sPdfOrientation": "landscape",
+                "sPaginationType": "bootstrap",
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ records per page"
+                },
+                "aLengthMenu": [[10, 25, 50,100,200, -1], [10, 25, 50,100,200, "All"]]
+            } );
+        } );
+    </script>
+    {{ friendlyReport.getJavascript | raw }}
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('commons/css/dt_bootstrap.css') }}" />
+    {{ friendlyReport.getStylesheet | raw }}
+{% endblock stylesheets %}
+
+{% block right_content -%}
+    <div class="container">
+        <h1><small>{{ title }}</small></h1>
+        {% if friendlyReport.type == 'sql' %}
+            <table class="records_list dataTable table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                    {% for friendlyReportResult in friendlyReportResults | slice(0,1) %}
+                        {% for columnTitle,columnData in friendlyReportResult %}
+                            <th>{{ columnTitle | capitalize }}</th>
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for friendlyReportResult in friendlyReportResults %}
+                    <tr>
+                    {% for columnTitle,columnData in friendlyReportResult %}
+                        <td>{{ columnData }}</td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <table class="records_list dataTable table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                <tr>
+                    <th>{{ friendlyReport.getSerie.getName }}</th>
+                    {% set totalOptions = '' %}
+                    {% set totalOptionsPreviouslySet = 'false' %}
+                    {% for key,friendlyReportCategory in friendlyReport.getFriendlyReportCategory %}
+                        {% set optionsCount = 0 %}
+                        {% set incr = 1 %}
+                        {% for fieldOption in  friendlyReportCategory.getFieldOptionGroup.getFieldOption %}
+                            {% set optionsCount = optionsCount + 1  %}
+                            <th >{{ fieldOption.getValue }}</th>
+                        {% endfor %}
+                        {% if totalOptionsPreviouslySet =='false' %}
+                            {% set totalOptions = { key : optionsCount } %}
+                            {% set totalOptionsPreviouslySet = 'true' %}
+                        {% else %}
+                            {% set totalOptions = totalOptions|merge({ incr : optionsCount }) %}
+                        {% endif %}
+                        {% set incr = incr +1 %}
+                    {% endfor %}
+
+                    {% if targets is not empty %}
+                        {% for target in targets %}
+                            <th>{{ target.getName }}</th>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if friendlyReport.showDeficitSurplus %}
+                        <th>Deficit/Surplus(-/+)</th>
+                    {% endif %}
+
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {# If repetition is allowed repeat option groups for previous category #}
+                {% for friendlyReportResult in friendlyReportResults %}
+                    {# Go through result rows#}
+                    <tr>
+                        {# Use slice to split columns by options in friendly report category #}
+                        {% set lastSlice = 0 %}
+                        {# Use fieldOptionValueTotal to keep track of total for fieldOption per report category#}
+                        {% set fieldOptionValueTotal=0 %}
+                        {# Go through options of single report category(avoid repetition) #}
+                        {% for totalOption in totalOptions %}
+                            {# Total field options #}
+                            {% set fieldOptionValueTotal=0 %}
+                            {% for fieldOptionValue in  friendlyReportResult|slice(lastSlice, totalOption+( totalOptions|length > 1? 0:1 ))  %} {# Make slice skip targets if therei's more than one category  i.e. 0#}
+                                {% set fieldOptionValueTotal = fieldOptionValueTotal + fieldOptionValue %}
+                            {% endfor %}
+                            {% set lastSlice = totalOption+1 %}
+                        {% endfor %}
+
+                        {% for fieldOptionValue in  friendlyReportResult %}
+                            <td>{{ fieldOptionValue }}</td>
+                        {% endfor %}
+
+                        {% if friendlyReport.showDeficitSurplus %}
+                            <th>{{ (fieldOptionValueTotal*2 - (friendlyReportResult|sum)) }}</th>
+                        {% endif %}
+
+                        <td>{{ fieldOptionValueTotal }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+    </div>
+{% endblock %}

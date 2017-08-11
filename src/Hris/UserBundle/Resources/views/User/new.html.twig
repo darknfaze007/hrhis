@@ -1,0 +1,247 @@
+{% extends "::base.html.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.validate.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/ext-all.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery-ui.js') }}"></script>
+    <script type="text/javascript">
+        $( ".date" ).datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showOn: "both",
+            buttonImage: "{{ asset('commons/images/calendar.gif') }}",
+            buttonImageOnly: true,
+            dateFormat: "dd/mm/yy",
+            showAnim: "clip",
+            minDate: "+0D",
+            yearRange:'c-60:c+60'
+        });
+        var treeplaceholder="treeplaceholder";
+        var inputboxname="hris_userbundle_usertype[organisationunit]";
+        var urlExtension="";
+        var selectedNode="";
+        Ext.define('OrganisationUnitTreeModel2', {
+            extend: 'Ext.data.Model',
+            idProperty: 'id',
+            fields: [{name: 'longname',type: 'string'},{name: 'id',type: 'int'},{ name: 'cls',type: 'string'},{name: 'leaf', type: 'boolean'}],
+            validations: [{type: 'exclusion', field: 'cls',list: ['file','folder']}]
+        });
+        Ext.onReady(function(){
+            var OrganisationUnitTreeStore2 = Ext.create('Ext.data.TreeStore', {
+                storeId: 'MyJsonOrganisationUnitTreeStore2',
+                model: 'OrganisationUnitTreeModel2',
+                proxy: {
+                    type: 'ajax',
+                    url: '{{ path('organisationunit_tree',{'_format':'json'}) }}'+urlExtension,
+                    reader: { type: 'json', root: 'organisationUnits'}
+                },
+                nodeParam: 'id',
+                root: {longname: 'Orgunits', id: 'src', expanded: true},
+                folderSort: true,
+                sorters: [{property: 'longname', direction: 'ASC'}]
+            });
+            var OrganisationUnitTreePanel2 = Ext.create('Ext.tree.Panel', {
+                id: 'organisationUnitTreePanel2',
+                store: OrganisationUnitTreeStore2,
+                displayField: 'longname',
+                rootVisible: false,
+                singleExpand: false,
+                height: 250,
+                viewConfig: {},
+                renderTo: treeplaceholder,
+                listeners: {
+                    select: function(selModel2, record, index, options) {
+                        var selectedOrgunits2 = selModel2.getSelection();
+                        var selectedId2 = selectedOrgunits2[0].get('id');
+                        $('input[name="'+inputboxname+'"]').val(selectedId2);
+                    },
+                    afterrender: function(treePanel,eOpts) {
+                        if(selectedNode){
+                            this.selectPath(selectedNode,'id','');
+                        };
+                    }
+                }
+
+            });
+        });
+        $( document ).ready(function() {
+            // validate signup form on keyup and submit
+            $("#fos_user_registration_register").validate({ ignore:".date" });
+            $("#hris_userbundle_usertype").validate({ ignore:[] });
+            $('#hris_userbundle_usertype_roles').multiSelect({
+                selectableHeader: "<div class=''>Avaiable Roles</div>",
+                selectionHeader: "<div class=''>Selected Roles</div>"
+            });
+            $('#hris_userbundle_usertype_groups').multiSelect({
+                selectableHeader: "<div class=''>Avaiable Groups</div>",
+                selectionHeader: "<div class=''>Selected Groups</div>"
+            });
+            $('#hris_userbundle_usertype_form').multiSelect({
+                selectableHeader: "<div class=''>Avaiable Forms</div>",
+                selectionHeader: "<div class=''>Selected Forms</div>"
+            });
+            $( 'input[required="required"],select[required="required"]').closest(".control-group").children("label").prepend('<em class="required-asterisk">*</em>');
+        });
+    </script>
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" media="all" href="{{ asset('commons/css/ext-standard.css') }}">
+    <link rel="stylesheet" href="{{ asset('commons/css/datepicker.css') }}" />
+    <link rel="stylesheet" href="{{ asset('commons/css/jquery-ui.css') }}" />
+    <link rel="stylesheet" type="text/css" media="all" href="{{ asset('commons/css/multi-select.css') }}">
+    <style type="text/css">
+        #ms-hris_userbundle_usertype_roles {
+            width:890px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block right_content %}
+    <h1><small>User creation</small></h1>
+    <form class="form-horizontal fos_user_registration_register" action="{{ path('user_create') }}" {{ form_enctype(form) }} method="POST" id="fos_user_registration_register">
+        <div class="control-group">
+            {{ form_label( form.organisationunit,'Select Organisationunit', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                <div id="treeplaceholder"></div>
+                {{ form_errors( form.organisationunit ) }}
+                {{ form_errors( form.organisationunit ) }}
+                {{ form_widget( form.organisationunit ) }}
+            </div>
+        </div>
+        <br/>
+        <div class="control-group">
+            {{ form_label( form.username,'Username', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.username ) }}
+                {{ form_widget( form.username ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.email,'Email', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.email ) }}
+                {{ form_widget( form.email ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.plainPassword.first,'Password', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.plainPassword.first ) }}
+                {{ form_widget( form.plainPassword.first ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.plainPassword.second,'Repeat Password', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.plainPassword.second ) }}
+                {{ form_widget( form.plainPassword.second ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.phonenumber,'Phone number', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.phonenumber ) }}
+                {{ form_widget( form.phonenumber ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.jobTitle,'Job Title', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.jobTitle ) }}
+                {{ form_widget( form.jobTitle ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.firstName,'First Name', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.firstName ) }}
+                {{ form_widget( form.firstName ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.middleName,'Middle Name', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.middleName ) }}
+                {{ form_widget( form.middleName ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.surname,'Surname', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.surname ) }}
+                {{ form_widget( form.surname ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.form,'Select Forms', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.form ) }}
+                {{ form_widget( form.form ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.enabled,'Account Enabled', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.enabled ) }}
+                {{ form_widget( form.enabled ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.locked,'Account Locked', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.locked ) }}
+                {{ form_widget( form.locked ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.locked,'Account Locked', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.locked ) }}
+                {{ form_widget( form.locked ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.expiresAt,'Account Expires at', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.expiresAt ) }}
+                {{ form_widget( form.expiresAt ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.credentialsExpireAt,'Credentials Expires at', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.credentialsExpireAt ) }}
+                {{ form_widget( form.credentialsExpireAt ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.roles,'User Roles', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.roles ) }}
+                {{ form_widget( form.roles ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.groups,'Group Memberships', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.groups ) }}
+                {{ form_widget( form.groups ) }}
+            </div>
+        </div>
+        {{ form_widget(form) }}
+        <br/>
+        <ul class="record_actions inline" style="float:left;">
+            <li>
+                <button type="submit" class="btn">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</button>
+            </li>
+            <li>
+                <a href="{{ path('user') }}" class="btn">
+                    Back to the list
+                </a>
+            </li>
+        </ul>
+    </form>
+{% endblock right_content %}

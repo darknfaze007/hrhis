@@ -1,0 +1,60 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.multi-select.js') }}"></script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#hris_formbundle_fieldgrouptype_field').multiSelect({
+                selectableHeader: "<div class=''>Avaiable Fields</div>",
+                selectionHeader: "<div class=''>Selected Fields</div>"
+            });
+            $( 'input[required="required"],select[required="required"]').closest(".control-group").children("label").prepend('<em class="required-asterisk">*</em>');
+        });
+    </script>
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" media="all" href="{{ asset('commons/css/multi-select.css') }}">
+{% endblock stylesheets %}
+
+{% block right_content -%}
+    <h1><small>FieldGroup creation</small></h1>
+
+    <form class="form-horizontal action="{{ path('fieldgroup_create') }}" method="post" {{ form_enctype(form) }}>
+        <div class="control-group">
+            {{ form_label( form.name,'Name', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.name ) }}
+                {{ form_widget( form.name ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.description,'Description', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.description ) }}
+                {{ form_widget( form.description ) }}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_label( form.field,'Member Fields', {'label_attr': {'class': 'control-label'} } ) }}
+            <div class="controls">
+                {{ form_errors( form.field ) }}
+                {{ form_widget( form.field ) }}
+            </div>
+        </div>
+        {{ form_widget(form) }}
+        <br/>
+        <ul class="record_actions inline" style="float:left;">
+            <li>
+                <button type="submit" class="btn">Create</button>
+            </li>
+            <li>
+                <a href="{{ path('fieldgroup') }}" class="btn">
+                    Back to the list
+                </a>
+            </li>
+        </ul>
+    </form>
+{% endblock %}
