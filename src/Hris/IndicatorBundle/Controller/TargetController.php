@@ -219,12 +219,10 @@ class TargetController extends Controller
             // Persist completeness figures too
             $targettypeform = $request->request->get('hris_indicatorbundle_targettype');
             $fieldOptions = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findBy(array('field'=>$targettypeform['fields']));
-            echo print_r($fieldOptions);
-            echo "<br />";
             $fieldOptionTargets = $request->request->get('hris_indicatorbundle_targettype_fieldoptiontarget');
-            echo print_r($fieldOptionTargets);
-            exit();
             foreach($fieldOptions as $fieldOptionKey=>$fieldOption) {
+                echo json_encode ($fieldOption);
+                exit();
                 if(isset($fieldOptionTargets[$fieldOption->getId()]) && !empty($fieldOptionTargets[$fieldOption->getId()])) {
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
