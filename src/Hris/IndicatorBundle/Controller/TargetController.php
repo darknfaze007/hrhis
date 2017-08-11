@@ -220,9 +220,9 @@ class TargetController extends Controller
             $targettypeform = $request->request->get('hris_indicatorbundle_targettype');
             $fieldOptions = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findBy(array('field'=>$targettypeform['fields']));
             $fieldOptionTargets = $request->request->get('hris_indicatorbundle_targettype_fieldoptiontarget');
+            echo json_encode ($fieldOptions);
+            exit();
             foreach($fieldOptions as $fieldOptionKey=>$fieldOption) {
-                echo json_encode ($fieldOption);
-                exit();
                 if(isset($fieldOptionTargets[$fieldOption->getId()]) && !empty($fieldOptionTargets[$fieldOption->getId()])) {
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
