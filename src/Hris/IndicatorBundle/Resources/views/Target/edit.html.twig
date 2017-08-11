@@ -28,7 +28,7 @@
                         // Loop accross the field options constructing inputbox and it's value
                         $.each(fieldOptionTargets, function(targetFieldOptionIndex, targetFieldOption) {
                             var maxValue = targetFieldOption['maxValue'];
-                            if(targetFieldOption['maxValue']){
+                            if(!targetFieldOption['maxValue']){
                                 maxValue = "";
                             }
                             $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+']"'
