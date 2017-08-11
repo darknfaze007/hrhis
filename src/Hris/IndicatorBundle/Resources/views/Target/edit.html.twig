@@ -31,12 +31,12 @@
                             if(!targetFieldOption['maxValue']){
                                 maxValue = "";
                             }
-                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+']"'
+                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][maxValue]"'
                                 + 'value="'+ maxValue+'"'
-                                + 'placeholder="Max" id="' + fieldOptionTargetNames + targetFieldOption['id'] + '" />');
-                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+']"'
+                                + 'placeholder="Max" id="' + fieldOptionTargetNames + targetFieldOption['id'] + '[maxValue]" />');
+                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][value]"'
                                 + 'value="'+ targetFieldOption['value']+'"'
-                                + 'placeholder="Min" id="' + fieldOptionTargetNames + targetFieldOption['id'] + '" />');
+                                + 'placeholder="Min" id="' + fieldOptionTargetNames + targetFieldOption['id'] + '[value]" />');
                             // Create label and inputbox
                             $(fieldOptionSection).prepend('<label for="'+fieldOptionTargetNames + targetFieldOption['id']+'">'+targetFieldOption['name']+'</label>');
                         });
