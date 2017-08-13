@@ -1,13 +1,19 @@
 {% extends '::base.html.twig' %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.js') }}"></script>
+    {#<script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.js') }}"></script>
     <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.ZeroClipboard.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.TableTools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('commons/js/jquery.dataTables.TableTools.min.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('https://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('commons/js/dt_settings.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('.records_list').dataTable( {
+            /*$('.records_list').dataTable( {
                 "sDom": "<'row'<'span6'TRl><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                 "oTableTools": {
                     "aButtons": [
@@ -23,6 +29,13 @@
                     "sLengthMenu": "_MENU_ records per page"
                 },
                 "aLengthMenu": [[10, 25, 50,100,200, -1], [10, 25, 50,100,200, "All"]]
+            } );*/
+
+            $('.records_list').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             } );
         } );
     </script>
