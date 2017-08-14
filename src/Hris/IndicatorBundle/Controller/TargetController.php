@@ -95,8 +95,8 @@ class TargetController extends Controller
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
                     $fieldOptionTarget->setTarget($entity);
-                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]['value']);
-                    $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['maxValue']);
+                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]['\'value\'']);
+                    $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['\'maxValue\'']);
                     $entity->addTargetFieldOption($fieldOptionTarget);
                     unset($fieldOptionTarget);
                 }
@@ -228,8 +228,8 @@ class TargetController extends Controller
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
                     $fieldOptionTarget->setTarget($entity);
-                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]['value']);
-                    $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['maxValue']);
+                    $fieldOptionTarget->setValue((int)$fieldOptionTargets[$fieldOption->getId()]['\'value\'']);
+                    $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['\'maxValue\'']);
                     $entity->addTargetFieldOption($fieldOptionTarget);
                     unset($fieldOptionTarget);
                     echo "Here ". json_encode($fieldOptionTargets[$fieldOption->getId()]). " and ". json_encode($fieldOptionTargets[$fieldOption->getId()]) ."<br />";
