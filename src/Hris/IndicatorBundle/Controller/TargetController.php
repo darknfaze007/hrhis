@@ -232,11 +232,8 @@ class TargetController extends Controller
                     $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['\'maxValue\'']);
                     $entity->addTargetFieldOption($fieldOptionTarget);
                     unset($fieldOptionTarget);
-                    echo "Here1 ". ($fieldOptionTargets[$fieldOption->getId()]['\'value\'']). " and ". ($fieldOptionTargets[$fieldOption->getId()]['\'maxValue\'']) ."<br />";
                 }
             }
-            echo "Finished saving <br />";
-            exit();
             $em->persist($entity);
             $em->flush();
 
