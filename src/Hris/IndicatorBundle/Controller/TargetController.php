@@ -223,7 +223,9 @@ class TargetController extends Controller
             $fieldOptionTargets = $request->request->get('hris_indicatorbundle_targettype_fieldoptiontarget');
 
             foreach($fieldOptions as $fieldOptionKey=>$fieldOption) {
-                if(isset($fieldOptionTargets[$fieldOption->getId()]))
+                if(isset($fieldOptionTargets[$fieldOption->getId()])
+                    && !empty($fieldOptionTargets[$fieldOption->getId()]['value'])
+                        && !empty($fieldOptionTargets[$fieldOption->getId()]['maxValue']))
                 {
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
@@ -232,7 +234,7 @@ class TargetController extends Controller
                     $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['maxValue']);
                     $entity->addTargetFieldOption($fieldOptionTarget);
                     unset($fieldOptionTarget);
-                    echo "Here <br />";
+                    echo "Here ". $fieldOptionTargets[$fieldOption->getId()]['value']. " and ". $fieldOptionTargets[$fieldOption->getId()]['maxValue'] ."<br />";
                 }
             }
             echo "Finished saving <br />";
