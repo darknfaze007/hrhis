@@ -238,6 +238,7 @@ class TargetController extends Controller
                 }
             }
             echo "Finished saving <br />";
+            exit();
             $em->persist($entity);
             $em->flush();
 
