@@ -232,7 +232,7 @@ class TargetController extends Controller
                     $fieldOptionTarget->setMaxValue((int)$fieldOptionTargets[$fieldOption->getId()]['maxValue']);
                     $entity->addTargetFieldOption($fieldOptionTarget);
                     unset($fieldOptionTarget);
-                    echo "Here ". $fieldOptionTargets[$fieldOption->getId()]. " and ". $fieldOptionTargets[$fieldOption->getId()] ."<br />";
+                    echo "Here ". json_encode($fieldOptionTargets[$fieldOption->getId()]). " and ". json_encode($fieldOptionTargets[$fieldOption->getId()]) ."<br />";
                 }
             }
             echo "Finished saving <br />";
