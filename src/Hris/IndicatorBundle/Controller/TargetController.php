@@ -223,9 +223,7 @@ class TargetController extends Controller
             $fieldOptionTargets = $request->request->get('hris_indicatorbundle_targettype_fieldoptiontarget');
 
             foreach($fieldOptions as $fieldOptionKey=>$fieldOption) {
-                if(isset($fieldOptionTargets[$fieldOption->getId()])
-                    && !empty($fieldOptionTargets[$fieldOption->getId()]['value'])
-                        && !empty($fieldOptionTargets[$fieldOption->getId()]['maxValue']))
+                if(isset($fieldOptionTargets[$fieldOption->getId()]))
                 {
                     $fieldOptionTarget = new TargetFieldOption();
                     $fieldOptionTarget->setFieldOption($fieldOption);
