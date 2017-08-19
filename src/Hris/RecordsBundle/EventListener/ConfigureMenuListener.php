@@ -61,6 +61,13 @@ class ConfigureMenuListener
                   'attributes'=> array('class'=>'accordion-group'),
             )
         );
+        $recordsModule->addChild('Targets',
+            array('route'=>'record_form_list',
+                'extras'=>array('tag'=>'div'),
+                'name'=>'Targets',
+                'attributes'=> array('class'=>'accordion-group'),
+            )
+        );
         $recordsModule->addChild('Data Validation',
             array('route'=>'validation_run',
                 'extras'=>array('tag'=>'div'),
