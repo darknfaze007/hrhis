@@ -26,10 +26,10 @@
                         $( fieldOptionSection ).addClass( "highlight" );
                         // Loop accross the field options constructing inputbox and it's value
                         $.each(fieldOptionTargets, function(targetFieldOptionIndex, targetFieldOption) {
-                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'maxValue\']"'
+                            $(fieldOptionSection).prepend('<input name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'maxValue\']"'
                                 + 'value="'+ targetFieldOption['maxValue']+'"'
                                 + 'placeholder="Enter Maximum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />');
-                            $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'value\']"'
+                            $(fieldOptionSection).prepend('<input name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'value\']"'
                                 + 'value="'+ targetFieldOption['value']+'"'
                                 + 'placeholder="Enter Minimum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'value" />');
                             // Create label and inputbox
