@@ -34,7 +34,7 @@ class ConfigureMenuListener
      */
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
-        $menu = $event->getMenu();
+        /*$menu = $event->getMenu();
 
         $menu->addChild('Target Module',
             array(
@@ -52,6 +52,6 @@ class ConfigureMenuListener
                   'name' =>'Targets',
                   'attributes'=> array('class'=>'accordion-group')
             )
-        );
+        );*/
     }
 }
