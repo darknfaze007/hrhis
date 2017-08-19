@@ -28,10 +28,10 @@
                         $.each(fieldOptionTargets, function(targetFieldOptionIndex, targetFieldOption) {
                             $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'maxValue\']"'
                                 + 'value="'+ targetFieldOption['maxValue']+'"'
-                                + 'placeholder="Max" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />');
+                                + 'placeholder="Enter Maximum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />');
                             $(fieldOptionSection).prepend('<input type="text" name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'value\']"'
                                 + 'value="'+ targetFieldOption['value']+'"'
-                                + 'placeholder="Min" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'value" />');
+                                + 'placeholder="Enter Minimum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'value" />');
                             // Create label and inputbox
                             $(fieldOptionSection).prepend('<label for="'+fieldOptionTargetNames + targetFieldOption['id']+'">'+targetFieldOption['name']+'</label>');
                         });
