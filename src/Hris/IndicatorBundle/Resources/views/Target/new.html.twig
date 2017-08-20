@@ -28,7 +28,8 @@
                         $.each(fieldOptionTargets, function(targetFieldOptionIndex, targetFieldOption) {
                             $(fieldOptionSection).prepend('<input name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'maxValue\']"'
                                 + 'value="'+ targetFieldOption['maxValue']+'"'
-                                + 'placeholder="Enter Maximum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />');
+                                + 'placeholder="Enter Maximum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />' +
+                                '<span id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'error" style="display:none;color:red">Minimum should be greater than Maximum</span>');
                             $(fieldOptionSection).prepend('<input name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'value\']"'
                                 + 'value="'+ targetFieldOption['value']+'"'
                                 + 'placeholder="Enter Minimum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'value" />');
@@ -36,6 +37,28 @@
                             $(fieldOptionSection).prepend('<label for="'+fieldOptionTargetNames + targetFieldOption['id']+'">'+targetFieldOption['name']+'</label>');
                         });
                     }
+                    $('input[placeholder="Enter Maximum Target"]').change(function(){
+                        var id = $(this).attr("id").replace("maxValue","");
+                        if(parseInt($("#" + id + "value").val()) > parseInt($(this).val())){
+                            $("#" + id + "error").show();
+                            $(this).focus();
+                        }
+                    })
+                    $('input[placeholder="Enter Minimum Target"]').change(function(){
+                        var id = $(this).attr("id").replace("value","");
+                        if(parseInt($("#" + id + "maxValue").val()) < parseInt($(this).val())){
+                            $("#" + id + "error").show();
+                            $(this).focus();
+                        }
+                    })
+                    $('input[placeholder="Enter Maximum Target"]').keyup(function(){
+                        var id = $(this).attr("id").replace("maxValue","");
+                        $("#" + id + "error").hide();
+                    })
+                    $('input[placeholder="Enter Minimum Target"]').keyup(function(){
+                        var id = $(this).attr("id").replace("value","");
+                        $("#" + id + "error").hide();
+                    })
                 });
             });
         });
