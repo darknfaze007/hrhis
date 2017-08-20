@@ -28,8 +28,8 @@
                         $.each(fieldOptionTargets, function(targetFieldOptionIndex, targetFieldOption) {
                             $(fieldOptionSection).prepend('<input name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'maxValue\']"'
                                 + 'value="'+ targetFieldOption['maxValue']+'"'
-                                + 'placeholder="Enter Maximum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />' +
-                                '<span id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'error" style="display:none;color:red">Minimum should be greater than Maximum</span>');
+                                + 'placeholder="Enter Maximum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'maxValue" />');
+                            $(fieldOptionSection).prepend('<span id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'error" style="display:none;color:red">Minimum should be greater than Maximum</span>');
                             $(fieldOptionSection).prepend('<input name="'+fieldOptionTargetNames+'[' + targetFieldOption['id']+'][\'value\']"'
                                 + 'value="'+ targetFieldOption['value']+'"'
                                 + 'placeholder="Enter Minimum Target" type="number" min="0" id="' + fieldOptionTargetNames + targetFieldOption['id'] + 'value" />');
