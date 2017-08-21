@@ -61,7 +61,7 @@ class ConfigureMenuListener
                   'attributes'=> array('class'=>'accordion-group'),
             )
         );
-        $recordsModule->addChild('Targets',
+        $recordsModule->addChild('HRH Inventory Targets',
             array('route'=>'target_list',
                 'extras'=>array('tag'=>'div'),
                 'name' =>'Targets',
