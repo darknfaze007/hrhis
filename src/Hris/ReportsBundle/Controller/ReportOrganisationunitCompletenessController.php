@@ -74,6 +74,7 @@ class ReportOrganisationunitCompletenessController extends Controller
 
         if ($organisationunitCompletenessForm->isValid()) {
             $organisationunitCompletenessFormData = $organisationunitCompletenessForm->getData();
+            var_dump($organisationunitCompletenessFormData);
             $this->organisationunit = $organisationunitCompletenessFormData['organisationunit'];
             $this->organisationunitLevel = $organisationunitCompletenessFormData['organisationunitLevel'];
             $this->forms = $organisationunitCompletenessFormData['forms'];
