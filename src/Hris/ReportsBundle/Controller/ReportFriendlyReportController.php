@@ -170,8 +170,6 @@ class ReportFriendlyReportController extends Controller
             $target = NULL;
             $colspanCounter = NULL;
             $groupPositionCounter = NULL;
-            echo $selectQuery;
-            exit();
         }else {
             /*
          * Initializing query for friendly report calculation
