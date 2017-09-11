@@ -17,7 +17,7 @@ function recordSet(data_record) {
 
 function changeForm(record_uid) {
 
-    $('#showPopupModal').modal('show')
+    $('#showPopupModal').modal('show', {backdrop: 'static', keyboard: 'false'});
 
     $('#showPopupModal').one('hide', function (e) {
 

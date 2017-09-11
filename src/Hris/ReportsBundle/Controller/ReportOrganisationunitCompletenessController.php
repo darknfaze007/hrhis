@@ -94,8 +94,7 @@ class ReportOrganisationunitCompletenessController extends Controller
         // If lowest level is selected(no organisationunitLevel is sent through the form)
         if(empty($this->organisationunitLevel)) $this->organisationunitLevel = $this->organisationunit->getOrganisationunitStructure()->getLevel();
         $this->processCompletenessFigures();
-
-        return array(
+        $testArr = array(
             'title' => $this->title,
             'organisationunitChildren'=>$this->organisationunitChildren,
             'rootNodeOrganisationunit'=>$this->rootNodeOrganisationunit,
@@ -113,6 +112,8 @@ class ReportOrganisationunitCompletenessController extends Controller
             'lowerLevels'=> $this->lowerLevels,
             'selectedLevel'=>$this->organisationunitLevel,
         );
+        var_dump($testArr);
+        return $testArr;
     }
 
     /**
