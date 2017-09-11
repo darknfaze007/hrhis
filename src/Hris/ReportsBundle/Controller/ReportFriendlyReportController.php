@@ -170,6 +170,8 @@ class ReportFriendlyReportController extends Controller
             $target = NULL;
             $colspanCounter = NULL;
             $groupPositionCounter = NULL;
+            echo $selectQuery;
+            exit();
         }else {
             /*
          * Initializing query for friendly report calculation
@@ -284,8 +286,6 @@ class ReportFriendlyReportController extends Controller
             $columns = " DISTINCT $resourceTableAlias.$seriesFieldName as $seriesFieldName,".implode(',',$queryColumnNames).( !empty($targetColumns) ? ','.$targetColumns : '');
             if(!empty($targetJoinClause)) $joinClause .=$targetJoinClause;
             $selectQuery="SELECT $columns $fromClause $joinClause WHERE $organisationunitLevelsWhereClause".( !empty($fieldOptionsToSkipQuery) ? " AND ( $fieldOptionsToSkipQuery )" : "" );
-            echo $selectQuery;
-            exit();
             $friendlyReportResults = $this->getDoctrine()->getManager()->getConnection()->fetchAll($selectQuery);
         }
 
