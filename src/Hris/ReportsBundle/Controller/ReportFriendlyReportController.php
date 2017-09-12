@@ -178,11 +178,11 @@ WHERE organisationunitgroup_id IN (#{orgUnitGroupIndicator}) AND Structure.level
             }
 
             $formsWhereClause=" $resourceTableAlias.form_id IN ($formIds) ";
-            $selectQuery = str_replace('#{orgUnitGroupIndicator}',$orgUnitGroupIndicator,$selectQuery);
             $selectQuery = str_replace('#{orgUnitGroupForTarget}',$orgUnitGroupForTarget,$selectQuery);
             $selectQuery = str_replace('#{organisationunitJoinClause}',$organisationUnitJoinClause,$selectQuery);
             $selectQuery = str_replace('#{organisationunitWhereClause}',$organisationunitLevelsWhereClause,$selectQuery);
             $selectQuery = str_replace('#{formWhereClause}',$formsWhereClause,$selectQuery);
+            $selectQuery = str_replace('#{orgUnitGroupIndicator}',$orgUnitGroupIndicator,$selectQuery);
             $sqlQueries = explode(';',$selectQuery);
             foreach($sqlQueries as $sqlKey=>$sqlQuery) {
                 $friendlyReportResults = $this->getDoctrine()->getManager()->getConnection()->fetchAll($sqlQuery);
