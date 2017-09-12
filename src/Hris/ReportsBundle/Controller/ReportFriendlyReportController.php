@@ -157,16 +157,16 @@ class ReportFriendlyReportController extends Controller
             $organisationunit = $this->getDoctrine()->getManager()->getRepository('HrisOrganisationunitBundle:Organisationunit')->find($organisationunitId);
             $organisationunitLevelsWhereClause = " Structure.level".$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel()."_id=$organisationunitId AND Structure.level_id >= ( SELECT hris_organisationunitlevel.level FROM hris_organisationunitstructure INNER JOIN hris_organisationunitlevel ON hris_organisationunitstructure.level_id=hris_organisationunitlevel.id  WHERE hris_organisationunitstructure.organisationunit_id=$organisationunitId ) ";
             // Clause for filtering target forms
-            $orgUnitClauseForTarget = "(SELECT COUNT(hris_organisationunitgroup_members.organisationunit_id) FROM hris_organisationunitgroup_members 
+            $orgUnitGroupForTarget = " FROM hris_organisationunitgroup_members 
 INNER JOIN hris_organisationunit as Organisationunit ON Organisationunit.id = hris_organisationunitgroup_members.organisationunit_id
 INNER JOIN hris_organisationunitstructure AS Structure ON Structure.organisationunit_id = hris_organisationunitgroup_members.organisationunit_id
 WHERE organisationunitgroup_id = 16 AND Structure.level".$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel()."_id=$organisationunitId AND Structure.level_id >= ( 
 	SELECT hris_organisationunitlevel.level FROM hris_organisationunitstructure 
 	INNER JOIN hris_organisationunitlevel ON hris_organisationunitstructure.level_id=hris_organisationunitlevel.id  
-	WHERE hris_organisationunitstructure.organisationunit_id=$organisationunitId ))";
+	WHERE hris_organisationunitstructure.organisationunit_id=$organisationunitId )";
 
             $formsWhereClause=" $resourceTableAlias.form_id IN ($formIds) ";
-            $selectQuery = str_replace('#{orgUnitClauseForTarget}',$orgUnitClauseForTarget,$selectQuery);
+            $selectQuery = str_replace('#{orgUnitGroupForTarget}',$orgUnitGroupForTarget,$selectQuery);
             $selectQuery = str_replace('#{organisationunitJoinClause}',$organisationUnitJoinClause,$selectQuery);
             $selectQuery = str_replace('#{organisationunitWhereClause}',$organisationunitLevelsWhereClause,$selectQuery);
             $selectQuery = str_replace('#{formWhereClause}',$formsWhereClause,$selectQuery);
