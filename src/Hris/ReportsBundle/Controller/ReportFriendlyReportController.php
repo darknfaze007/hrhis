@@ -166,7 +166,7 @@ WHERE organisationunitgroup_id IN (#{orgUnitGroupIndicator}) AND Structure.level
 	WHERE hris_organisationunitstructure.organisationunit_id=$organisationunitId )";
             $orgUnitGroupIndicator = "SELECT organisationunitgroup_id";
             if(isset($targets) && !empty($targets)) {
-                $orgUnitGroupIndicator .= " FROM WHERE ";
+                $orgUnitGroupIndicator .= " FROM hris_indicator_target WHERE ";
                 $index = 0;
                 foreach($targets as $targetKey=>$target) {
                     if($index > 0){
