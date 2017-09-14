@@ -184,7 +184,7 @@ WHERE organisationunitgroup_id IN (#{orgUnitGroupIndicator}) AND Structure.level
             $selectQuery = str_replace('#{formWhereClause}',$formsWhereClause,$selectQuery);
             $selectQuery = str_replace('#{orgUnitGroupIndicator}',$orgUnitGroupIndicator,$selectQuery);
             $sqlQueries = explode(';',$selectQuery);
-            echo $sqlQueries;
+            echo $selectQuery;
             exit();
             foreach($sqlQueries as $sqlKey=>$sqlQuery) {
                 $friendlyReportResults = $this->getDoctrine()->getManager()->getConnection()->fetchAll($sqlQuery);
