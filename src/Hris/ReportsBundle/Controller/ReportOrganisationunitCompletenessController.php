@@ -112,7 +112,6 @@ class ReportOrganisationunitCompletenessController extends Controller
             'lowerLevels'=> $this->lowerLevels,
             'selectedLevel'=>$this->organisationunitLevel,
         );
-        var_dump($testArr);
         return $testArr;
     }
 
