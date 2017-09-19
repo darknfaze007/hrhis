@@ -305,6 +305,34 @@ class TargetController extends Controller
     }
 
     /**
+     * Returns TargetFieldOptions json.
+     *
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_LISTFIELDOPTIONS")
+     * @Route("/targetFieldOption2.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="target_targetfieldption")
+     * @Method("GET")
+     * @Template()
+     */
+    public function targetFieldOption2Action($_format)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $fieldOptionTargetNodes = NULL;
+
+        // Fetch existing targets and field options belonging to target
+        $fieldOptions = $em->getRepository('HrisFormBundle:FieldOption')->findBy(array('field'=>151));
+
+        $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
+        echo $queryBuilder->select('targetFieldOption')
+            ->from('HrisIndicatorBundle:TargetFieldOption','targetFieldOption')
+            ->join('targetFieldOption.fieldOption','fieldOption')
+            ->join('fieldOption.field','field')
+            ->where('targetFieldOption.target=:targetid')
+            ->andWhere('field.id=:fieldid')
+            ->setParameters(array('targetid'=>5,'fieldid'=>151))
+            ->getSql();
+        exit();
+    }
+
+    /**
      * Deletes a Target entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_DELETE")
