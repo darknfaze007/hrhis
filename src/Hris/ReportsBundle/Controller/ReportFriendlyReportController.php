@@ -157,11 +157,35 @@ class ReportFriendlyReportController extends Controller
             $organisationunit = $this->getDoctrine()->getManager()->getRepository('HrisOrganisationunitBundle:Organisationunit')->find($organisationunitId);
             $organisationunitLevelsWhereClause = " Structure.level".$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel()."_id=$organisationunitId AND Structure.level_id >= ( SELECT hris_organisationunitlevel.level FROM hris_organisationunitstructure INNER JOIN hris_organisationunitlevel ON hris_organisationunitstructure.level_id=hris_organisationunitlevel.id  WHERE hris_organisationunitstructure.organisationunit_id=$organisationunitId ) ";
             // Clause for filtering target forms
+            $orgUnitGroupForTarget = " FROM hris_organisationunitgroup_members 
+INNER JOIN hris_organisationunit as Organisationunit ON Organisationunit.id = hris_organisationunitgroup_members.organisationunit_id
+INNER JOIN hris_organisationunitstructure AS Structure ON Structure.organisationunit_id = hris_organisationunitgroup_members.organisationunit_id
+WHERE organisationunitgroup_id IN (#{orgUnitGroupIndicator}) AND Structure.level".$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel()."_id=$organisationunitId AND Structure.level_id >= ( 
+	SELECT hris_organisationunitlevel.level FROM hris_organisationunitstructure 
+	INNER JOIN hris_organisationunitlevel ON hris_organisationunitstructure.level_id=hris_organisationunitlevel.id  
+	WHERE hris_organisationunitstructure.organisationunit_id=$organisationunitId )";
+            $orgUnitGroupIndicator = "SELECT organisationunitgroup_id";
+            if(isset($targets) && !empty($targets)) {
+                $orgUnitGroupIndicator .= " FROM hris_indicator_target WHERE ";
+                $index = 0;
+                foreach($targets as $targetKey=>$target) {
+                    if($index > 0){
+                        $orgUnitGroupIndicator .= " AND hris_indicator_target.id =".$target->getId();
+                    }else{
+                        $orgUnitGroupIndicator .= " hris_indicator_target.id =".$target->getId();
+                    }
+                }
+            }
+
             $formsWhereClause=" $resourceTableAlias.form_id IN ($formIds) ";
+            $selectQuery = str_replace('#{orgUnitGroupForTarget}',$orgUnitGroupForTarget,$selectQuery);
             $selectQuery = str_replace('#{organisationunitJoinClause}',$organisationUnitJoinClause,$selectQuery);
             $selectQuery = str_replace('#{organisationunitWhereClause}',$organisationunitLevelsWhereClause,$selectQuery);
             $selectQuery = str_replace('#{formWhereClause}',$formsWhereClause,$selectQuery);
+            $selectQuery = str_replace('#{orgUnitGroupIndicator}',$orgUnitGroupIndicator,$selectQuery);
             $sqlQueries = explode(';',$selectQuery);
+            //echo $selectQuery;
+            //exit();
             foreach($sqlQueries as $sqlKey=>$sqlQuery) {
                 $friendlyReportResults = $this->getDoctrine()->getManager()->getConnection()->fetchAll($sqlQuery);
             }
