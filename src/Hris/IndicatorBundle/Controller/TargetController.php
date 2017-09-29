@@ -305,63 +305,6 @@ class TargetController extends Controller
     }
 
     /**
-     * Returns TargetFieldOptions json.
-     *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_LISTFIELDOPTIONS")
-     * @Route("/targetFieldOption.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="target_targetfieldption")
-     * @Method("POST")
-     * @Template()
-     */
-    public function targetFieldOption2Action($_format)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $fieldid = $this->getRequest()->request->get('fieldid');
-        $targetid = $this->getRequest()->request->get('targetid');
-        $fieldOptionTargetNodes = NULL;
-
-        // Fetch existing targets and field options belonging to target
-        $fieldOptions = $em->getRepository('HrisFormBundle:FieldOption')->findBy(array('field'=>$fieldid));
-
-        if(!empty($targetid) && !empty($fieldid)) {
-            $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
-            $targetFieldOptions = $queryBuilder->select('targetFieldOption')
-                ->from('HrisIndicatorBundle:TargetFieldOption','targetFieldOption')
-                ->join('targetFieldOption.fieldOption','fieldOption')
-                ->join('fieldOption.field','field')
-                ->where('targetFieldOption.target=:targetid')
-                ->andWhere('field.id=:fieldid')
-                ->setParameters(array('targetid'=>$targetid,'fieldid'=>$fieldid))
-                ->getQuery()->getResult();
-            if(!empty($targetFieldOptions)) {
-                foreach($targetFieldOptions as $targetFieldOptionKey=>$targetFieldOption) {
-                    $fieldOptionTargetNodes[$targetFieldOption->getFieldOption()->getId()] = Array(
-                        'name' => $targetFieldOption->getFieldOption()->getValue(),
-                        'id' => $targetFieldOption->getFieldOption()->getId(),
-                        'value' => $targetFieldOption->getValue(),
-                        'maxValue' => $targetFieldOption->getMaxValue()
-                    );
-                }
-            }
-        }
-        foreach($fieldOptions as $fieldOptionKey=>$fieldOption) {
-            if(!isset($fieldOptionTargetNodes[$fieldOption->getId()])) {
-                $fieldOptionTargetNodes[] = Array(
-                    'name' => $fieldOption->getValue(),
-                    'id' => $fieldOption->getId(),
-                    'value' => '',
-                    'maxValue' => ''
-                );
-            }
-        }
-
-        $serializer = $this->container->get('serializer');
-
-        return array(
-            'entities' => $serializer->serialize($fieldOptionTargetNodes,$_format)
-        );
-    }
-
-    /**
      * Deletes a Target entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_DELETE")
