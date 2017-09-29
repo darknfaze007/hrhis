@@ -47,7 +47,7 @@ class TargetController extends Controller
     /**
      * Lists all Target entities.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_LIST")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_LIST,ROLE_RECORD_LISTFORMS")
      * @Route("/", name="target")
      * @Route("/list", name="target_list")
      * @Method("GET")
@@ -72,7 +72,7 @@ class TargetController extends Controller
     /**
      * Creates a new Target entity.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_CREATE")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_CREATE,ROLE_RECORD_LISTFORMS")
      * @Route("/", name="target_create")
      * @Method("POST")
      * @Template("HrisIndicatorBundle:Target:new.html.twig")
@@ -116,7 +116,7 @@ class TargetController extends Controller
     /**
      * Displays a form to create a new Target entity.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_CREATE")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_CREATE,ROLE_RECORD_LISTFORMS")
      * @Route("/new", name="target_new")
      * @Method("GET")
      * @Template()
@@ -135,7 +135,7 @@ class TargetController extends Controller
     /**
      * Finds and displays a Target entity.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_SHOW")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_SHOW,ROLE_RECORD_LISTFORMS")
      * @Route("/{id}", requirements={"id"="\d+"}, name="target_show")
      * @Method("GET")
      * @Template()
@@ -161,7 +161,7 @@ class TargetController extends Controller
     /**
      * Displays a form to edit an existing Target entity.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_UPDATE")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_UPDATE,ROLE_RECORD_LISTFORMS")
      * @Route("/{id}/edit", name="target_edit")
      * @Method("GET")
      * @Template()
@@ -189,7 +189,7 @@ class TargetController extends Controller
     /**
      * Edits an existing Target entity.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_UPDATE")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_UPDATE,ROLE_RECORD_LISTFORMS")
      * @Route("/{id}", name="target_update")
      * @Method("PUT")
      * @Template("HrisIndicatorBundle:Target:edit.html.twig")
@@ -250,7 +250,7 @@ class TargetController extends Controller
     /**
      * Returns TargetFieldOptions json.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_LISTFIELDOPTIONS")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_LISTFIELDOPTIONS,ROLE_RECORD_LISTFORMS")
      * @Route("/targetFieldOption.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="target_targetfieldption")
      * @Method("POST")
      * @Template()
@@ -307,7 +307,7 @@ class TargetController extends Controller
     /**
      * Deletes a Target entity.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_DELETE")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_TARGET_DELETE,ROLE_RECORD_LISTFORMS")
      * @Route("/{id}", name="target_delete")
      * @Method("DELETE")
      */
