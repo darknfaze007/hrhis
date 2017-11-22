@@ -261,8 +261,6 @@ class TargetController extends Controller
         $fieldid = $this->getRequest()->request->get('fieldid');
         $targetid = $this->getRequest()->request->get('targetid');
         $fieldOptionTargetNodes = NULL;
-        echo $fieldid;
-        exit();
         // Fetch existing targets and field options belonging to target
         $fieldOptions = $em->getRepository('HrisForpgmBundle:FieldOption')->findBy(array('field'=>$fieldid));
 
