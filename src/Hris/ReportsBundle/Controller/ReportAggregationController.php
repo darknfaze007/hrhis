@@ -341,8 +341,8 @@ class ReportAggregationController extends Controller
         if ($fieldsTwo->getId() != $fields->getId()) {
             $query .= " , ResourceTable.".$fieldsTwo->getName();
         }
-        echo $query;
-        exit();
+        //echo $query;
+        //exit();
         //get the records
         $report = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
        // $report = json_encode($report);
