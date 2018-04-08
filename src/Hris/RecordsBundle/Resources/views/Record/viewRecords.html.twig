@@ -72,10 +72,10 @@
                     {% if visibleField.getIsCalculated %}
                         <td>{{ record | calculateFieldExpression(visibleField.getCalculatedExpression,formFields) }}</td>
                     {% else %}
-                        {% if visibleField.getInputType == 'Select' and visibleField.uid != '5289e934b733f' %}
+                        {% if visibleField.getInputType == 'Select' %}
                             <td>
                                 {% if record.getValue( visibleField.uid ) in optionMap | keys %}
-                                    {{ optionMap[ record.getValue( visibleField.uid ) ] }}
+                                    {#{{ optionMap[ record.getValue( visibleField.uid ) ] }}#}
                                 {% else %}
 
                                 {% endif %}
