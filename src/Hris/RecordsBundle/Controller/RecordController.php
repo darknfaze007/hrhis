@@ -361,7 +361,7 @@ class RecordController extends Controller
 
         $formEntity = $em->getRepository('HrisFormBundle:Form')->find($id);
 
-        print_r($formEntity);
+        echo $formEntity;
         exit();
 
         $user = $this->container->get('security.context')->getToken()->getUser();
