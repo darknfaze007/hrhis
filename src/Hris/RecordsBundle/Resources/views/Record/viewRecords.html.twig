@@ -76,8 +76,7 @@
                             <td>
                                 {% if record.getValue( visibleField.uid ) != '0' %}
                                     {% if record.getValue( visibleField.uid ) in optionMap | keys %}
-                                        {#{{ optionMap[ record.getValue( visibleField.uid ) ] }}#}
-                                        {{ record.getValue( visibleField.uid ) }}
+                                        {{ optionMap[ record.getValue( visibleField.uid ) ] }}
                                     {% else %}
 
                                     {% endif %}
