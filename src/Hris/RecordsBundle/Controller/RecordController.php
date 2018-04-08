@@ -190,6 +190,13 @@ class RecordController extends Controller
             $delete_forms[$entity->getId()] = $delete_form->createView();
         }
         echo json_encode($visibleFields);
+        foreach($records as $record) {
+            foreach($visibleFields as $visibleField) {
+                if(!$visibleField.getIsCalculated()){
+                    echo $visibleField.uid. ":" .$record.getValue($visibleField.uid );
+                }
+            }
+        }
         exit();
 
         return array(
