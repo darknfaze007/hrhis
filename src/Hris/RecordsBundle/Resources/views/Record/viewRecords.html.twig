@@ -74,17 +74,17 @@
                     {% else %}
                         {% if visibleField.getInputType == 'Select' %}
                             <td>
-                                {% if record.getValue( visibleField.uid ) in optionMap | keys %}
-                                    {#{{ optionMap[ record.getValue( visibleField.uid ) ] }}#}
-                                    {{ record.getValue( visibleField.uid ) }}
-                                    {% if record.getValue( visibleField.uid ) != '0' %}
-                                        {{ optionMap[ record.getValue( visibleField.uid ) ] }}
+                                {% if record.getValue( visibleField.uid ) != '0' %}
+                                    {% if record.getValue( visibleField.uid ) in optionMap | keys %}
+                                        {#{{ optionMap[ record.getValue( visibleField.uid ) ] }}#}
+                                        {{ record.getValue( visibleField.uid ) }}
                                     {% else %}
 
                                     {% endif %}
                                 {% else %}
 
                                 {% endif %}
+
                             </td>
                         {% elseif visibleField.getInputType == 'Date' %}
                             <td>{{ record.getValue( visibleField.uid ) | date('d/m/Y') }}</td>
