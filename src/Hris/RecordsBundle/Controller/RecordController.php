@@ -191,9 +191,9 @@ class RecordController extends Controller
         }
         //echo json_encode($visibleFields);
         foreach($records as $record) {
-            echo "Here;";
+            echo "<br />Here";
             foreach($visibleFields as $visibleField) {
-                echo "Here1:".$visibleField.uid;
+                echo "<br /> Here:".$record.getValue($visibleField.uid );
                 //echo $visibleField.getIsCalculated().":".$visibleField.uid. ":" .$record.getValue($visibleField.uid );
             }
         }
