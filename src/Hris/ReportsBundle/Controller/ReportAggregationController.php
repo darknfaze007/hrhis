@@ -310,7 +310,7 @@ class ReportAggregationController extends Controller
 
         if($withLowerLevels){
             $query .= " AND Structure.level".$selectedOrgunitStructure->getLevel()->getLevel()."_id=".$organisationUnit->getId();
-            $query .= " AND  Structure.level_id >= ";
+            $query .= " AND  Structure.level_id IN ";
             //$query .= "(SELECT hris_organisationunitstructure.level_id FROM hris_organisationunitstructure WHERE hris_organisationunitstructure.organisationunit_id=".$organisationUnit->getId()." )";
             $query .= "(SELECT oul2.id FROM hris_organisationunitstructure 
 INNER JOIN hris_organisationunitlevel oul on(hris_organisationunitstructure.level_id=oul.id AND hris_organisationunitstructure.organisationunit_id=".$organisationUnit->getId().")
