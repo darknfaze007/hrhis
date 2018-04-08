@@ -75,7 +75,6 @@
                         {% if visibleField.getInputType == 'Select' %}
                             <td>
                                 {% if record.getValue( visibleField.uid ) in optionMap | keys %}
-                                    {#{{ optionMap[ record.getValue( visibleField.uid ) ] }}#}
                                     {{ record.getValue( visibleField.uid ) }}
                                 {% else %}
 
