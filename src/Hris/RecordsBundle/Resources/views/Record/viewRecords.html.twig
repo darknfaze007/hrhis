@@ -77,6 +77,11 @@
                                 {% if record.getValue( visibleField.uid ) in optionMap | keys %}
                                     {#{{ optionMap[ record.getValue( visibleField.uid ) ] }}#}
                                     {{ record.getValue( visibleField.uid ) }}
+                                    {% if record.getValue( visibleField.uid ) != '0' %}
+                                        {{ optionMap[ record.getValue( visibleField.uid ) ] }}
+                                    {% else %}
+
+                                    {% endif %}
                                 {% else %}
 
                                 {% endif %}
