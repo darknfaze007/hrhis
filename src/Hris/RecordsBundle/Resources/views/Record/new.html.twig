@@ -5,6 +5,11 @@
     <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.validate.js') }}"></script>
     <script type="text/javascript">
         function changeRelatedFieldOptions(uid) {
+            if(uid == '5289e934b733f'){
+                if($('#5289e934b733f :selected').text() == 'N/A'){
+                    uid = '5289e934b733b';
+                }
+            }
             window.childFields = [];
             window.selectedFieldOption={};
             window.childFieldIncrement = {};
