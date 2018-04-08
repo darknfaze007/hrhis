@@ -189,7 +189,7 @@ class RecordController extends Controller
             $delete_form= $this->createDeleteForm($entity->getId());
             $delete_forms[$entity->getId()] = $delete_form->createView();
         }
-        print($visibleFields);
+        echo json_encode($visibleFields);
         exit();
 
         return array(
