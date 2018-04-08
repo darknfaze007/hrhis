@@ -311,7 +311,11 @@ class ReportAggregationController extends Controller
         if($withLowerLevels){
             $query .= " AND Structure.level".$selectedOrgunitStructure->getLevel()->getLevel()."_id=".$organisationUnit->getId();
             $query .= " AND  Structure.level_id >= ";
-            $query .= "(SELECT hris_organisationunitstructure.level_id FROM hris_organisationunitstructure WHERE hris_organisationunitstructure.organisationunit_id=".$organisationUnit->getId()." )";
+            //$query .= "(SELECT hris_organisationunitstructure.level_id FROM hris_organisationunitstructure WHERE hris_organisationunitstructure.organisationunit_id=".$organisationUnit->getId()." )";
+            $query .= "(SELECT oul2.id FROM hris_organisationunitstructure 
+INNER JOIN hris_organisationunitlevel oul on(hris_organisationunitstructure.level_id=oul.id AND hris_organisationunitstructure.organisationunit_id=".$organisationUnit->getId().")
+LEFT OUTER JOIN hris_organisationunitlevel oul2 ON(true)
+WHERE oul.level <= oul2.level)";
         }else{
             $query .= " AND ResourceTable.organisationunit_id=".$organisationUnit->getId();
         }
@@ -341,8 +345,8 @@ class ReportAggregationController extends Controller
         if ($fieldsTwo->getId() != $fields->getId()) {
             $query .= " , ResourceTable.".$fieldsTwo->getName();
         }
-        echo $query."<br />";
-        exit();
+        //echo $query."<br />";
+        //exit();
         //get the records
         $report = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
        // $report = json_encode($report);
