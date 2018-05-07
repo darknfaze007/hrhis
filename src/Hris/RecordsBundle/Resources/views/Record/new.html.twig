@@ -105,9 +105,7 @@
                     $.each( jsonFields, function( fieldKey, jsonField ) {
                         $('#'+value.id).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
                     });
-                    console.log("Here");
-                    if($('#5289e934b733e')[0]){
-                        console.log("Here1");
+                    if($('#5289e934b733f')[0]){
                         $('#5289e934b733f option[value=528b0adfa726a]').remove();
                         $("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));
                     }
