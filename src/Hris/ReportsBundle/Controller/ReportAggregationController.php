@@ -345,8 +345,8 @@ WHERE oul.level <= oul2.level)";
         if ($fieldsTwo->getId() != $fields->getId()) {
             $query .= " , ResourceTable.".$fieldsTwo->getName();
         }
-        //echo $query."<br />";
-        //exit();
+        echo $query."<br />";
+        exit();
         //get the records
         $report = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
        // $report = json_encode($report);
