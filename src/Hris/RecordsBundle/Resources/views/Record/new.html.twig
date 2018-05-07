@@ -75,6 +75,10 @@
                             $(organisationunitsTagId).append(new Option(organisationunit['longname'], organisationunit['uid']));
                         });
                     }
+                    if($('#5289e934b733e')[0]){
+                        $('#5289e934b733f option[value=528b0adfa726a]').remove();
+                        $("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));
+                    }
                 }).done(function(){
                     if (jQuery.isEmptyObject(window.loadedOrganisationunits)){
                         $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get duty posts, please check your network connection</small></div>');
@@ -106,7 +110,7 @@
                         $('#'+value.id).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
                     });
                     if($('#5289e934b733e')[0]){
-                        $('#5289e934b733f option[value=528b0adfa726a]').remove()
+                        $('#5289e934b733f option[value=528b0adfa726a]').remove();
                         $("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));
                     }
                 }).done(function(){
