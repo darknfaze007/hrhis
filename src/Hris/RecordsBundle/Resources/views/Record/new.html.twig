@@ -75,7 +75,9 @@
                             $(organisationunitsTagId).append(new Option(organisationunit['longname'], organisationunit['uid']));
                         });
                     }
+                    console.log("Here");
                     if($('#5289e934b733e')[0]){
+                        console.log("Here1");
                         $('#5289e934b733f option[value=528b0adfa726a]').remove();
                         $("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));
                     }
