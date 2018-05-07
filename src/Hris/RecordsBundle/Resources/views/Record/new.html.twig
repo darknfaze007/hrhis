@@ -5,6 +5,9 @@
     <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.validate.js') }}"></script>
     <script type="text/javascript">
         function changeRelatedFieldOptions(uid) {
+            if(uid == '5289e934b733b'){
+                $('#5289e934b733f option[value=528b0adfa726a]').attr('selected','selected');
+            }
             if(uid == '5289e934b733f'){
                 if($('#5289e934b733f :selected').text() == 'N/A'){
                     uid = '5289e934b733b';
@@ -95,8 +98,6 @@
 
             var selectItems = $( "td" ).find( "select" );//Get all select fields
             $.each( selectItems, function( key, value ) {
-                console.log(value);
-//                5289e934a7bb0
                 var fieldUrl = "{{ path('api_fieldoption', { '_format': 'json'}) }}"+'?uid='+value.id;
 //                console.log(fieldUrl);
                 var getFields = $.getJSON( fieldUrl, function( jsonFields ) { //Get field options of all select fields
@@ -104,6 +105,10 @@
                     $.each( jsonFields, function( fieldKey, jsonField ) {
                         $('#'+value.id).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
                     });
+                    if($('#5289e934b733e')[0]){
+                        $('#5289e934b733f option[value=528b0adfa726a]').remove()
+                        $("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));
+                    }
                 }).done(function(){
                     $('.dataentry').find('input, textarea,select').removeAttr('disabled');
                     $('#loadingMessage').remove();
@@ -120,10 +125,7 @@
                     });
 
                 window.uniqueValuesString = window.uniqueValuesString + 'unique_5289e934ab062'+'='+$('#5289e934ab062').val()+'&' + 'unique_5289e934b2b33'+'='+$('#5289e934b2b33').val()+'&' + 'unique_5289e934c02a1'+'='+$('#5289e934c02a1').val()+'&' + 'unique_5289e934a140e'+'='+$('#5289e934a140e').val()+'&';
-                //console.log(window.uniqueValuesString.replace(/&+$/,''));
 
-
-                console.log(window.uniqueValuesString.replace(/&+$/,''));
                     window.recordUnique='';
                     $.get( "{{ path('record_checkuniqueness', { '_format': 'json' }) }}"+'?'+'formid='+'{{ formEntity.id }}&'+window.uniqueValuesString.replace(/&+$/,''), function( data ) {
                         window.recordUnique=data;
