@@ -400,6 +400,9 @@ class ReportEmployeeRecordsController extends Controller
          * The Final Query(factoring pagination, searching and sorting)
          */
         $recordsToDisplayQuery="SELECT ".$selectColumnClause.$filteredRecordsWithLimitsWithoutSelectQuery;
+
+        echo $recordsToDisplayQuery;
+        exit();
         //var_dump($recordsToDisplayQuery);exit();
         $recordsArray = $this->getDoctrine()->getManager()->getConnection()->fetchAll($recordsToDisplayQuery);
         /*
@@ -435,26 +438,26 @@ class ReportEmployeeRecordsController extends Controller
                         }else if ($fieldObject->getInputType()->getName() == 'Date') {
                             /**if($fieldObject->getIsCalculated()) {
 
-                                if(preg_match_all('/\#{([^\}]+)\}/',$fieldObject->getCalculatedExpression(),$match)) {
-                                    foreach($fieldObjects as $fieldKey=>$field) {
-                                        if($field->getName()==$match[1][0]) {
-                                            // Translates to $field->getName()
-                                            $valueKey = $field->getName();
-                                        }
-                                    }
-                                }
-                                $derivedDate = new \DateTime($recordArray[strtolower($valueKey)]);
-                                // Date Field Value
-                                $formattedDerivedDate = $derivedDate->format('d/m/Y');
-                                $expression = @@str_replace($match[0][0],$formattedDerivedDate,$fieldObject->getCalculatedExpression());
+                            if(preg_match_all('/\#{([^\}]+)\}/',$fieldObject->getCalculatedExpression(),$match)) {
+                            foreach($fieldObjects as $fieldKey=>$field) {
+                            if($field->getName()==$match[1][0]) {
+                            // Translates to $field->getName()
+                            $valueKey = $field->getName();
+                            }
+                            }
+                            }
+                            $derivedDate = new \DateTime($recordArray[strtolower($valueKey)]);
+                            // Date Field Value
+                            $formattedDerivedDate = $derivedDate->format('d/m/Y');
+                            $expression = @@str_replace($match[0][0],$formattedDerivedDate,$fieldObject->getCalculatedExpression());
 
-                                $displayValue = eval("return $expression;");
+                            $displayValue = eval("return $expression;");
                             }else {
-                                if(isset($recordArray[strtolower($fieldObject->getName())])) {
-                                    $displayValue = new \DateTime($recordArray[strtolower($fieldObject->getName())]);
-                                    // Date Field Value
-                                    $displayValue = $displayValue->format('d/m/Y');
-                                }
+                            if(isset($recordArray[strtolower($fieldObject->getName())])) {
+                            $displayValue = new \DateTime($recordArray[strtolower($fieldObject->getName())]);
+                            // Date Field Value
+                            $displayValue = $displayValue->format('d/m/Y');
+                            }
                             }**/
                             #########
                             #ABOVE SCRIPT WILL NEED TO BE REVIEWED AS WE ARE PULLING DATA FROM RESOURCE TABLES
