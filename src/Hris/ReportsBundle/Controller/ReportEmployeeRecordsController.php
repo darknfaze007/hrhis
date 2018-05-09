@@ -486,11 +486,11 @@ class ReportEmployeeRecordsController extends Controller
      * Returns Employee records json.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_REPORTRECORDS_LIST")
-     * @Route("/{_format}", requirements={"_format"="json|"}, defaults={"_format"="json"}, name="report_employeerecordssearch_ajax")
+     * @Route("/employeesearch{_format}", requirements={"_format"="json|"}, defaults={"_format"="json"}, name="report_employeesearch_ajax")
      * @Method("GET")
      * @Template()
      */
-    public function employeeRecordsSearchAction($_format)
+    public function employeeSearchAction($_format)
     {
         $em = $this->getDoctrine()->getManager();
         $visibleFieldIds = explode(',',$this->getRequest()->request->get('visibleFields'));
