@@ -493,8 +493,8 @@ class ReportEmployeeRecordsController extends Controller
     public function employeeSearchAction($_format)
     {
         $em = $this->getDoctrine()->getManager();
-        $visibleFieldIds = explode(',',$this->getRequest()->request->get('visibleFields'));
-        $searchString = $this->getRequest()->request->get('sSearch');
+        //$visibleFieldIds = explode(',',$this->getRequest()->request->get('visibleFields'));
+        //$searchString = $this->getRequest()->request->get('sSearch');
 
         $recordsToDisplayQuery = "SELECT * FROM _resource_all_fields LIMIT 10";
         $recordsArray = $this->getDoctrine()->getManager()->getConnection()->fetchAll($recordsToDisplayQuery);
