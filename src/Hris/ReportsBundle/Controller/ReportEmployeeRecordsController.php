@@ -400,9 +400,6 @@ class ReportEmployeeRecordsController extends Controller
          * The Final Query(factoring pagination, searching and sorting)
          */
         $recordsToDisplayQuery="SELECT ".$selectColumnClause.$filteredRecordsWithLimitsWithoutSelectQuery;
-
-        echo $recordsToDisplayQuery;
-        exit();
         //var_dump($recordsToDisplayQuery);exit();
         $recordsArray = $this->getDoctrine()->getManager()->getConnection()->fetchAll($recordsToDisplayQuery);
         /*
@@ -482,6 +479,31 @@ class ReportEmployeeRecordsController extends Controller
 
         return array(
             'employeeRecords' => $serializer->serialize($employeeRecordsArray,$_format)
+        );
+    }
+
+    /**
+     * Returns Employee records json.
+     *
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_REPORTRECORDS_LIST")
+     * @Route("/{_format}", requirements={"_format"="json|"}, defaults={"_format"="json"}, name="report_employeerecordssearch_ajax")
+     * @Method("GET")
+     * @Template()
+     */
+    public function employeeRecordsSearchAction($_format)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $visibleFieldIds = explode(',',$this->getRequest()->request->get('visibleFields'));
+        $searchString = $this->getRequest()->request->get('sSearch');
+
+        $recordsToDisplayQuery = "";
+        $recordsArray = $this->getDoctrine()->getManager()->getConnection()->fetchAll($recordsToDisplayQuery);
+
+
+        $serializer = $this->container->get('serializer');
+
+        return array(
+            'employeeRecords' => $serializer->serialize($recordsArray,$_format)
         );
     }
 
