@@ -266,7 +266,7 @@ class ReportAggregationController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         $selectedOrgunitStructure = $entityManager->getRepository('HrisOrganisationunitBundle:OrganisationunitStructure')->findOneBy(array('organisationunit' => $organisationUnit->getId()));
-        /*$x = 1;
+        $x = 1;
         $found = FALSE;
         while($x <= 6) {
             if($organisationUnit->getId() == call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))->getId()){
@@ -274,7 +274,7 @@ class ReportAggregationController extends Controller
             }
             $x++;
         }
-        if(!$found){
+        /*if(!$found){
             $withLowerLevels = FALSE;
         }*/
         //get the list of options to exclude from the reports
