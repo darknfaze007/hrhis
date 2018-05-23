@@ -272,14 +272,16 @@ class ReportAggregationController extends Controller
             array('skipInReport' => TRUE)
         );
         $x = 1;
-        echo call_user_func(array($selectedOrgunitStructure, 'getLevel2Organisationunit'))->getId()." <br>";
-        echo $organisationUnit->getId()." ".'getLevel'.$x.'Organisationunit'."<br>";
+        $found = FALSE;
         while($x <= 6) {
             echo $x.". ".$organisationUnit->getId()." == ". call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))->getId()."<br />";
             if($organisationUnit->getId() == call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))->getId()){
-                echo "The number is: $x <br>";
+                $found = TRUE;
             }
             $x++;
+        }
+        if(!$found){
+            $withLowerLevels = FALSE;
         }
         //remove the value which have field option set to exclude in reports
         //but check to see if the first field is in the list of fields to remove.
@@ -358,8 +360,6 @@ WHERE oul.level <= oul2.level)";*/
         if ($fieldsTwo->getId() != $fields->getId()) {
             $query .= " , ResourceTable.".$fieldsTwo->getName();
         }
-        echo $query;
-        exit();
         //get the records
         $report = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
        // $report = json_encode($report);
