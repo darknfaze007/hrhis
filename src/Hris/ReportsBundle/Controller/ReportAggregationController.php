@@ -273,7 +273,7 @@ class ReportAggregationController extends Controller
         );
         $x = 1;
         echo call_user_func(array($selectedOrgunitStructure, 'getLevel2Organisationunit'))->getId()." <br>";
-        echo $selectedOrgunitStructure->getLevel2Organisationunit()->getId()." <br>";
+        echo $organisationUnit->getId()." ".'getLevel'.$x.'Organisationunit'."<br>";
         while($x <= 5) {
             if($organisationUnit->getId() == call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))->getId()){
                 echo "The number is: $x <br>";
