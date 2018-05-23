@@ -274,7 +274,6 @@ class ReportAggregationController extends Controller
         $x = 1;
         $found = FALSE;
         while($x <= 6) {
-            echo $x.". ".$organisationUnit->getId()." == ". call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))->getId()."<br />";
             if($organisationUnit->getId() == call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))->getId()){
                 $found = TRUE;
             }
