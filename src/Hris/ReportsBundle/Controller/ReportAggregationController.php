@@ -271,7 +271,14 @@ class ReportAggregationController extends Controller
         $fieldOptionsToExclude = $entityManager->getRepository('HrisFormBundle:FieldOption')->findBy (
             array('skipInReport' => TRUE)
         );
+        $x = 1;
 
+        while($x <= 5) {
+            if($organisationUnit->getId() == $selectedOrgunitStructure->{'getLevel'.$x.'Organisationunit'}()){
+                echo "The number is: $x <br>";
+            }
+            $x++;
+        }
         //remove the value which have field option set to exclude in reports
         //but check to see if the first field is in the list of fields to remove.
         foreach($fieldOptionsToExclude as $key => $fieldOptionToExclude)
