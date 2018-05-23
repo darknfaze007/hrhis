@@ -269,14 +269,17 @@ class ReportAggregationController extends Controller
         $x = 1;
         $found = FALSE;
         while($x <= 6) {
-            if($organisationUnit->getId() == call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))->getId()){
-                $found = TRUE;
+            $org = call_user_func(array($selectedOrgunitStructure, 'getLevel'.$x.'Organisationunit'))
+            if(isset($org)){
+                if($organisationUnit->getId() == $org->getId()){
+                    $found = TRUE;
+                }
             }
             $x++;
         }
-        /*if(!$found){
+        if($found == FALSE){
             $withLowerLevels = FALSE;
-        }*/
+        }
         //get the list of options to exclude from the reports
         $fieldOptionsToExclude = $entityManager->getRepository('HrisFormBundle:FieldOption')->findBy (
             array('skipInReport' => TRUE)
