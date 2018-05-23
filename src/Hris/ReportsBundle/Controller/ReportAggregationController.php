@@ -272,6 +272,7 @@ class ReportAggregationController extends Controller
             array('skipInReport' => TRUE)
         );
         $x = 1;
+        echo call_user_func(array($selectedOrgunitStructure, 'getLevel2Organisationunit'))->getId()." <br>";
         echo $selectedOrgunitStructure->getLevel2Organisationunit()->getId()." <br>";
         while($x <= 5) {
             if($organisationUnit->getId() == $selectedOrgunitStructure->{'getLevel'.$x.'Organisationunit'}()){
