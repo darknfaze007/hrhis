@@ -101,7 +101,7 @@ class DashboardController extends Controller
         //get the data from the aggregation engine
         $organisationunit = $user->getOrganisationunit();
         echo $organisationunit ."<br/>";
-        echo $forms ."<br/>";
+        print_r($forms)  ."<br/>";
         echo $dashboardEmplyomentField ."<br/>";
         echo $organisationunitGroups ."<br/>";
         exit();
