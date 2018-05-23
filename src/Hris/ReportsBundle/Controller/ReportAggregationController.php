@@ -266,11 +266,6 @@ class ReportAggregationController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         $selectedOrgunitStructure = $entityManager->getRepository('HrisOrganisationunitBundle:OrganisationunitStructure')->findOneBy(array('organisationunit' => $organisationUnit->getId()));
-
-        //get the list of options to exclude from the reports
-        $fieldOptionsToExclude = $entityManager->getRepository('HrisFormBundle:FieldOption')->findBy (
-            array('skipInReport' => TRUE)
-        );
         $x = 1;
         $found = FALSE;
         while($x <= 6) {
@@ -282,6 +277,10 @@ class ReportAggregationController extends Controller
         if(!$found){
             $withLowerLevels = FALSE;
         }
+        //get the list of options to exclude from the reports
+        $fieldOptionsToExclude = $entityManager->getRepository('HrisFormBundle:FieldOption')->findBy (
+            array('skipInReport' => TRUE)
+        );
         //remove the value which have field option set to exclude in reports
         //but check to see if the first field is in the list of fields to remove.
         foreach($fieldOptionsToExclude as $key => $fieldOptionToExclude)
