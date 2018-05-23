@@ -100,7 +100,7 @@ class DashboardController extends Controller
 
         //get the data from the aggregation engine
         $organisationunit = $user->getOrganisationunit();
-        var_dump($organisationunit);
+        echo $organisationunit;
         exit();
         if(empty($organisationunit)) $organisationunit =  $this->getDoctrine()->getManager()->createQuery('SELECT organisationunit FROM HrisOrganisationunitBundle:Organisationunit organisationunit WHERE organisationunit.parent IS NULL')->getSingleResult();
         $dashboardEmplyomentChart = $reportAggregationController::aggregationEngine($organisationunit, $forms,$dashboardEmplyomentField, $organisationunitGroups, TRUE, $dashboardEmplyomentField);
