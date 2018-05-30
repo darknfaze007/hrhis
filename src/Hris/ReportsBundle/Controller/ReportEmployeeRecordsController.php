@@ -492,6 +492,8 @@ class ReportEmployeeRecordsController extends Controller
      */
     public function employeeSearchAction($_format)
     {
+        echo "Here";
+        exit();
         $em = $this->getDoctrine()->getManager();
         //$visibleFieldIds = explode(',',$this->getRequest()->request->get('visibleFields'));
         //$searchString = $this->getRequest()->request->get('sSearch');
