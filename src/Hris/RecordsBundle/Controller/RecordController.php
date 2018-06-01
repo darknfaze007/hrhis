@@ -139,6 +139,8 @@ class RecordController extends Controller
                 'formIds'=>$formIds,
             );
         }
+        echo $records->andWhere($queryBuilder->expr()->in('form.id',':formIds'))->setParameters($parameters)->toSql();
+        exit();
         $records = $records->andWhere($queryBuilder->expr()->in('form.id',':formIds'))
             ->setParameters($parameters)
             ->getQuery()->getResult();
