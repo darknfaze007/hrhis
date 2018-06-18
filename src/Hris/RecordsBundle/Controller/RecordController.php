@@ -125,7 +125,7 @@ class RecordController extends Controller
                                         FROM HrisOrganisationunitBundle:OrganisationunitStructure selectedOrganisationunitStructure
                                         INNER JOIN selectedOrganisationunitStructure.level selectedOrganisationunitLevel
                                         WHERE selectedOrganisationunitStructure.organisationunit=:selectedOrganisationunit )'
-                )
+                );
             //->andWhere('organisationunitStructure.level'.$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel().'Organisationunit=:levelId');
             $parameters = array(
                 'levelId'=>$organisationunit->getId(),
