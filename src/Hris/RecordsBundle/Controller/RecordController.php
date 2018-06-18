@@ -127,8 +127,12 @@ class RecordController extends Controller
                                         WHERE selectedOrganisationunitStructure.organisationunit=:selectedOrganisationunit )'
                 );
             //->andWhere('organisationunitStructure.level'.$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel().'Organisationunit=:levelId');
-            $parameters = array(
+            /*$parameters = array(
                 'levelId'=>$organisationunit->getId(),
+                'selectedOrganisationunit'=>$organisationunit->getId(),
+                'formIds'=>$formIds,
+            );*/
+            $parameters = array(
                 'selectedOrganisationunit'=>$organisationunit->getId(),
                 'formIds'=>$formIds,
             );
