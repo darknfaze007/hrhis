@@ -126,7 +126,7 @@ class RecordController extends Controller
                                         INNER JOIN selectedOrganisationunitStructure.level selectedOrganisationunitLevel
                                         WHERE selectedOrganisationunitStructure.organisationunit=:selectedOrganisationunit )'
                 )
-            ->andWhere('organisationunitStructure.level'.$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel().'Organisationunit=:levelId');
+            //->andWhere('organisationunitStructure.level'.$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel().'Organisationunit=:levelId');
             $parameters = array(
                 'levelId'=>$organisationunit->getId(),
                 'selectedOrganisationunit'=>$organisationunit->getId(),
