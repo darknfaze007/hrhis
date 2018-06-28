@@ -711,9 +711,9 @@ class RecordController extends Controller
     /**
      * Search Record Checklist number
      *
-     * @Route("/searchCheckList/{checkNumber}", requirements={\"checkNumber\"=\"\d+\"},name="search_checklist")
+     * @Route("/searchCheckList/{checkNumber}", requirements={"checkNumber"="\d+"},defaults={"checkNumber" = null}, name="search_checklist")
      * @Method("GET")
-     *
+     * @return null/string/array
      */
     public function searchCheckList($checkNumber)
     {
