@@ -711,13 +711,19 @@ class RecordController extends Controller
     /**
      * Search Record Checklist number
      *
-     * @Route("/searchCheckList/{checkNumber}", requirements={"checkNumber"="\d+"},defaults={"checkNumber" = null}, name="search_checklist")
+     * @Route("/searchCheckList/{checkNumber}",defaults={"checkNumber" = null}, name="search_checklist")
      * @Method("GET")
      * @return null/string/array
      */
     public function searchCheckList($checkNumber)
     {
-        return new JsonResponse(array('name' => "Leonard Mpande ".$checkNumber));
+        $response = array();
+        if ($checkNumber === NULL ){
+            $response = array('error' => "No checklist number supplied");
+        } else {
+            $response = array('checkList'=>$checkNumber);
+        }
+        return new JsonResponse($response);
     }
 }
 
