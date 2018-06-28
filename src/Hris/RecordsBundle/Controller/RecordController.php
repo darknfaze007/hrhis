@@ -723,17 +723,16 @@ class RecordController extends Controller
         if ($checkNumber === NULL ){
             $response = array('error' => "No checklist number supplied");
         } else {
-            $response = array('checkList'=>$checkNumber);
-            $resourceTableName = "_resource_all_fields";
-
-            //Query all history data and count by field option
+//            $response = array('checkList'=>$checkNumber);
             $query = "SELECT R.firstname, R.middlename, R.surname, R.designation,R.dob, R.sex, R.edu_evel, R.check_no, R.department, R.employment_status, R.level5_facility ,R.retirementdistribution ";
-            $query .= "FROM ".$resourceTableName." R ";
+            $query .= "FROM _resource_all_fields R ";
             $query .= "INNER JOIN hris_record as V on V.instance = R.instance ";
-            $query .= "WHERE R.check_no = ".$checkNumber;
-            $query .= " ORDER BY R.firstname ASC";
-//            $response = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
-            var_dump($query);
+            $query .= "WHERE R.check_no = ".$checkNumber." LIMIT 1 ";
+            $query .= "ORDER BY R.firstname ASC";
+
+            $statement = $entityManager->getConnection()->prepare($query);
+            $statement->execute();
+            $response = $statement->fetchAll();
 
         }
         return new JsonResponse($response);
