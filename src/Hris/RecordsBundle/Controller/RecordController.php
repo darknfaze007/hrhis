@@ -728,7 +728,7 @@ class RecordController extends Controller
             $query .= "FROM _resource_all_fields R ";
             $query .= "INNER JOIN hris_record as V on V.instance = R.instance ";
             $query .= "WHERE R.check_no = ".$checkNumber;
-            $query .= "ORDER BY R.firstname ASC";
+            $query .= " ORDER BY R.firstname ASC";
 
             $statement = $entityManager->getConnection()->prepare($query);
             $statement->execute();
