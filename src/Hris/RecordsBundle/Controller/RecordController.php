@@ -711,13 +711,13 @@ class RecordController extends Controller
     /**
      * Search Record Checklist number
      *
-     * @Route("/searchCheckList/{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="search_checklist")
+     * @Route("/searchCheckList/{checkNumber}", requirements={\"checkNumber\"=\"\d+\"},name="search_checklist")
      * @Method("GET")
      *
      */
-    public function searchCheckList(Request $request)
+    public function searchCheckList($checkNumber)
     {
-        return new JsonResponse(array('name' => "Leonard Mpande"));
+        return new JsonResponse(array('name' => "Leonard Mpande ".$checkNumber));
     }
 }
 
