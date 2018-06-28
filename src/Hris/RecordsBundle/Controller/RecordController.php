@@ -734,8 +734,12 @@ class RecordController extends Controller
                 $query .= " ORDER BY R.firstname ASC";
 
                 $statement = $entityManager->getConnection()->prepare($query);
-                $statement->execute();
-                $response = $statement->fetchAll();
+                if ($statement->execute()){
+                    $response = $statement->fetchAll();
+                } else {
+                    throw new Exception("Invalid check number") ;
+                }
+
 
             }
 
