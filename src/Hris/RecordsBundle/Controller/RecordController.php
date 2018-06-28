@@ -717,11 +717,24 @@ class RecordController extends Controller
      */
     public function searchCheckList($checkNumber)
     {
+        $entityManager = $this->getDoctrine()->getManager();
+
         $response = array();
         if ($checkNumber === NULL ){
             $response = array('error' => "No checklist number supplied");
         } else {
             $response = array('checkList'=>$checkNumber);
+            $resourceTableName = "_resource_all_fields";
+            //Query all history data and count by field option
+            $query = "SELECT R.firstname, R.middlename, R.surname, R.designation,R.dob, R.sex, R.edu_evel, R.check_no, R.department, R.employment_status, R.level5_facility ,R.retirementdistribution ";
+            $query .= "FROM ".$resourceTableName." R ";
+            $query .= "INNER JOIN hris_record as V on V.instance = R.instance ";
+            $query .= "INNER JOIN hris_organisationunitstructure as S on S.organisationunit_id = V.organisationunit_id ";
+            $query .= "INNER JOIN hris_organisationunitlevel as L on L.id = S.level_id ";
+            $query .= "WHERE R.check_no = ".$checkNumber;
+            $query .= " ORDER BY R.firstname ASC";
+            $response = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
+
         }
         return new JsonResponse($response);
     }
