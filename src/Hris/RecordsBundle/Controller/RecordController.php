@@ -22,6 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
+
 namespace Hris\RecordsBundle\Controller;
 
 use Doctrine\DBAL\DBALException;
@@ -31,7 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\QueryBuilder as QueryBuilder;
 use FOS\UserBundle\Doctrine;
-use Doctrine\ORM\Internal\Hydration\ObjectHydrator  as DoctrineHydrator;
+use Doctrine\ORM\Internal\Hydration\ObjectHydrator as DoctrineHydrator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -45,6 +46,7 @@ use Hris\FormBundle\Form\DesignFormType;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use DateTime;
 
@@ -93,89 +95,89 @@ class RecordController extends Controller
         $user = $userManager->findUserByUsername($this->getUser());
         $organisationunit = $user->getOrganisationunit();
 
-        if($formid == 0) {
-            $formIds = $this->getDoctrine()->getManager()->createQueryBuilder()->select( 'form.id')
-                            ->from('HrisFormBundle:Form','form')->getQuery()->getArrayResult();
-            $formIds = $this->array_value_recursive('id',$formIds);
+        if ($formid == 0) {
+            $formIds = $this->getDoctrine()->getManager()->createQueryBuilder()->select('form.id')
+                ->from('HrisFormBundle:Form', 'form')->getQuery()->getArrayResult();
+            $formIds = $this->array_value_recursive('id', $formIds);
             $forms = $em->getRepository('HrisFormBundle:Form')->findAll();
-        }else {
-            $forms = $em->getRepository('HrisFormBundle:Form')->findby(array('id'=>$formid));
-            $formIds[]=$formid;
+        } else {
+            $forms = $em->getRepository('HrisFormBundle:Form')->findby(array('id' => $formid));
+            $formIds[] = $formid;
         }
 
         //Prepare field Option map, converting from stored FieldOption key in record value array to actual text value
         $fieldOptions = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findAll();
         foreach ($fieldOptions as $fieldOptionKey => $fieldOption) {
             $recordFieldOptionKey = ucfirst(Record::getFieldOptionKey());
-            $fieldOptionMap[call_user_func_array(array($fieldOption, "get${recordFieldOptionKey}"),array()) ] =   $fieldOption->getValue();
+            $fieldOptionMap[call_user_func_array(array($fieldOption, "get${recordFieldOptionKey}"), array())] = $fieldOption->getValue();
         }
 
         //If user's organisationunit is data entry level pull only records of his organisationunit
         //else pull lower children too.
         $records = $queryBuilder->select('record')
-            ->from('HrisRecordsBundle:Record','record')
-            ->join('record.organisationunit','organisationunit')
-            ->join('record.form','form');
-        if($organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel()) {
+            ->from('HrisRecordsBundle:Record', 'record')
+            ->join('record.organisationunit', 'organisationunit')
+            ->join('record.form', 'form');
+        if ($organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel()) {
             $records = $records
-                ->join('organisationunit.organisationunitStructure','organisationunitStructure')
-                ->join('organisationunitStructure.level','organisationunitLevel')
+                ->join('organisationunit.organisationunitStructure', 'organisationunitStructure')
+                ->join('organisationunitStructure.level', 'organisationunitLevel')
                 ->andWhere('organisationunitLevel.level >= (
                                         SELECT selectedOrganisationunitLevel.level
                                         FROM HrisOrganisationunitBundle:OrganisationunitStructure selectedOrganisationunitStructure
                                         INNER JOIN selectedOrganisationunitStructure.level selectedOrganisationunitLevel
                                         WHERE selectedOrganisationunitStructure.organisationunit=:selectedOrganisationunit )'
                 )
-            //->andWhere('organisationunitStructure.level'.$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel().'Organisationunit=:levelId');
-            ->andWhere('organisationunitStructure.organisationunit=:levelId');
+                //->andWhere('organisationunitStructure.level'.$organisationunit->getOrganisationunitStructure()->getLevel()->getLevel().'Organisationunit=:levelId');
+                ->andWhere('organisationunitStructure.organisationunit=:levelId');
             $parameters = array(
-                'levelId'=>$organisationunit->getId(),
-                'selectedOrganisationunit'=>$organisationunit->getId(),
-                'formIds'=>$formIds,
+                'levelId' => $organisationunit->getId(),
+                'selectedOrganisationunit' => $organisationunit->getId(),
+                'formIds' => $formIds,
             );
-        }else {
+        } else {
             $records = $records->andWhere('organisationunit.id=:selectedOrganisationunit');
             $parameters = array(
-                'selectedOrganisationunit'=>$organisationunit->getId(),
-                'formIds'=>$formIds,
+                'selectedOrganisationunit' => $organisationunit->getId(),
+                'formIds' => $formIds,
             );
         }
         //var_dump($parameters);
         //echo "<br /><br /><br />";
         //echo $records->andWhere($queryBuilder->expr()->in('form.id',':formIds'))->setParameters($parameters)->getQuery()->getSQL();
         //exit();
-        $records = $records->andWhere($queryBuilder->expr()->in('form.id',':formIds'))
+        $records = $records->andWhere($queryBuilder->expr()->in('form.id', ':formIds'))
             ->setParameters($parameters)
             ->getQuery()->getResult();
 
         $formNames = NULL;
         $visibleFields = Array();
         $formFields = Array();
-        $incr=0;
+        $incr = 0;
         $formIds = Array();
-        foreach($forms as $formKey=>$form) {
+        foreach ($forms as $formKey => $form) {
             $incr++;
             $formIds[] = $form->getId();
             // Concatenate form Names
-            if(empty($formNames)) {
+            if (empty($formNames)) {
                 $formNames = $form->getTitle();
-            }else {
-                if(count($formNames)==$incr) $formNames.=','.$form->getTitle();
+            } else {
+                if (count($formNames) == $incr) $formNames .= ',' . $form->getTitle();
             }
             // Accrue visible fields
-            foreach($form->getFormVisibleFields() as $visibleFieldKey=>$visibleField) {
+            foreach ($form->getFormVisibleFields() as $visibleFieldKey => $visibleField) {
 
-                if(!in_array($visibleField->getField(),$visibleFields)) $visibleFields[] =$visibleField->getField();
+                if (!in_array($visibleField->getField(), $visibleFields)) $visibleFields[] = $visibleField->getField();
             }
             // Accrue form fields
-            foreach($form->getFormFieldMember() as $formFieldKey=>$formField) {
-                if(!in_array($formField->getField(),$formFields)) $formFields[] =$formField->getField();
+            foreach ($form->getFormFieldMember() as $formFieldKey => $formField) {
+                if (!in_array($formField->getField(), $formFields)) $formFields[] = $formField->getField();
             }
         }
-        $title = "Employee Records for ".$organisationunit->getLongname();
+        $title = "Employee Records for " . $organisationunit->getLongname();
 
-        $title .= " for ".$formNames;
-        if(empty($visibleFields)) $visibleFields=$formFields;
+        $title .= " for " . $formNames;
+        if (empty($visibleFields)) $visibleFields = $formFields;
 
         //getting all User Forms for User Migration
 
@@ -183,22 +185,23 @@ class RecordController extends Controller
         $userForms = $user->getForm();
 
         $delete_forms = NULL;
-        foreach($records as $entity) {
-            $delete_form= $this->createDeleteForm($entity->getId());
+        foreach ($records as $entity) {
+            $delete_form = $this->createDeleteForm($entity->getId());
             $delete_forms[$entity->getId()] = $delete_form->createView();
         }
 
         return array(
-            'title'=>$title,
+            'title' => $title,
             'visibleFields' => $visibleFields,
-            'formFields'=>$formFields,
-            'records'=>$records,
-            'optionMap'=>$fieldOptionMap,
-            'userForms'=>$userForms,
+            'formFields' => $formFields,
+            'records' => $records,
+            'optionMap' => $fieldOptionMap,
+            'userForms' => $userForms,
             'delete_forms' => $delete_forms,
-            'formid'=>$formid,
+            'formid' => $formid,
         );
     }
+
 
     /**
      * List Forms Available for Record entry.
@@ -218,15 +221,15 @@ class RecordController extends Controller
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
         $entities = $queryBuilder->select('form')
-            ->from('HrisFormBundle:Form','form')
-            ->join('form.user','user')
-            ->andWhere("user.username='".$this->getUser()."'")
+            ->from('HrisFormBundle:Form', 'form')
+            ->join('form.user', 'user')
+            ->andWhere("user.username='" . $this->getUser() . "'")
             ->getQuery()->getArrayResult();
 
         return array(
             'entities' => $entities,
-            'channel'=>$channel,
-            'message'=>'',
+            'channel' => $channel,
+            'message' => '',
 
         );
     }
@@ -243,7 +246,7 @@ class RecordController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository( 'HrisFormBundle:Form' )->createQueryBuilder('p')->getQuery()->getArrayResult();
+        $entities = $em->getRepository('HrisFormBundle:Form')->createQueryBuilder('p')->getQuery()->getArrayResult();
 
         return array(
             'entities' => $entities,
@@ -262,7 +265,7 @@ class RecordController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity  = new Record();
+        $entity = new Record();
         //$record = $this->createForm(new RecordType(), $entity);
         //$record->bind($request);
         $message = '';
@@ -274,9 +277,9 @@ class RecordController extends Controller
         $onrgunitParent = $this->get('request')->request->get('orgunitParent');
         $orunitUid = $this->get('request')->request->get('selectedOrganisationunit');
 
-        if ( $orunitUid != null ){
+        if ($orunitUid != null) {
             $orgunit = $em->getRepository('HrisOrganisationunitBundle:Organisationunit')->findOneBy(array('uid' => $orunitUid));
-        }else{
+        } else {
             $orgunit = $user->getOrganisationunit();
         }
 
@@ -286,16 +289,16 @@ class RecordController extends Controller
         $fields = $form->getSimpleField();
 
         $instance = '';
-        foreach($uniqueFields as $key => $field_unique){
+        foreach ($uniqueFields as $key => $field_unique) {
             $instance .= $this->getRequest()->get($field_unique->getName());
-            if($field_unique->getDataType()->getName()!="Date") $message .=$this->getRequest()->get($field_unique->getName()). " ";
+            if ($field_unique->getDataType()->getName() != "Date") $message .= $this->getRequest()->get($field_unique->getName()) . " ";
         }
 
 
-        foreach ($fields as $key => $field){
+        foreach ($fields as $key => $field) {
             $recordValue = $this->get('request')->request->get($field->getName());
 
-            if($field->getDataType()->getName() == "Date" && $recordValue != null){
+            if ($field->getDataType()->getName() == "Date" && $recordValue != null) {
                 $recordValue = DateTime::createFromFormat('d/m/Y', $recordValue)->format('Y-m-d');
                 $recordValue = new \DateTime($recordValue);
             }
@@ -306,7 +309,7 @@ class RecordController extends Controller
             // Translates to $field->getUid()
             // or $field->getUid() depending on value of $recordKeyName
             $recordFieldKey = ucfirst(Record::getFieldKey());
-            $valueKey = call_user_func_array(array($field, "get${recordFieldKey}"),array());
+            $valueKey = call_user_func_array(array($field, "get${recordFieldKey}"), array());
 
             $recordArray[$valueKey] = $recordValue;
         }
@@ -322,25 +325,24 @@ class RecordController extends Controller
         $entity->setHastraining(False);
 
 
-
         //if ($entity->isValid()) {
         $em = $this->getDoctrine()->getManager();
         try {
 
             $em->persist($entity);
             $em->flush();
-            $message.="saved successfully";
-            $success='true';
-        } catch(DBALException $exception) {
-            $record = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('instance'=>$entity->getInstance()));
-            $message.=" is existing for ".$entity->getOrganisationunit()->getLongname();
+            $message .= "saved successfully";
+            $success = 'true';
+        } catch (DBALException $exception) {
+            $record = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('instance' => $entity->getInstance()));
+            $message .= " is existing for " . $entity->getOrganisationunit()->getLongname();
             $parent = $entity->getOrganisationunit()->getParent();
-            if(!empty($parent)) $message.= " in ".$entity->getOrganisationunit()->getParent()->getLongname()."!";
-            $message.=' <a href="'.$this->generateUrl('record_edit', array('id' => $record->getId(),'message'=>$message)).'">Click here to edit existing record</a>';
-            $success='false';
+            if (!empty($parent)) $message .= " in " . $entity->getOrganisationunit()->getParent()->getLongname() . "!";
+            $message .= ' <a href="' . $this->generateUrl('record_edit', array('id' => $record->getId(), 'message' => $message)) . '">Click here to edit existing record</a>';
+            $success = 'false';
         }
 
-        return $this->redirect($this->generateUrl('record_new', array('id' => $form->getId(),'message'=>$message,'success'=>$success)));
+        return $this->redirect($this->generateUrl('record_new', array('id' => $form->getId(), 'message' => $message, 'success' => $success)));
 
     }
 
@@ -353,7 +355,7 @@ class RecordController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction( $id )
+    public function newAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -366,22 +368,22 @@ class RecordController extends Controller
         $message = $this->getRequest()->get('message');
         $success = $this->getRequest()->get('success');
         $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
-                    ->select('organisationunitLevel')
-                    ->from('HrisOrganisationunitBundle:organisationunitLevel','organisationunitLevel')
-                    ->where('organisationunitLevel.level>'.$user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
-                    ->andWhere('organisationunitLevel.level>'.$user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
-                    ->orderBy('organisationunitLevel.level','ASC')
-                    ->orderBy('organisationunitLevel.name','ASC')
-                    ->getQuery()->getResult();
+            ->select('organisationunitLevel')
+            ->from('HrisOrganisationunitBundle:organisationunitLevel', 'organisationunitLevel')
+            ->where('organisationunitLevel.level>' . $user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
+            ->andWhere('organisationunitLevel.level>' . $user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
+            ->orderBy('organisationunitLevel.level', 'ASC')
+            ->orderBy('organisationunitLevel.name', 'ASC')
+            ->getQuery()->getResult();
 
         return array(
             'formEntity' => $formEntity,
-            'message'=>$message,
-            'success'=>$success,
-            'isEntryLevel'=>$isEntryLevel,
-            'user'=>$user,
-            'message'=>$message,
-            'organisationunitLevels'=>$organisationunitLevels,
+            'message' => $message,
+            'success' => $success,
+            'isEntryLevel' => $isEntryLevel,
+            'user' => $user,
+            'message' => $message,
+            'organisationunitLevels' => $organisationunitLevels,
         );
     }
 
@@ -407,15 +409,15 @@ class RecordController extends Controller
         $fieldOptions = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findAll();
         foreach ($fieldOptions as $fieldOptionKey => $fieldOption) {
             $recordFieldOptionKey = ucfirst(Record::getFieldOptionKey());
-            $fieldOptionMap[call_user_func_array(array($fieldOption, "get${recordFieldOptionKey}"),array()) ] =   $fieldOption->getValue();
+            $fieldOptionMap[call_user_func_array(array($fieldOption, "get${recordFieldOptionKey}"), array())] = $fieldOption->getValue();
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
-            'optionMap'=>$fieldOptionMap,
+            'optionMap' => $fieldOptionMap,
         );
     }
 
@@ -430,8 +432,7 @@ class RecordController extends Controller
     {
         return $this->createFormBuilder(array('id' => $id))
             ->add('id', 'hidden')
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     /**
@@ -457,27 +458,27 @@ class RecordController extends Controller
         $message = $this->getRequest()->get('message');
         $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunitLevel')
-            ->from('HrisOrganisationunitBundle:organisationunitLevel','organisationunitLevel')
-            ->where('organisationunitLevel.level>'.$user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
-            ->andWhere('organisationunitLevel.level>'.$user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
-            ->orderBy('organisationunitLevel.level','ASC')
-            ->orderBy('organisationunitLevel.name','ASC')
+            ->from('HrisOrganisationunitBundle:organisationunitLevel', 'organisationunitLevel')
+            ->where('organisationunitLevel.level>' . $user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
+            ->andWhere('organisationunitLevel.level>' . $user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
+            ->orderBy('organisationunitLevel.level', 'ASC')
+            ->orderBy('organisationunitLevel.name', 'ASC')
             ->getQuery()->getResult();
 
         $organisationunits = $this->getDoctrine()->getManager()->createQuery("SELECT organisationunit
                                                         FROM HrisOrganisationunitBundle:Organisationunit organisationunit
                                                         WHERE organisationunit.parent=:parentid
                                                         GROUP BY organisationunit.id,organisationunit.longname
-                                                        ORDER BY organisationunit.longname ASC")->setParameter('parentid',$user->getOrganisationunit()->getId())->getResult();
+                                                        ORDER BY organisationunit.longname ASC")->setParameter('parentid', $user->getOrganisationunit()->getId())->getResult();
 
         return array(
-            'formEntity'=>$formEntity,
+            'formEntity' => $formEntity,
             'entryLevel' => $isEntryLevel,
-            'entity'=>$entity,
-            'user'=>$user,
-            'message'=>$message,
-            'organisationunitLevels'=>$organisationunitLevels,
-            'organisationunits'=>$organisationunits,
+            'entity' => $entity,
+            'user' => $user,
+            'message' => $message,
+            'organisationunitLevels' => $organisationunitLevels,
+            'organisationunits' => $organisationunits,
         );
     }
 
@@ -497,18 +498,18 @@ class RecordController extends Controller
 
         $instance = $this->getRequest()->get('instance');
 
-        $entity = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('instance' => $instance ));
+        $entity = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('instance' => $instance));
 
-        $formId = (int) $this->getRequest()->get('formid');
+        $formId = (int)$this->getRequest()->get('formid');
 
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $onrgunitParent = $this->getRequest()->get('orgunitParent');
         $orunitUid = $this->getRequest()->get('selectedOrganisationunit');
 
-        if ( $orunitUid != null ){
+        if ($orunitUid != null) {
             $orgunit = $em->getRepository('HrisOrganisationunitBundle:Organisationunit')->findOneBy(array('uid' => $orunitUid));
-        }else{
+        } else {
             $orgunit = $user->getOrganisationunit();
         }
 
@@ -517,7 +518,7 @@ class RecordController extends Controller
         $uniqueFields = $form->getUniqueRecordFields();
         $fields = $form->getSimpleField();
 
-        foreach ($fields as $key => $field){
+        foreach ($fields as $key => $field) {
             $recordValue = $this->get('request')->request->get($field->getName());
 
             /*
@@ -526,7 +527,7 @@ class RecordController extends Controller
             }
             */
 
-            if($field->getDataType()->getName() == "Date" && $recordValue != null){
+            if ($field->getDataType()->getName() == "Date" && $recordValue != null) {
 
                 $recordValue = DateTime::createFromFormat('d/m/Y', $recordValue)->format('Y-m-d');
                 $recordValue = new \DateTime($recordValue);
@@ -537,7 +538,7 @@ class RecordController extends Controller
              * Made dynamic, on which field column is used as key, i.e. uid, name or id.
              */
             $recordFieldKey = ucfirst(Record::getFieldKey());
-            $valueKey = call_user_func_array(array($field, "get${recordFieldKey}"),array());
+            $valueKey = call_user_func_array(array($field, "get${recordFieldKey}"), array());
 
             $recordArray[$valueKey] = $recordValue;
         }
@@ -551,7 +552,6 @@ class RecordController extends Controller
         $entity->setCorrect(True);
         $entity->setHashistory(False);
         $entity->setHastraining(False);
-
 
 
         //if ($entity->isValid()) {
@@ -571,31 +571,31 @@ class RecordController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function checkUniquenessAction(Request $request,$_format)
+    public function checkUniquenessAction(Request $request, $_format)
     {
         $em = $this->getDoctrine()->getManager();
 
 
         $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
 
-        $recordsResults = $queryBuilder->select('record')->from('HrisRecordsBundle:Record','record');
+        $recordsResults = $queryBuilder->select('record')->from('HrisRecordsBundle:Record', 'record');
 
         $uniquenessVariables = $this->getRequest()->query->all();
-        $incr=0;
-        foreach($uniquenessVariables as $fieldUid=>$fieldValue) {
+        $incr = 0;
+        foreach ($uniquenessVariables as $fieldUid => $fieldValue) {
             $valuePattern = '';
             unset($valuePattern);
             $incr++;
-            if(!empty($fieldValue)) {
+            if (!empty($fieldValue)) {
                 $valuePattern[$fieldUid] = $fieldValue;
                 $json = json_encode($valuePattern);
                 $pattern = str_replace("{", "", $json);
                 $pattern = str_replace("}", "", $pattern);
-                if(!preg_match('[unique_]', $fieldUid)) {
+                if (!preg_match('[unique_]', $fieldUid)) {
                     // Takes care of individuallly unique fields
                     $recordsResults->orWhere("record.value LIKE '%$pattern%' ");
 
-                }else {
+                } else {
                     // Takes care of collectively fields
 
                 }
@@ -622,13 +622,13 @@ class RecordController extends Controller
 
         $output = $recordsResults->setMaxResults(1)->getQuery()->getResult();
         //@todo implement stating what's unique and what's not
-        if(empty($output)) {
-            $message="true";
-        }else {
-            $message="false";
+        if (empty($output)) {
+            $message = "true";
+        } else {
+            $message = "false";
         }
         return array(
-            'message'=>$message
+            'message' => $message
         );
 
     }
@@ -668,9 +668,12 @@ class RecordController extends Controller
      * @param $arr array
      * @return null|string|array
      */
-    public function array_value_recursive($key, array $arr){
+    public function array_value_recursive($key, array $arr)
+    {
         $val = array();
-        array_walk_recursive($arr, function($v, $k) use($key, &$val){if($k == $key) array_push($val, $v);});
+        array_walk_recursive($arr, function ($v, $k) use ($key, &$val) {
+            if ($k == $key) array_push($val, $v);
+        });
         return count($val) > 1 ? $val : array_pop($val);
     }
 
@@ -691,7 +694,7 @@ class RecordController extends Controller
 
         $formId = $this->get('request')->request->get('form_id');
 
-        $entity = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('uid' => $uid ));
+        $entity = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('uid' => $uid));
 
         $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
 
@@ -703,6 +706,18 @@ class RecordController extends Controller
 
         return new Response('success');
 
+    }
+
+    /**
+     * Search Record Checklist number
+     *
+     * @Route("/searchCheckList/{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="search_checklist")
+     * @Method("GET")
+     *
+     */
+    public function searchCheckList(Request $request)
+    {
+        return new JsonResponse(array('name' => "Leonard Mpande"));
     }
 }
 
