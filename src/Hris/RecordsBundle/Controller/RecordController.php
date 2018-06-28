@@ -732,7 +732,8 @@ class RecordController extends Controller
             $query .= "INNER JOIN hris_record as V on V.instance = R.instance ";
             $query .= "WHERE R.check_no = ".$checkNumber;
             $query .= " ORDER BY R.firstname ASC";
-            $response = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
+//            $response = $entityManager -> getConnection() -> executeQuery($query) -> fetchAll();
+            var_dump($query);
 
         }
         return new JsonResponse($response);
