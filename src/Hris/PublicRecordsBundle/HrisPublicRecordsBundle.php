@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle;
+namespace Hris\PublicRecordsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
