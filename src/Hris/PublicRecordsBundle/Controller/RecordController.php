@@ -62,7 +62,7 @@ class RecordController extends Controller
      * Lists all Record entities.
      *
      *
-     * @Route("/", name="record")
+     * @Route("/", name="public_record")
      * @Route("/list", name="record_list")
      * @Method("GET")
      * @Template()
