@@ -2,11 +2,11 @@ parameters:
 #    hris_records.example.class: Hris\RecordsBundle\Example
 
 services:
-    hris_public_record.configure_menu_listener:
-            class: Hris\PublicRecordsBundle\EventListener\ConfigureMenuListener
-            tags:
-                - { name: kernel.event_listener, event: hris_public_record.menu_configure, method: onMenuConfigure }
-    hris.twig.calculate_field_expression:
-        class: Hris\PublicRecordsBundle\Twig\Extension\CalculateFieldExpressionExtension
-        tags:
-            - { name: twig.extension}
+#    hris_public_record.configure_menu_listener:
+#            class: Hris\PublicRecordsBundle\EventListener\ConfigureMenuListener
+#            tags:
+#                - { name: kernel.event_listener, event: hris_records.menu_configure, method: onMenuConfigure }
+#    hris.twig.calculate_field_expression:
+#        class: Hris\PublicRecordsBundle\Twig\Extension\CalculateFieldExpressionExtension
+#        tags:
+#            - { name: twig.extension}
