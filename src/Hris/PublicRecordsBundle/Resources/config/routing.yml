@@ -1,0 +1,3 @@
+public_record:
+    resource: "@HrisPublicRecordsBundle/Controller/RecordController.php"
+    type: annotation
