@@ -51,7 +51,7 @@ hris_records:
     resource: "@HrisRecordsBundle/Resources/config/routing.yml"
     prefix:   /
 
-hris_public_records:
+hris_public_record:
     resource: "@HrisPublicRecordsBundle/Resources/config/routing.yml"
     prefix:   /
 
