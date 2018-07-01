@@ -53,7 +53,7 @@ use DateTime;
 /**
  * Record controller.
  *
- * @Route("/record")
+ * @Route("/public_record")
  */
 class RecordController extends Controller
 {
@@ -71,7 +71,7 @@ class RecordController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('HrisRecordsBundle:Record')->findAll();
+        $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
 
         return array(
             'entities' => $entities,
@@ -115,7 +115,7 @@ class RecordController extends Controller
         //If user's organisationunit is data entry level pull only records of his organisationunit
         //else pull lower children too.
         $records = $queryBuilder->select('record')
-            ->from('HrisRecordsBundle:Record', 'record')
+            ->from('HrisPublicRecordsBundle:Record', 'record')
             ->join('record.organisationunit', 'organisationunit')
             ->join('record.form', 'form');
         if ($organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel()) {
@@ -240,7 +240,7 @@ class RecordController extends Controller
      *
      * @Route("/formlistupdate", name="record_form_list_update")
      * @Method("GET")
-     * @Template("HrisRecordsBundle:Record:formlistupdate.html.twig")
+     * @Template("HrisPublicRecordsBundle:Record:formlistupdate.html.twig")
      */
     public function formlistupdateAction()
     {
@@ -259,7 +259,7 @@ class RecordController extends Controller
      *
      * @Route("/", name="record_create")
      * @Method("POST")
-     * @Template("HrisRecordsBundle:Record:new.html.twig")
+     * @Template("HrisPublicRecordsBundle:Record:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -334,7 +334,7 @@ class RecordController extends Controller
             $message .= "saved successfully";
             $success = 'true';
         } catch (DBALException $exception) {
-            $record = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('instance' => $entity->getInstance()));
+            $record = $em->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('instance' => $entity->getInstance()));
             $message .= " is existing for " . $entity->getOrganisationunit()->getLongname();
             $parent = $entity->getOrganisationunit()->getParent();
             if (!empty($parent)) $message .= " in " . $entity->getOrganisationunit()->getParent()->getLongname() . "!";
@@ -399,7 +399,7 @@ class RecordController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HrisRecordsBundle:Record')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:Record')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Record entity.');
@@ -447,7 +447,7 @@ class RecordController extends Controller
     {
         $message = NULL;
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('HrisRecordsBundle:Record')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:Record')->find($id);
         $formEntity = $entity->getForm();
 
         $user = $this->container->get('security.context')->getToken()->getUser();
@@ -488,7 +488,7 @@ class RecordController extends Controller
      *
      * @Route("/update", name="record_update")
      * @Method("POST")
-     * @Template("HrisRecordsBundle:Record:viewRecords.html.twig")
+     * @Template("HrisPublicRecordsBundle:Record:viewRecords.html.twig")
      */
 
     public function updateAction(Request $request)
@@ -498,7 +498,7 @@ class RecordController extends Controller
 
         $instance = $this->getRequest()->get('instance');
 
-        $entity = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('instance' => $instance));
+        $entity = $em->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('instance' => $instance));
 
         $formId = (int)$this->getRequest()->get('formid');
 
@@ -578,7 +578,7 @@ class RecordController extends Controller
 
         $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
 
-        $recordsResults = $queryBuilder->select('record')->from('HrisRecordsBundle:Record', 'record');
+        $recordsResults = $queryBuilder->select('record')->from('HrisPublicRecordsBundle:Record', 'record');
 
         $uniquenessVariables = $this->getRequest()->query->all();
         $incr = 0;
@@ -647,7 +647,7 @@ class RecordController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('HrisRecordsBundle:Record')->find($id);
+            $entity = $em->getRepository('HrisPublicRecordsBundle:Record')->find($id);
             $form = $entity->getForm();
 
             if (!$entity) {
@@ -694,7 +694,7 @@ class RecordController extends Controller
 
         $formId = $this->get('request')->request->get('form_id');
 
-        $entity = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('uid' => $uid));
+        $entity = $em->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('uid' => $uid));
 
         $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
 
