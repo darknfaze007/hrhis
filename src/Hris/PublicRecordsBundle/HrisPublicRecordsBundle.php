@@ -26,6 +26,6 @@ namespace Hris\RecordsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class HrisRecordsBundle extends Bundle
+class HrisPublicRecordsBundle extends Bundle
 {
 }
