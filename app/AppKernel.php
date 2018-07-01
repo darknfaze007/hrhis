@@ -33,7 +33,7 @@ class AppKernel extends Kernel
             new Hris\OrganisationunitBundle\HrisOrganisationunitBundle(),
             new Hris\FormBundle\HrisFormBundle(),
             new Hris\RecordsBundle\HrisRecordsBundle(),
-            new Hris\PublicRecordsBundle\HrisPublicRecordsBundle(),
+//            new Hris\PublicRecordsBundle\HrisPublicRecordsBundle(),
             new Hris\DataQualityBundle\HrisDataQualityBundle(),
             new Hris\IndicatorBundle\HrisIndicatorBundle(),
             new Hris\ReportsBundle\HrisReportsBundle(),
