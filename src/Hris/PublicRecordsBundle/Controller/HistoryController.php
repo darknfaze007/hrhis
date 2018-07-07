@@ -23,7 +23,7 @@
  * @author Ismail Yusuf Koleleni <ismailkoleleni@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Controller;
+namespace Hris\PublicRecordsBundle\Controller;
 
 use Hris\FormBundle\Entity\Field;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,8 +31,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Hris\RecordsBundle\Entity\History;
-use Hris\RecordsBundle\Form\HistoryType;
+use Hris\PublicRecordsBundle\Entity\History;
+use Hris\PublicRecordsBundle\Form\HistoryType;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
 /**

@@ -22,21 +22,21 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Entity;
+namespace Hris\PublicRecordsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-use Hris\RecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Entity\Record;
 use Hris\FormBundle\Entity\Field;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Hris\RecordsBundle\Entity\History
+ * Hris\PublicRecordsBundle\Entity\History
  *
  * @Gedmo\Loggable
  * @ORM\Table(name="hris_record_history",uniqueConstraints={ @ORM\UniqueConstraint(name="unique_recordhistory_idx",columns={"record_id", "history","startdate"}) })
- * @ORM\Entity(repositoryClass="Hris\RecordsBundle\Entity\HistoryRepository")
+ * @ORM\Entity(repositoryClass="Hris\PublicRecordsBundle\Entity\HistoryRepository")
  */
 class History
 {
@@ -61,7 +61,7 @@ class History
      * @var Record $record
      *
      * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Hris\RecordsBundle\Entity\Record")
+     * @ORM\ManyToOne(targetEntity="Hris\PublicRecordsBundle\Entity\Record")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="record_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })

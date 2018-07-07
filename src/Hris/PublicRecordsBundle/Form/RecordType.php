@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Form;
+namespace Hris\PublicRecordsBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -51,7 +51,7 @@ class RecordType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Hris\RecordsBundle\Entity\Record'
+            'data_class' => 'Hris\PublicRecordsBundle\Entity\Record'
         ));
     }
 

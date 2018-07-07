@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Tests\Controller;
+namespace Hris\PublicRecordsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

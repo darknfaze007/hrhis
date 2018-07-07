@@ -23,7 +23,7 @@
  * @author Ismail Y.Koleleni <ismailkoleleni@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Form;
+namespace Hris\PublicRecordsBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -66,7 +66,7 @@ class TrainingType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Hris\RecordsBundle\Entity\Training'
+            'data_class' => 'Hris\PublicRecordsBundle\Entity\Training'
         ));
     }
 

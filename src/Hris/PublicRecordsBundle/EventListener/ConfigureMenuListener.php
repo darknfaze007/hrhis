@@ -23,14 +23,14 @@
  *
  */
 
-namespace Hris\RecordsBundle\EventListener;
+namespace Hris\PublicRecordsBundle\EventListener;
 
-use Hris\RecordsBundle\Event\ConfigureMenuEvent;
+use Hris\PublicRecordsBundle\Event\ConfigureMenuEvent;
 
 class ConfigureMenuListener
 {
     /**
-     * @param \Hris\RecordsBundle\Event\ConfigureMenuEvent $event
+     * @param \Hris\PublicRecordsBundle\Event\ConfigureMenuEvent $event
      */
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {

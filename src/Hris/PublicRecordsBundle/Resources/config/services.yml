@@ -1,5 +1,5 @@
 parameters:
-#    hris_records.example.class: Hris\RecordsBundle\Example
+#    hris_records.example.class: Hris\PublicRecordsBundle\Example
 
 services:
 #    hris_public_record.configure_menu_listener:

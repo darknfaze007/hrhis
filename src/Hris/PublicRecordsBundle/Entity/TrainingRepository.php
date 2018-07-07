@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Entity;
+namespace Hris\PublicRecordsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

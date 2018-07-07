@@ -23,7 +23,7 @@
  *
  */
 
-namespace Hris\RecordsBundle\Event;
+namespace Hris\PublicRecordsBundle\Event;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;

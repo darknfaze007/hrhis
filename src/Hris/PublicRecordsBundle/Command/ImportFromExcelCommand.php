@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Command;
+namespace Hris\PublicRecordsBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,8 +38,8 @@ use Doctrine\ORM\Internal\Hydration\ObjectHydrator  as DoctrineHydrator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Hris\RecordsBundle\Entity\Record;
-use Hris\RecordsBundle\Form\RecordType;
+use Hris\PublicRecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Form\RecordType;
 use Hris\OrganisationunitBundle\Entity\Organisationunit;
 use Doctrine\Common\Collections\ArrayCollection;
 use Hris\FormBundle\Entity\Field;

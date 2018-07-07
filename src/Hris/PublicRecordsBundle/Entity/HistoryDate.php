@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Entity;
+namespace Hris\PublicRecordsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -35,7 +35,7 @@ use Hris\FormBundle\Entity\Field;
  *
  * @Gedmo\Loggable
  * @ORM\Table(name="hris_record_history_date")
- * @ORM\Entity(repositoryClass="Hris\RecordsBundle\Entity\HistoryDateRepository")
+ * @ORM\Entity(repositoryClass="Hris\PublicRecordsBundle\Entity\HistoryDateRepository")
  */
 class HistoryDate
 {

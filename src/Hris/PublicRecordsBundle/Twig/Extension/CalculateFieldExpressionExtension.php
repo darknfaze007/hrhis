@@ -22,9 +22,9 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Twig\Extension;
+namespace Hris\PublicRecordsBundle\Twig\Extension;
 
-use Hris\RecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Entity\Record;
 
 class CalculateFieldExpressionExtension extends \Twig_Extension
 {

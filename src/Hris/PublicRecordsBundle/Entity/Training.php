@@ -22,20 +22,20 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Entity;
+namespace Hris\PublicRecordsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-use Hris\RecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Entity\Record;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Hris\RecordsBundle\Entity\Training
+ * Hris\PublicRecordsBundle\Entity\Training
  *
  * @Gedmo\Loggable
  * @ORM\Table(name="hris_record_training",uniqueConstraints={ @ORM\UniqueConstraint(name="unique_recordtraining_idx",columns={"record_id", "coursename", "courselocation", "startdate", "enddate"}) })
- * @ORM\Entity(repositoryClass="Hris\RecordsBundle\Entity\TrainingRepository")
+ * @ORM\Entity(repositoryClass="Hris\PublicRecordsBundle\Entity\TrainingRepository")
  */
 class Training
 {
@@ -60,7 +60,7 @@ class Training
      * @var Record $record
      *
      * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Hris\RecordsBundle\Entity\Record")
+     * @ORM\ManyToOne(targetEntity="Hris\PublicRecordsBundle\Entity\Record")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="record_id", referencedColumnName="id", onDelete="CASCADE")
      * })

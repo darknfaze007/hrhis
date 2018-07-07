@@ -23,7 +23,7 @@
  *
  */
 
-namespace Hris\RecordsBundle\Controller;
+namespace Hris\PublicRecordsBundle\Controller;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
@@ -36,8 +36,8 @@ use Doctrine\ORM\Internal\Hydration\ObjectHydrator as DoctrineHydrator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Hris\RecordsBundle\Entity\Record;
-use Hris\RecordsBundle\Form\RecordType;
+use Hris\PublicRecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Form\RecordType;
 use Hris\OrganisationunitBundle\Entity\Organisationunit;
 use Doctrine\Common\Collections\ArrayCollection;
 use Hris\FormBundle\Entity\Field;

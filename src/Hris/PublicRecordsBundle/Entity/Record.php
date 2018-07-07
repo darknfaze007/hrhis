@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Entity;
+namespace Hris\PublicRecordsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -33,11 +33,11 @@ use Hris\LeaveBundle\Entity\Leave;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Hris\RecordsBundle\Entity\Record
+ * Hris\PublicRecordsBundle\Entity\Record
  *
  * @Gedmo\Loggable
  * @ORM\Table(name="hris_record")
- * @ORM\Entity(repositoryClass="Hris\RecordsBundle\Entity\RecordRepository")
+ * @ORM\Entity(repositoryClass="Hris\PublicRecordsBundle\Entity\RecordRepository")
  */
 class Record
 {
@@ -136,7 +136,7 @@ class Record
     /**
      * @var History $history
      *
-     * @ORM\OneToMany(targetEntity="Hris\RecordsBundle\Entity\History", mappedBy="record",cascade={"ALL"})
+     * @ORM\OneToMany(targetEntity="Hris\PublicRecordsBundle\Entity\History", mappedBy="record",cascade={"ALL"})
      * @ORM\OrderBy({"history" = "ASC"})
      */
     private $history;
@@ -160,7 +160,7 @@ class Record
     /**
      * @var Training $training
      *
-     * @ORM\OneToMany(targetEntity="Hris\RecordsBundle\Entity\Training", mappedBy="record",cascade={"ALL"})
+     * @ORM\OneToMany(targetEntity="Hris\PublicRecordsBundle\Entity\Training", mappedBy="record",cascade={"ALL"})
      * @ORM\OrderBy({"coursename" = "ASC"})
      */
     private $training;

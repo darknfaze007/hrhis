@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Form;
+namespace Hris\PublicRecordsBundle\Form;
 
 use Doctrine\Tests\Common\Annotations\False;
 use Symfony\Component\Form\AbstractType;
@@ -74,7 +74,7 @@ class HistoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Hris\RecordsBundle\Entity\History'
+            'data_class' => 'Hris\PublicRecordsBundle\Entity\History'
         ));
     }
 

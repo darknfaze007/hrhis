@@ -8,7 +8,7 @@
  */
 
 
-namespace Hris\RecordsBundle\Controller;
+namespace Hris\PublicRecordsBundle\Controller;
 
 use Symfony\Component\Form\Tests\Extension\Core\DataTransformer\BooleanToStringTransformerTest;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Hris\RecordsBundle\Entity\Training;
-use Hris\RecordsBundle\Form\ValidationRunType;
-use Hris\RecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Entity\Training;
+use Hris\PublicRecordsBundle\Form\ValidationRunType;
+use Hris\PublicRecordsBundle\Entity\Record;
 use Hris\OrganisationunitBundle\Entity\OrganisationunitLevel;
 use Hris\FormBundle\Entity\Field;
 use Hris\OrganisationunitBundle\Entity\Organisationunit;
@@ -58,7 +58,7 @@ class ValidationRunController extends Controller
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDVALIDATION_VALIDATE")
      * @Route("/result/",name="validation_result")
      * @Method("POST")
-     * @Template("HrisRecordsBundle:ValidationRun:validationResult.html.twig")
+     * @Template("HrisPublicRecordsBundle:ValidationRun:validationResult.html.twig")
      */
     public function validateAction(Request $request)
     {

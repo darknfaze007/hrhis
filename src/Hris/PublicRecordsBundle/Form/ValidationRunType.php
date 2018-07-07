@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Form;
+namespace Hris\PublicRecordsBundle\Form;
 
 use Hris\ReportsBundle\Form\OrganisationunitToIdTransformer;
 use Symfony\Component\Form\AbstractType;

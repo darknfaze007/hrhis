@@ -22,7 +22,7 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\DataFixtures\ORM;
+namespace Hris\PublicRecordsBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,9 +33,9 @@ use Hris\FormBundle\DataFixtures\ORM\LoadOrganisationunitData;
 use Hris\FormBundle\Entity\Field;
 use Hris\FormBundle\Entity\FieldOption;
 use Hris\FormBundle\Entity\FormFieldMember;
-use Hris\RecordsBundle\Entity\History;
-use Hris\RecordsBundle\Entity\Record;
-use Hris\RecordsBundle\Entity\Training;
+use Hris\PublicRecordsBundle\Entity\History;
+use Hris\PublicRecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Entity\Training;
 use Hris\UserBundle\DataFixtures\ORM\LoadUserData;
 use Symfony\Component\Stopwatch\Stopwatch;
 

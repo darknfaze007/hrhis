@@ -22,17 +22,17 @@
  * @author John Francis Mukulu <john.f.mukulu@gmail.com>
  *
  */
-namespace Hris\RecordsBundle\Controller;
+namespace Hris\PublicRecordsBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Hris\RecordsBundle\Entity\Training;
+use Hris\PublicRecordsBundle\Entity\Training;
 use Hris\TrainingBundle\Entity\Traininginstance;
-use Hris\RecordsBundle\Entity\Record;
-use Hris\RecordsBundle\Form\TrainingType;
+use Hris\PublicRecordsBundle\Entity\Record;
+use Hris\PublicRecordsBundle\Form\TrainingType;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
 /**
