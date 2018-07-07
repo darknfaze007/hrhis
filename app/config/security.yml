@@ -29,6 +29,7 @@ security:
         - { path: ^/resetting/check-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/public_record/list, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/isusernameunique/json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/isusernameunique/xml, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/isusernameunique/yml, roles: IS_AUTHENTICATED_ANONYMOUSLY }
