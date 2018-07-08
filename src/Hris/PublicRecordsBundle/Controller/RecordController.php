@@ -361,27 +361,33 @@ class RecordController extends Controller
 
         $formEntity = $em->getRepository('HrisFormBundle:Form')->find($id);
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        //$user = $this->container->get('security.context')->getToken()->getUser();
 
-        $isEntryLevel = $user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
         // Workaround to send message when user is redirected from one data entry page to another.
         $message = $this->getRequest()->get('message');
         $success = $this->getRequest()->get('success');
         $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunitLevel')
             ->from('HrisOrganisationunitBundle:organisationunitLevel', 'organisationunitLevel')
-            ->where('organisationunitLevel.level>' . $user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
-            ->andWhere('organisationunitLevel.level>' . $user->getOrganisationunit()->getOrganisationunitStructure()->getLevel()->getLevel())
+            ->where('organisationunitLevel.level>' . '1')
+            ->andWhere('organisationunitLevel.level>' . '1')
             ->orderBy('organisationunitLevel.level', 'ASC')
             ->orderBy('organisationunitLevel.name', 'ASC')
             ->getQuery()->getResult();
+        $organisationunit = $this->getDoctrine()->getManager()->createQueryBuilder()
+            ->select('organisationunit')
+            ->from('HrisOrganisationunitBundle:organisationunit', 'organisationunit')
+            ->where('organisationunit.name =\'Regions\'')
+            ->orderBy('organisationunit.name', 'ASC')
+            ->getQuery()->getResult();
+        $isEntryLevel = $organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
 
         return array(
             'formEntity' => $formEntity,
             'message' => $message,
             'success' => $success,
             'isEntryLevel' => $isEntryLevel,
-            'user' => $user,
+            'organisationunit' => $organisationunit,
             'message' => $message,
             'organisationunitLevels' => $organisationunitLevels,
         );
