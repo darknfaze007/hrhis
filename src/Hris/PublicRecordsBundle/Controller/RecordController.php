@@ -61,7 +61,7 @@ class RecordController extends Controller
     /**
      * Lists all Record entities.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/", name="public_record")
      * @Route("/list", name="record_list")
      * @Method("GET")
@@ -81,7 +81,7 @@ class RecordController extends Controller
     /**
      * Lists all Records by forms.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/viewrecords/{formid}/form", requirements={"formid"="\d+"}, defaults={"formid"=0}, name="record_viewrecords")
      * @Method("GET")
      * @Template()
@@ -206,7 +206,7 @@ class RecordController extends Controller
     /**
      * List Forms Available for Record entry.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/formlist/dataentry", defaults={"channel"="dataentry"}, name="record_form_list")
      * @Route("/formlist/updaterecords", defaults={"channel"="updaterecords"}, name="record_form_list_updaterecords")
      * @Route("/formlist/updateleaverecords", defaults={"channel"="leaverecords"}, name="record_form_list_leaverecords")
@@ -237,7 +237,7 @@ class RecordController extends Controller
     /**
      * List Forms Available for Update Record.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/formlistupdate", name="record_form_list_update")
      * @Method("GET")
      * @Template("HrisPublicRecordsBundle:Record:formlistupdate.html.twig")
@@ -256,7 +256,7 @@ class RecordController extends Controller
     /**
      * Creates a new Record entity.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/", name="record_create")
      * @Method("POST")
      * @Template("HrisPublicRecordsBundle:Record:new.html.twig")
@@ -397,7 +397,7 @@ class RecordController extends Controller
     /**
      * Finds and displays a Record entity.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/{id}", requirements={"id"="\d+"}, name="record_show")
      * @Method("GET")
      * @Template()
@@ -431,6 +431,7 @@ class RecordController extends Controller
     /**
      * Creates a form to delete a Record entity by id.
      *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @param mixed $id The entity id
      *
      * @return \Symfony\Component\Form\Form The form
@@ -445,7 +446,7 @@ class RecordController extends Controller
     /**
      * Displays a form to edit an existing Record entity.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/{id}/edit", requirements={"id"="\d+"}, name="record_edit")
      * @Method("GET")
      * @Template()
@@ -492,7 +493,7 @@ class RecordController extends Controller
     /**
      * Edits an existing Record entity.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/update", name="record_update")
      * @Method("POST")
      * @Template("HrisPublicRecordsBundle:Record:viewRecords.html.twig")
@@ -573,7 +574,7 @@ class RecordController extends Controller
     /**
      * Check uniqueness of record
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/checkUniqueness/{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="record_checkuniqueness")
      * @Method("GET")
      * @Template()
@@ -643,7 +644,7 @@ class RecordController extends Controller
     /**
      * Deletes a Record entity.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/{id}", requirements={"id"="\d+"}, name="record_delete")
      * @Method("DELETE")
      */
@@ -687,7 +688,7 @@ class RecordController extends Controller
     /**
      * Change the Forms for the Employee.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/changeform", name="record_form_change")
      * @Method("POST")
      */
@@ -718,6 +719,7 @@ class RecordController extends Controller
     /**
      * Search Record Checklist number
      *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/searchCheckList/{checkNumber}",defaults={"checkNumber" = null}, name="search_checklist")
      * @Method("GET")
      * @return null/string/array
