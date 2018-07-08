@@ -368,7 +368,7 @@ class RecordController extends Controller
         $success = $this->getRequest()->get('success');
         $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunitLevel')
-            ->from('HrisOrganisationunitBundle:organisationunitLevel', 'organisationunitLevel')
+            ->from('HrisOrganisationunitBundle:OrganisationunitLevel', 'organisationunitLevel')
             ->where('organisationunitLevel.level>' . '1')
             ->andWhere('organisationunitLevel.level>' . '1')
             ->orderBy('organisationunitLevel.level', 'ASC')
