@@ -31,6 +31,14 @@ security:
         - { path: ^/resetting/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/public_record, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/public_record/list, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/public_record/formlist/dataentry, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/public_record/viewrecords/9/form, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/public_record/checkUniqueness/json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/public_record/checkUniqueness, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/organisationunit/tree, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/list, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/relatedOptions, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/public_record/new/9, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/isusernameunique/json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/isusernameunique/xml, roles: IS_AUTHENTICATED_ANONYMOUSLY }

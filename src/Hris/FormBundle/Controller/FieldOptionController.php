@@ -47,7 +47,7 @@ class FieldOptionController extends Controller
     /**
      * Lists all FieldAPIOption entities.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_FIELDOPTION_LIST,ROLE_USER")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_FIELDOPTION_LIST,ROLE_USER,IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/api/{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="api_fieldoption")
      * @Route("/api/list/{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="api_fieldoption_list")
      * @Method("GET")

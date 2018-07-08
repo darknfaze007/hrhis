@@ -141,7 +141,7 @@ class FieldController extends Controller
     /**
      * Finds and displays a Field entity.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_FIELD_SHOW,ROLE_USER")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_FIELD_SHOW,ROLE_USER,IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/api/relatedOptions/{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, requirements={"id"="\w+"}, name="api_field_show")
      * @Method("GET")
      * @Template()

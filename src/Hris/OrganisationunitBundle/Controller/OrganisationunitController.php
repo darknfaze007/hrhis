@@ -395,7 +395,7 @@ class OrganisationunitController extends Controller
     /**
      * Returns Organisationunit tree json.
      *
-     * @Secure(roles="ROLE_SUPER_USER,ROLE_ORGANISATIONUNIT_LISTTREE,ROLE_USER")
+     * @Secure(roles="ROLE_SUPER_USER,ROLE_ORGANISATIONUNIT_LISTTREE,ROLE_USER,IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/tree.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="organisationunit_tree")
      * @Method("GET")
      * @Template()
