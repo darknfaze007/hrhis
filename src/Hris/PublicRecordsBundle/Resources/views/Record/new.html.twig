@@ -35,7 +35,7 @@
             if(window.foundRelatedOptions=='false') {
                 //@todo setting of options of related fields should depend on values of parent field relation
                 $.each( window.childFields, function( key, value ) {
-                    var fieldUrl = "{{ path('api_fieldoption', { '_format': 'json'}) }}"+'?uid='+value;
+                    var fieldUrl = "/api/relatedOptions"+'?uid='+value;
                     var getFields = $.getJSON( fieldUrl, function( jsonFields ) {
 
                         $('#'+value).find('option').remove();
@@ -54,7 +54,7 @@
         }
         function updateOrganisationunits() {
             var userLevelUid='{{ organisationunit.getOrganisationunitStructure().getLevel().getUid() }}';
-            var organisationunitTreeUrl = '{{ path('organisationunit_tree', {'_format':'json'}) }}';
+            var organisationunitTreeUrl = '/organisationunit/tree';
             var organisationunitsTagId='#organisationUnit';
             $(organisationunitsTagId).find('option').remove();
             if($('#level').val()==userLevelUid) {
@@ -88,7 +88,7 @@
         }
         $( document ).ready(function() {
             //@todo all fields and options should be loaded once and processed by browser
-            var fieldOptionRelationUrl = "{{ path('api_field_show', { '_format': 'json'}) }}";
+            var fieldOptionRelationUrl = "/api/relatedOptions.json";
             var getFields = $.getJSON( fieldOptionRelationUrl, function( jsonObject ) { window.fieldOptionRelations=jsonObject;}).done(function(){
             }).error(function(){
             });
@@ -98,7 +98,7 @@
 
             var selectItems = $( "td" ).find( "select" );//Get all select fields
             $.each( selectItems, function( key, value ) {
-                var fieldUrl = "{{ path('api_fieldoption', { '_format': 'json'}) }}"+'?uid='+value.id;
+                var fieldUrl = "/api"+'?uid='+value.id;
 //                console.log(fieldUrl);
                 var getFields = $.getJSON( fieldUrl, function( jsonFields ) { //Get field options of all select fields
                     $('#'+value.id).append(new Option('--[Select '+value.name+']--', '',true,true));
@@ -127,7 +127,7 @@
                 window.uniqueValuesString = window.uniqueValuesString + 'unique_5289e934ab062'+'='+$('#5289e934ab062').val()+'&' + 'unique_5289e934b2b33'+'='+$('#5289e934b2b33').val()+'&' + 'unique_5289e934c02a1'+'='+$('#5289e934c02a1').val()+'&' + 'unique_5289e934a140e'+'='+$('#5289e934a140e').val()+'&';
 
                     window.recordUnique='';
-                    $.get( "{{ path('record_checkuniqueness', { '_format': 'json' }) }}"+'?'+'formid='+'{{ formEntity.id }}&'+window.uniqueValuesString.replace(/&+$/,''), function( data ) {
+                    $.get( "/public_record/checkUniqueness"+'?'+'formid='+'{{ formEntity.id }}&'+window.uniqueValuesString.replace(/&+$/,''), function( data ) {
                         window.recordUnique=data;
                     }).done(function(){
                         if( window.recordUnique==true ) {
@@ -189,7 +189,7 @@
 
     <h1><small>{{ formEntity.getTitle() | raw }}</small></h1>
 
-    <form action="{{ path('record_create', { 'formid': formEntity.getId() }) }}" id="dataEntryForm" method="post">
+    <form action="/public_record?formid{{ formEntity.getId() }}" id="dataEntryForm" method="post">
         {% if isEntryLevel %}
             <em style="font-style: normal;padding-right:25px;">Select Duty Post Level</em>
             <select name="level"  id="level" required="required" onchange="updateOrganisationunits();">
@@ -219,12 +219,7 @@
         <p>
             <input type="hidden" name="formId" value="{{ formEntity.getId() }}">
             <button type="submit" name='Save' class="btn"> Save Records</button>
-            <a href="{{ path('record_viewrecords', { 'formid': formEntity.getId() } ,'form') }}" class="btn">
-                Back to the list
-            </a>
-            <a href="{{ path('record_form_list') }}" class="btn">
-                Cancel
-            </a>
+
         </p>
 
     </form>
