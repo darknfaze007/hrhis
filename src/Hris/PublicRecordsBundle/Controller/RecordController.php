@@ -380,7 +380,7 @@ class RecordController extends Controller
             ->where('organisationunit.longname =\'Regions\'')
             ->orderBy('organisationunit.longname', 'ASC')
             ->getQuery()->getResult();
-        $isEntryLevel = $organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
+        $isEntryLevel = true;//$organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
 
         return array(
             'formEntity' => $formEntity,
