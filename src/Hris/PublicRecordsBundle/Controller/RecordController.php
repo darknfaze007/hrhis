@@ -378,7 +378,7 @@ class RecordController extends Controller
             ->select('organisationunit')
             ->from('HrisOrganisationunitBundle:organisationunit', 'organisationunit')
             ->where('organisationunit.longname =\'Regions\'')
-            ->orderBy('organisationunit.name', 'ASC')
+            ->orderBy('organisationunit.longname', 'ASC')
             ->getQuery()->getResult();
         $isEntryLevel = $organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
 
