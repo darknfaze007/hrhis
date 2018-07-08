@@ -350,7 +350,7 @@ class RecordController extends Controller
     /**
      * Displays a form to create a new Record entity.
      *
-     *
+     * @Secure(roles="IS_AUTHENTICATED_ANONYMOUSLY")
      * @Route("/new/{id}", requirements={"id"="\d+"}, name="record_new")
      * @Method("GET")
      * @Template()
