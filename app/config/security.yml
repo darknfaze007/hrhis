@@ -36,6 +36,7 @@ security:
         - { path: ^/public_record/checkUniqueness/json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/public_record/checkUniqueness.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/public_record/checkUniqueness, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/organisationunit, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/organisationunit/tree, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/organisationunit/tree.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
