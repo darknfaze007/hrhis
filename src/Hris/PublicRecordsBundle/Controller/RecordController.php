@@ -511,7 +511,6 @@ class RecordController extends Controller
 
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        $onrgunitParent = $this->getRequest()->get('orgunitParent');
         $orunitUid = $this->getRequest()->get('selectedOrganisationunit');
 
         if ($orunitUid != null) {
