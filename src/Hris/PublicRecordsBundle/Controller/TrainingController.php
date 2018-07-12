@@ -47,10 +47,10 @@ class TrainingController extends Controller
      * Lists all Training entities.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDTRAINING_LIST")
-     * @Route("/", name="training")
-     * @Route("/list", name="training_list")
-     * @Route("/{recordid}/training", requirements={"recordid"="\d+"}, name="training_byrecord")
-     * @Route("/list/{recordid}/", requirements={"recordid"="\d+"}, name="training_list_byrecord")
+     * @Route("/", name="public_training")
+     * @Route("/list", name="public_training_list")
+     * @Route("/{recordid}/training", requirements={"recordid"="\d+"}, name="public_training_byrecord")
+     * @Route("/list/{recordid}/", requirements={"recordid"="\d+"}, name="public_training_list_byrecord")
      * @Method("GET")
      * @Template()
      */
@@ -59,8 +59,8 @@ class TrainingController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if(!empty($recordid)){
-            $entities = $em->getRepository('HrisRecordsBundle:Training')->findBy(array('record'=>$recordid));
-            $record = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+            $entities = $em->getRepository('HrisPublicRecordsBundle:Training')->findBy(array('record'=>$recordid));
+            $record = $em->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
         }
 
         $delete_forms = array();
@@ -82,9 +82,9 @@ class TrainingController extends Controller
      * Creates a new Training entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDTRAINING_CREATE")
-     * @Route("/{recordid}/recordid", requirements={"recordid"="\d+"}, name="training_create")
+     * @Route("/{recordid}/recordid", requirements={"recordid"="\d+"}, name="public_training_create")
      * @Method("POST")
-     * @Template("HrisRecordsBundle:Training:new.html.twig")
+     * @Template("HrisPublicRecordsBundle:Training:new.html.twig")
      */
     public function createAction(Request $request, $recordid = NULL)
     {
@@ -96,7 +96,7 @@ class TrainingController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             if(!empty($recordid)) {
-                $record = $this->getDoctrine()->getManager()->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+                $record = $this->getDoctrine()->getManager()->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
                 $entity->setRecord($record);
             }else {
                 $record = NULL;
@@ -128,7 +128,7 @@ class TrainingController extends Controller
      *
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_REPORTHISTORY_GENERATE")
-     * @Route("/districtFormFields.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="districts_formfields")
+     * @Route("/districtFormFields.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="public_districts_formfields")
      * @Method("POST")
      * @Template()
      */
@@ -151,7 +151,7 @@ class TrainingController extends Controller
      *
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_REPORTHISTORY_GENERATE")
-     * @Route("/trainingFormFields.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="training_formfields")
+     * @Route("/trainingFormFields.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="public_training_formfields")
      * @Method("POST")
      * @Template()
      */
@@ -176,7 +176,7 @@ class TrainingController extends Controller
      * Displays a form to create a new Training entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDTRAINING_CREATE")
-     * @Route("/new/{recordid}/recordid", requirements={"recordid"="\d+"}, name="training_new")
+     * @Route("/new/{recordid}/recordid", requirements={"recordid"="\d+"}, name="public_training_new")
      * @Method("GET")
      * @Template()
      */
@@ -186,7 +186,7 @@ class TrainingController extends Controller
         $entity = new Training();
         $form   = $this->createForm(new TrainingType(), $entity);
         if(!empty($recordid)) {
-            $record = $this->getDoctrine()->getManager()->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+            $record = $this->getDoctrine()->getManager()->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
         }else {
             $record = NULL;
         }
@@ -212,7 +212,7 @@ class TrainingController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         if(!empty($recordid)) {
-            $record = $this->getDoctrine()->getManager()->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+            $record = $this->getDoctrine()->getManager()->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
         }else {
             $record = NULL;
         }
@@ -232,7 +232,7 @@ class TrainingController extends Controller
      * Finds and displays a Training entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDTRAINING_SHOW")
-     * @Route("/{id}", requirements={"id"="\d+"}, requirements={"id"="\d+"}, name="training_show")
+     * @Route("/{id}", requirements={"id"="\d+"}, requirements={"id"="\d+"}, name="public_training_show")
      * @Method("GET")
      * @Template()
      */
@@ -240,7 +240,7 @@ class TrainingController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HrisRecordsBundle:Training')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:Training')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Training entity.');
@@ -258,7 +258,7 @@ class TrainingController extends Controller
      * Displays a form to edit an existing Training entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDTRAINING_UPDATE")
-     * @Route("/{id}/edit", requirements={"id"="\d+"}, name="training_edit")
+     * @Route("/{id}/edit", requirements={"id"="\d+"}, name="public_training_edit")
      * @Method("GET")
      * @Template()
      */
@@ -266,7 +266,7 @@ class TrainingController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HrisRecordsBundle:Training')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:Training')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Training entity.');
@@ -287,16 +287,16 @@ class TrainingController extends Controller
      * Edits an existing Training entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDTRAINING_UPDATE")
-     * @Route("/{id}", requirements={"id"="\d+"}, name="training_update")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="public_training_update")
      * @Method("PUT")
-     * @Template("HrisRecordsBundle:Training:edit.html.twig")
+     * @Template("HrisPublicRecordsBundle:Training:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        $entity = $em->getRepository('HrisRecordsBundle:Training')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:Training')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Training entity.');
@@ -324,7 +324,7 @@ class TrainingController extends Controller
      * Deletes a Training entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDTRAINING_DELETE")
-     * @Route("/{id}", requirements={"id"="\d+"}, name="training_delete")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="public_training_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -334,7 +334,7 @@ class TrainingController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('HrisRecordsBundle:Training')->find($id);
+            $entity = $em->getRepository('HrisPublicRecordsBundle:Training')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Training entity.');

@@ -47,9 +47,9 @@ class HistoryController extends Controller
      * Lists all History entities.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_LIST")
-     * @Route("/", name="history")
-     * @Route("/list", name="history_list")
-     * @Route("/list/{recordid}/", requirements={"recordid"="\d+"}, name="history_list_byrecord")
+     * @Route("/", name="public_history")
+     * @Route("/list", name="public_history_list")
+     * @Route("/list/{recordid}/", requirements={"recordid"="\d+"}, name="public_history_list_byrecord")
      * @Method("GET")
      * @Template()
      */
@@ -58,11 +58,11 @@ class HistoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if(!empty($recordid)){
-            $entities = $em->getRepository('HrisRecordsBundle:History')->findBy(array('record'=>$recordid));
-            $record = $em->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+            $entities = $em->getRepository('HrisPublicRecordsBundle:History')->findBy(array('record'=>$recordid));
+            $record = $em->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
         }
 
-        //$entities = $em->getRepository('HrisRecordsBundle:History')->findAll();
+        //$entities = $em->getRepository('HrisPublicRecordsBundle:History')->findAll();
         $delete_forms = array();
         foreach($entities as $entity) {
             $delete_form= $this->createDeleteForm($entity->getId());
@@ -81,9 +81,9 @@ class HistoryController extends Controller
      * Creates a new History entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_CREATE")
-     * @Route("/{recordid}/recordid", requirements={"recordid"="\d+"}, name="history_create")
+     * @Route("/{recordid}/recordid", requirements={"recordid"="\d+"}, name="public_history_create")
      * @Method("POST")
-     * @Template("HrisRecordsBundle:History:new.html.twig")
+     * @Template("HrisPublicRecordsBundle:History:new.html.twig")
      */
     public function createAction(Request $request, $recordid = NULL)
     {
@@ -107,7 +107,7 @@ class HistoryController extends Controller
                 //echo "Im tryn to transfer";exit;
                 $orgunit = $this->getDoctrine()->getManager()->getRepository('HrisOrganisationunitBundle:Organisationunit')->findOneBy(array('uid' =>$historyValue['history'] ));
                 if(!empty($recordid)) {
-                    $record = $this->getDoctrine()->getManager()->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+                    $record = $this->getDoctrine()->getManager()->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
 
                     //If History Set to update record
                     if(isset($historyFormData['updaterecord']) && $historyFormData['updaterecord']){
@@ -138,7 +138,7 @@ class HistoryController extends Controller
                 //If history is not orgunit transfer
                 $fieldOption = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:FieldOption')->findOneBy(array('uid'=>$historyValue['history']));
                 if(!empty($recordid)) {
-                    $record = $this->getDoctrine()->getManager()->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+                    $record = $this->getDoctrine()->getManager()->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
                     $field = $this->getDoctrine()->getManager()->getRepository('HrisFormBundle:Field')->findOneBy(array('id'=>$historyFormData['field']));
 
                     //If History Set to update record
@@ -200,7 +200,7 @@ class HistoryController extends Controller
      * Displays a form to create a new History entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_CREATE")
-     * @Route("/new/{recordid}/recordid", requirements={"recordid"="\d+"}, name="history_new")
+     * @Route("/new/{recordid}/recordid", requirements={"recordid"="\d+"}, name="public_history_new")
      * @Method("GET")
      * @Template()
      */
@@ -211,7 +211,7 @@ class HistoryController extends Controller
         $form   = $this->createForm(new HistoryType(), $entity);
 
         if(!empty($recordid)) {
-            $record = $this->getDoctrine()->getManager()->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+            $record = $this->getDoctrine()->getManager()->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
         }else {
             $record = NULL;
         }
@@ -276,7 +276,7 @@ class HistoryController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         if(!empty($recordid)) {
-            $record = $this->getDoctrine()->getManager()->getRepository('HrisRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
+            $record = $this->getDoctrine()->getManager()->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('id'=>$recordid));
         }else {
             $record = NULL;
         }
@@ -298,7 +298,7 @@ class HistoryController extends Controller
      * Finds and displays a History entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_SHOW")
-     * @Route("/{id}", requirements={"id"="\d+"}, requirements={"id"="\d+"}, name="history_show")
+     * @Route("/{id}", requirements={"id"="\d+"}, requirements={"id"="\d+"}, name="public_history_show")
      * @Method("GET")
      * @Template()
      */
@@ -306,7 +306,7 @@ class HistoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HrisRecordsBundle:History')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:History')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find History entity.');
@@ -324,7 +324,7 @@ class HistoryController extends Controller
      * Displays a form to edit an existing History entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_UPDATE")
-     * @Route("/{id}/edit", requirements={"id"="\d+"}, name="history_edit")
+     * @Route("/{id}/edit", requirements={"id"="\d+"}, name="public_history_edit")
      * @Method("GET")
      * @Template()
      */
@@ -332,7 +332,7 @@ class HistoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HrisRecordsBundle:History')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:History')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find History entity.');
@@ -353,15 +353,15 @@ class HistoryController extends Controller
      * Edits an existing History entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_UPDATE")
-     * @Route("/{id}", requirements={"id"="\d+"}, name="history_update")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="public_history_update")
      * @Method("PUT")
-     * @Template("HrisRecordsBundle:History:edit.html.twig")
+     * @Template("HrisPublicRecordsBundle:History:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HrisRecordsBundle:History')->find($id);
+        $entity = $em->getRepository('HrisPublicRecordsBundle:History')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find History entity.');
@@ -427,7 +427,7 @@ class HistoryController extends Controller
      * Deletes a History entity.
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_DELETE")
-     * @Route("/{id}", requirements={"id"="\d+"}, name="history_delete")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="public_history_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -437,7 +437,7 @@ class HistoryController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('HrisRecordsBundle:History')->find($id);
+            $entity = $em->getRepository('HrisPublicRecordsBundle:History')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find History entity.');
@@ -471,7 +471,7 @@ class HistoryController extends Controller
      *
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_SHOWFIELDOPTION")
-     * @Route("/historyFieldOption.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="history_historyfieldption")
+     * @Route("/historyFieldOption.{_format}", requirements={"_format"="yml|xml|json"}, defaults={"_format"="json"}, name="public_history_historyfieldption")
      * @Method("POST")
      * @Template()
      */
@@ -550,7 +550,7 @@ class HistoryController extends Controller
      * Displays a calendar for a history in a single record
      *
      * @Secure(roles="ROLE_SUPER_USER,ROLE_RECORDHISTORY_CREATE")
-     * @Route("/calendar/{recordid}", requirements={"recordid"="\d+"}, name="employee_calendar")
+     * @Route("/calendar/{recordid}", requirements={"recordid"="\d+"}, name="public_employee_calendar")
      * @Method("GET")
      * @Template()
      */
