@@ -81,7 +81,7 @@ class RecordController extends Controller
 //            ->getQuery()->getArrayResult();
 
         return array(
-            'entities' => [],
+            'entities' => null,
             'channel' => $channel,
             'message' => '',
 
