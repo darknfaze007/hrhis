@@ -119,46 +119,46 @@
     {% endif %}
 {% endblock message_alert %}
 
-{#{% block right_content -%}#}
-    {#{% if message %}#}
-        {# Return messages should be displaed here!!#}
-    {#{% else %}#}
-        {#{% set queryParams = app.request.query.all %}#}
-        {#<div class="container">#}
-            {#{% if channel=='dataentry' %}#}
-                {#<h1><small>Data Entry Forms</small></h1>#}
-            {#{% elseif channel=='traininginstance' %}#}
-                {#<h1><small>Training Instance</small></h1>#}
-            {#{% elseif channel=='leaverecords' %}#}
-                {#<h1><small>Update Records</small></h1>#}
-            {#{% elseif channel=='updaterecords' %}#}
-                {#<h1><small>View Records</small></h1>#}
-            {#{% elseif channel=='facilitatorInstanceRecord' %}#}
-                {#<h1><small>Form Lists for Training Internal Facilitators</small></h1>#}
-            {#{% elseif channel=='participantsInstanceRecord' %}#}
-                {#<h1><small>Form Lists for Training Participants</small></h1>#}
-            {#{% elseif channel=='instanceRecord' %}#}
-                {#{% if queryParams['partic_for_view'] is defined %}#}
-                    {#<h1><small>Add Participants</small></h1>#}
-                    {#<a class="btn btn-default" href="{{ path("record_viewparticipants",{'instance_id':queryParams['instance_id']} ) }}" title="back to list">back</a>#}
-                    {#</br>#}
-                    {#</br>#}
-                {#{% elseif queryParams['facilitator'] is defined %}#}
-                    {#<h1><small>Facilitators(Internal) To the Training Instance</small></h1>#}
-                    {#<a class="btn btn-default" href="{{ path('record_viewfacilitators',{'instance_id':queryParams['instance_id']} ) }}" title="back to list">back</a>#}
-                    {#</br>#}
-                    {#</br>#}
-                {#{% else %}#}
-                    {#<h1><small>Add Participants, Trainers(External) and Facilitators(Internal) To the Training Instance</small></h1>#}
+{% block right_content -%}
+    {% if message %}
+         Return messages should be displaed here!!
+    {% else %}
+        {% set queryParams = app.request.query.all %}
+        <div class="container">
+            {% if channel=='dataentry' %}
+                <h1><small>Data Entry Forms</small></h1>
+            {% elseif channel=='traininginstance' %}
+                <h1><small>Training Instance</small></h1>
+            {% elseif channel=='leaverecords' %}
+                <h1><small>Update Records</small></h1>
+            {% elseif channel=='updaterecords' %}
+                <h1><small>View Records</small></h1>
+            {% elseif channel=='facilitatorInstanceRecord' %}
+                <h1><small>Form Lists for Training Internal Facilitators</small></h1>
+            {% elseif channel=='participantsInstanceRecord' %}
+                <h1><small>Form Lists for Training Participants</small></h1>
+            {% elseif channel=='instanceRecord' %}
+                {% if queryParams['partic_for_view'] is defined %}
+                    <h1><small>Add Participants</small></h1>
+                    <a class="btn btn-default" href="{{ path("record_viewparticipants",{'instance_id':queryParams['instance_id']} ) }}" title="back to list">back</a>
+                    </br>
+                    </br>
+                {% elseif queryParams['facilitator'] is defined %}
+                    <h1><small>Facilitators(Internal) To the Training Instance</small></h1>
+                    <a class="btn btn-default" href="{{ path('record_viewfacilitators',{'instance_id':queryParams['instance_id']} ) }}" title="back to list">back</a>
+                    </br>
+                    </br>
+                {% else %}
+                    <h1><small>Add Participants, Trainers(External) and Facilitators(Internal) To the Training Instance</small></h1>
 
-                    {#<span class=" btn-group">#}
-                        {#<a class="btn btn-mini btn-default" href="{{ path('trainers',{'instance_id':queryParams['instance_id'],'status':'all'}) }}" title="Add External Facilitators/ Trainers"><i class="icon-add"></i>&nbsp;Add External Trainers</a>#}
-                        {#<a class="btn btn-mini btn-default" href="{{ path("trainingevent") }}" class="btn btn-default" class="icon-left-arrow">&nbsp;Back</a>#}
-                    {#</span>#}
-                    {#</br></br><span style="color:#ccc;">Select forms to add facilitator and participants</span>#}
-                    {#</br></br>#}
-                {#{% endif %}#}
-            {#{% endif %}#}
+                    <span class=" btn-group">
+                        <a class="btn btn-mini btn-default" href="{{ path('trainers',{'instance_id':queryParams['instance_id'],'status':'all'}) }}" title="Add External Facilitators/ Trainers"><i class="icon-add"></i>&nbsp;Add External Trainers</a>
+                        <a class="btn btn-mini btn-default" href="{{ path("trainingevent") }}" class="btn btn-default" class="icon-left-arrow">&nbsp;Back</a>
+                    </span>
+                    </br></br><span style="color:#ccc;">Select forms to add facilitator and participants</span>
+                    </br></br>
+                {% endif %}
+            {% endif %}
 
             {#<table class="records_list dataTable table table-striped table-bordered table-hover">#}
                 {#<thead>#}
@@ -236,18 +236,18 @@
                 {#{% endfor %}#}
                 {#</tbody>#}
             {#</table>#}
-        {#</div>#}
-        {#<div id="result" />#}
+        </div>
+        <div id="result" />
 
-        {#<div class="modal fade" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">#}
-            {#<div class="modal-header">#}
-                {#<h1>Loading Data ...</h1>#}
-            {#</div>#}
-            {#<div class="modal-body">#}
-                {#<div class="progress progress-striped active">#}
-                    {#<div class="bar" style="width: 100%;"></div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#{% endif %}#}
-{#{% endblock %}#}
+        <div class="modal fade" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-header">
+                <h1>Loading Data ...</h1>
+            </div>
+            <div class="modal-body">
+                <div class="progress progress-striped active">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
