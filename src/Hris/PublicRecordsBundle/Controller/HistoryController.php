@@ -55,6 +55,8 @@ class HistoryController extends Controller
      */
     public function indexAction( $recordid=NULL )
     {
+        echo "leonard";
+        exit();
         $em = $this->getDoctrine()->getManager();
 
         if(!empty($recordid)){
