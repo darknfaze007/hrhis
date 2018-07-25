@@ -73,6 +73,7 @@ class RecordController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
+        var_dump($entities);
         echo "leonard";
         exit();
         return array(
