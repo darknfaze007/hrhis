@@ -61,23 +61,53 @@ class RecordController extends Controller
     /**
      * Lists all Record entities.
      *
-     *
-     * @Route("/", name="public_record")
-     * @Route("/list", name="public_record_list")
+     * @Route("/", name="public_record", defaults={"channel"="dataentry"}, name="public_record")
+     * @Route("/updaterecords", defaults={"channel"="updaterecords"}, name="public_record__updaterecords")
+     * @Route("/updateleaverecords", defaults={"channel"="leaverecords"}, name="public_record__leaverecords")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($channel)
     {
 
+        /*
+                * Getting the Form Metadata and Values
+                */
 
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
+        $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $entities = $queryBuilder->select('form')
+            ->from('HrisFormBundle:Form', 'form')
+            ->getQuery()->getArrayResult();
 
         return array(
             'entities' => $entities,
+            'channel' => $channel,
+            'message' => '',
+
         );
+
     }
+//    /**
+//     * Lists all Record entities.
+//     *
+//     *
+//     * @Route("/", name="public_record")
+//     * @Route("/list", name="public_record_list")
+//     * @Method("GET")
+//     * @Template()
+//     */
+//    public function indexAction()
+//    {
+//
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
+//
+//        return array(
+//            'entities' => $entities,
+//        );
+//    }
 
     /**
      * Lists all Records by forms.
@@ -219,6 +249,7 @@ class RecordController extends Controller
         /*
          * Getting the Form Metadata and Values
          */
+
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
         $entities = $queryBuilder->select('form')
@@ -231,6 +262,24 @@ class RecordController extends Controller
             'message' => '',
 
         );
+
+
+
+//        $em = $this->getDoctrine()->getManager();
+//        $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
+//        $entities = $queryBuilder->select('form')
+//            ->from('HrisFormBundle:Form', 'form')
+//            ->join('form.user', 'user')
+//            ->andWhere("user.username='" . $this->getUser() . "'")
+//            ->getQuery()->getArrayResult();
+//
+//        return array(
+//            'entities' => $entities,
+//            'channel' => 'dataentry',
+//            'message' => '',
+//
+//        );
+
     }
 
     /**
@@ -740,10 +789,10 @@ class RecordController extends Controller
                 $query .= " ORDER BY R.firstname ASC";
 
                 $statement = $entityManager->getConnection()->prepare($query);
-                if ($statement->execute()) {
+                if ($statement->execute()){
                     $response = $statement->fetchAll();
                 } else {
-                    throw new Exception("Invalid check number");
+                    throw new Exception("Invalid check number") ;
                 }
 
 
