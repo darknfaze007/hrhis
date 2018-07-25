@@ -61,7 +61,7 @@ class RecordController extends Controller
     /**
      * Lists all Record entities.
      *
-     * @Route("/", name="public_record", defaults={"channel"="dataentry"}, name="public_record")
+     * @Route("/", name="public_record/sponsorship_form", defaults={"channel"="dataentry"}, name="public_record/sponsorship_form")
      * @Route("/updaterecords", defaults={"channel"="updaterecords"}, name="public_record__updaterecords")
      * @Route("/updateleaverecords", defaults={"channel"="leaverecords"}, name="public_record__leaverecords")
      * @Method("GET")
@@ -77,10 +77,8 @@ class RecordController extends Controller
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
         $entities = $queryBuilder->select('form')
-            ->from('HrisFormBundle:Form', 'form')
+            ->from('HrisFormBundle:Form', 'form')->findby(array('id' => 9))
             ->getQuery()->getArrayResult();
-            var_dump($entities);
-            exit();
         return array(
             'entities' => $entities,
             'channel' => $channel,
