@@ -79,11 +79,10 @@ class RecordController extends Controller
 //        $entities = $queryBuilder->select('form')
 //            ->from('HrisFormBundle:Form', 'form')
 //            ->getQuery()->getArrayResult();
-        echo "Testing the templates";
-        exit();
+
         return array(
             'entities' => null,
-            'channel' => $channel,
+            'channel' => null,
             'message' => '',
 
         );
