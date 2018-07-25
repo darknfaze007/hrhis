@@ -74,15 +74,15 @@ class RecordController extends Controller
          * Getting the Form Metadata and Values
          */
 //
-//        $em = $this->getDoctrine()->getManager();
-//        $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
-//        $entities = $queryBuilder->select('form')
-//            ->from('HrisFormBundle:Form', 'form')
-//            ->getQuery()->getArrayResult();
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $entities = $queryBuilder->select('form')
+            ->from('HrisFormBundle:Form', 'form')
+            ->getQuery()->getArrayResult();
 
         return array(
-            'entities' => null,
-            'channel' => null,
+            'entities' => $entities,
+            'channel' => $channel,
             'message' => '',
 
         );
