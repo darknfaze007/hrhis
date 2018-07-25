@@ -79,7 +79,8 @@ class RecordController extends Controller
 //        $entities = $queryBuilder->select('form')
 //            ->from('HrisFormBundle:Form', 'form')
 //            ->getQuery()->getArrayResult();
-
+        echo "Testing the templates";
+        exit();
         return array(
             'entities' => null,
             'channel' => $channel,
@@ -262,7 +263,6 @@ class RecordController extends Controller
             'message' => '',
 
         );
-
 
 
 //        $em = $this->getDoctrine()->getManager();
@@ -789,10 +789,10 @@ class RecordController extends Controller
                 $query .= " ORDER BY R.firstname ASC";
 
                 $statement = $entityManager->getConnection()->prepare($query);
-                if ($statement->execute()){
+                if ($statement->execute()) {
                     $response = $statement->fetchAll();
                 } else {
-                    throw new Exception("Invalid check number") ;
+                    throw new Exception("Invalid check number");
                 }
 
 
