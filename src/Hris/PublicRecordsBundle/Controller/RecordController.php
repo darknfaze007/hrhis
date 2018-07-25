@@ -70,10 +70,8 @@ class RecordController extends Controller
     public function indexAction()
     {
 
+
         $em = $this->getDoctrine()->getManager();
-        var_dump($em);
-        echo "leonard";
-        exit();
         $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
 
         return array(
@@ -225,8 +223,6 @@ class RecordController extends Controller
         $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
         $entities = $queryBuilder->select('form')
             ->from('HrisFormBundle:Form', 'form')
-            ->join('form.user', 'user')
-            ->andWhere("user.username='" . $this->getUser() . "'")
             ->getQuery()->getArrayResult();
 
         return array(
@@ -744,10 +740,10 @@ class RecordController extends Controller
                 $query .= " ORDER BY R.firstname ASC";
 
                 $statement = $entityManager->getConnection()->prepare($query);
-                if ($statement->execute()){
+                if ($statement->execute()) {
                     $response = $statement->fetchAll();
                 } else {
-                    throw new Exception("Invalid check number") ;
+                    throw new Exception("Invalid check number");
                 }
 
 
