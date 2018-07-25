@@ -104,10 +104,11 @@
 {#</div>#}
     {#{% endblock %}#}
 
-{#{% extends '::base.html.twig' %}#}
-{#{% block javascripts %}#}
-    {#{{ parent() }}#}
-{#{% endblock %}#}
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('commons/css/dt_bootstrap.css') }}" />
+{% endblock stylesheets %}
 
 {% block message_alert %}
     {% if message %}
