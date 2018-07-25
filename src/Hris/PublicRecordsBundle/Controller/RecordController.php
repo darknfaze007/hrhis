@@ -69,12 +69,12 @@ class RecordController extends Controller
      */
     public function indexAction()
     {
-        echo "leonard";
-        exit();
+
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
-
+        echo "leonard";
+        exit();
         return array(
             'entities' => $entities,
         );
