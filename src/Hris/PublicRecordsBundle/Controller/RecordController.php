@@ -79,6 +79,8 @@ class RecordController extends Controller
         $entities = $queryBuilder->select('form')
             ->from('HrisFormBundle:Form', 'form')->findby(array('id' => 9))
             ->getQuery()->getArrayResult();
+        var_dump($entities);
+        exit();
         return array(
             'entities' => $entities,
             'channel' => $channel,
