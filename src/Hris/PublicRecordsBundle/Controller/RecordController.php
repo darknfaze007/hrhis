@@ -80,7 +80,7 @@ class RecordController extends Controller
 
 
 
-//        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->container->get('security.context')->getToken()->getUser();
 //
 //        $onrgunitParent = $this->get('request')->request->get('orgunitParent');
         $orunitUid = $this->get('request')->request->get('selectedOrganisationunit');
