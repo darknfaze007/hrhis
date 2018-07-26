@@ -77,15 +77,15 @@ class RecordController extends Controller
 
         $formId = 9;//$this->getRequest()->get('formid');
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-
-        $onrgunitParent = $this->get('request')->request->get('orgunitParent');
+//        $user = $this->container->get('security.context')->getToken()->getUser();
+//
+//        $onrgunitParent = $this->get('request')->request->get('orgunitParent');
         $orunitUid = $this->get('request')->request->get('selectedOrganisationunit');
 
         if ($orunitUid != null) {
             $orgunit = $em->getRepository('HrisOrganisationunitBundle:Organisationunit')->findOneBy(array('uid' => $orunitUid));
         } else {
-            $orgunit = $user->getOrganisationunit();
+//            $orgunit = $user->getOrganisationunit();
         }
 
         $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
