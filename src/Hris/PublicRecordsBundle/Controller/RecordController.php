@@ -75,18 +75,9 @@ class RecordController extends Controller
          */
 //
         $em = $this->getDoctrine()->getManager();
-//        $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
-//        $entities = $queryBuilder->select('form')
-//            ->from('HrisFormBundle:Form', 'form')->findby(array('id' => 9))
-//            ->getQuery()->getArrayResult();
-//
-//        $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('HrisFormBundle:Form')->find(9);
 
 
-        var_dump($entities);
-        exit();
         return array(
             'entities' => $entities,
             'channel' => $channel,
