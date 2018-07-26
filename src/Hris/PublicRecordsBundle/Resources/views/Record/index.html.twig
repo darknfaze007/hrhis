@@ -104,9 +104,9 @@
 {#</div>#}
     {#{% endblock %}#}
 
-{% extends '::base.html.twig' %}
+{#{% extends '::base.html.twig' %}#}
 {% block stylesheets %}
-    {{ parent() }}
+    {#{{ parent() }}#}
     <link rel="stylesheet" href="{{ asset('commons/css/dt_bootstrap.css') }}" />
 {% endblock stylesheets %}
 
@@ -158,7 +158,7 @@
                     {#</span>#}
                     {#</br></br><span style="color:#ccc;">Select forms to add facilitator and participants</span>#}
                     {#</br></br>#}
-                {% endif %}
+                {#{% endif %}#}
             {% endif %}
 
             <table class="records_list dataTable table table-striped table-bordered table-hover">
@@ -200,36 +200,6 @@
                                     <li>
                                         <a href="{{ path('record_new', { 'id': entity.id }) }}"><i class="icon-down-arrow icon-large" title="Show"></i></a>
                                     </li>
-                                {#{% elseif channel=='updaterecords' %}#}
-                                    {#<li>#}
-                                        {#<a href="{{ path('record_viewrecords', { 'formid': entity.id }) }}"><i class="icon-folder-open icon-large" title="Show"></i></a>#}
-                                    {#</li>#}
-
-                                {#{% elseif channel=='leaverecords' %}#}
-                                    {#<li>#}
-                                        {#<a href="{{ path('leave_viewrecords', { 'formid': entity.id }) }}"><i class="icon-folder-open icon-large" title="Show"></i></a>#}
-                                    {#</li>#}
-
-                                {#{% elseif channel=='traininginstance' %}#}
-                                    {#<li>#}
-                                        {#<a href="{{ path('record_viewinstance', { 'formid': entity.id }) }}"><i class="icon-folder-open icon-large" title="Show"></i></a>#}
-                                    {#</li>#}
-                                {#{% elseif channel=='participantsInstanceRecord' %}#}
-                                    {#<li>#}
-                                        {#<a href="{{ path('record_viewparticipants', { 'instance_id':queryParams['instance_id'],'id':'partic_for_view'  }) }}"><i class="icon-folder-open icon-large" title="Show"></i></a>#}
-                                    {#</li>#}
-                                {#{% elseif channel=='facilitatorInstanceRecord' %}#}
-                                    {#<li>#}
-                                        {#<a href="{{ path('record_viewfacilitators', { 'formid': entity.id,'instance_id':queryParams['instance_id'],'id':'facilitators'  }) }}"><i class="icon-folder-open icon-large" title="Show"></i></a>#}
-                                    {#</li>#}
-                                {#{% elseif channel=='instanceRecord' %}#}
-                                    {#<li>#}
-
-                                        {#<a href="{{ path('record_viewinstance', { 'formid': entity.id,'instance_id':queryParams['instance_id']  }) }}">#}
-                                            {#<i class="icon-folder-open icon-large" title="Show"></i>#}
-                                        {#</a>#}
-
-                                    {#</li>#}
                                 {% endif %}
                             </ul>
                         </td>
