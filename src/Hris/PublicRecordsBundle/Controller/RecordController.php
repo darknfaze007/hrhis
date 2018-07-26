@@ -77,6 +77,10 @@ class RecordController extends Controller
 
         $formId = 9;//$this->getRequest()->get('formid');
 
+        echo "Leonard";
+        echo "mpande";
+        exit();
+
 //        $user = $this->container->get('security.context')->getToken()->getUser();
 //
 //        $onrgunitParent = $this->get('request')->request->get('orgunitParent');
@@ -87,10 +91,7 @@ class RecordController extends Controller
         } else {
 //            $orgunit = $user->getOrganisationunit();
         }
-echo "Leonard";
-        var_dump($orunitUid);
-        echo "mpande";
-        exit();
+
         $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
 
         $uniqueFields = $form->getUniqueRecordFields();
