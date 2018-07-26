@@ -68,6 +68,9 @@ class RecordController extends Controller
     public function indexAction($channel)
     {
 
+        echo "Leonard";
+        echo "mpande";
+        exit();
         $em = $this->getDoctrine()->getManager();
 
         $entity = new Record();
@@ -77,9 +80,7 @@ class RecordController extends Controller
 
         $formId = 9;//$this->getRequest()->get('formid');
 
-        echo "Leonard";
-        echo "mpande";
-        exit();
+
 
 //        $user = $this->container->get('security.context')->getToken()->getUser();
 //
