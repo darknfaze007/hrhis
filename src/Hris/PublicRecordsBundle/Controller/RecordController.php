@@ -88,6 +88,8 @@ class RecordController extends Controller
 //            $orgunit = $user->getOrganisationunit();
         }
 
+        var_dump($orunitUid);
+        exit();
         $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
 
         $uniqueFields = $form->getUniqueRecordFields();
