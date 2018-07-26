@@ -87,8 +87,9 @@ class RecordController extends Controller
         } else {
 //            $orgunit = $user->getOrganisationunit();
         }
-
+echo "Leonard";
         var_dump($orunitUid);
+        echo "mpande";
         exit();
         $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
 
