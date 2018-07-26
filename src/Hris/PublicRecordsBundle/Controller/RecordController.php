@@ -68,9 +68,7 @@ class RecordController extends Controller
     public function indexAction($channel)
     {
 
-        echo "Leonard";
-        echo "mpande";
-        exit();
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = new Record();
