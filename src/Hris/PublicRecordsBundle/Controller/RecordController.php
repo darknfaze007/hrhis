@@ -85,8 +85,8 @@ class RecordController extends Controller
         $entities = $em->getRepository('HrisFormBundle:Form')->find(9);
 
 
-//        var_dump($entities);
-//        exit();
+        var_dump($entities);
+        exit();
         return array(
             'entities' => $entities,
             'channel' => $channel,
