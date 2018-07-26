@@ -1,3 +1,3 @@
-public_record:
+sponsorship_form:
     resource: "@HrisPublicRecordsBundle/Controller/RecordController.php"
     type: annotation
