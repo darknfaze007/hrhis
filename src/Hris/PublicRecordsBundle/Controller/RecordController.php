@@ -72,8 +72,8 @@ class RecordController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = new Record();
-        //$record = $this->createForm(new RecordType(), $entity);
-        //$record->bind($request);
+//        $record = $this->createForm(new RecordType(), $entity);
+//        $record->bind($request);
         $message = '';
 
         $formId = 9;//$this->getRequest()->get('formid');
@@ -88,7 +88,7 @@ class RecordController extends Controller
         if ($orunitUid != null) {
             $orgunit = $em->getRepository('HrisOrganisationunitBundle:Organisationunit')->findOneBy(array('uid' => $orunitUid));
         } else {
-//            $orgunit = $user->getOrganisationunit();
+            $orgunit = $user->getOrganisationunit();
         }
 
         $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
@@ -155,26 +155,26 @@ class RecordController extends Controller
 
     }
 
-    /**
-     * Lists all Record entities.
-     *
-     *
-     * @Route("/", name="public_record")
-     * @Route("/list", name="public_record_list")
-     * @Method("GET")
-     * @Template()
-     */
-    public function indexAction()
-    {
-
-
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
-    }
+//    /**
+//     * Lists all Record entities.
+//     *
+//     *
+//     * @Route("/", name="public_record")
+//     * @Route("/list", name="public_record_list")
+//     * @Method("GET")
+//     * @Template()
+//     */
+//    public function indexAction()
+//    {
+//
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $entities = $em->getRepository('HrisPublicRecordsBundle:Record')->findAll();
+//
+//        return array(
+//            'entities' => $entities,
+//        );
+//    }
 
     /**
      * Lists all Records by forms.
