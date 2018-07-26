@@ -1,118 +1,228 @@
 {#{% extends '::base.html.twig' %}#}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('commons/js/jquery-ui.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.validate.js') }}"></script>
+    <script type="text/javascript">
+        function changeRelatedFieldOptions(uid) {
+            if(uid == '5289e934b733b'){
+                $('#5289e934b733f option[value=528b0adfa726a]').attr('selected','selected');
+            }
+            if(uid == '5289e934b733f'){
+                if($('#5289e934b733f :selected').text() == 'N/A'){
+                    uid = '5289e934b733b';
+                }
+            }
+            window.childFields = [];
+            window.selectedFieldOption={};
+            window.childFieldIncrement = {};
+            window.foundRelatedOptions='false';
+            $.each( window.fieldOptionRelations, function( key, value ) {
+                // Check if selected field is in parent field optiosn and related child fields are in loaded form
+                if(value.parent_fielduid==uid && value.parent_fieldoptionuid==$('#'+uid).val() && $($( "td" ).find( "select#"+value.child_fielduid )).size() > 0 ) {
+                    if(typeof(childFieldIncrement[value.child_fielduid]) ==='undefined' ) {
+                        childFieldIncrement[value.child_fielduid]='cleared'; //Clear field options
+                        $('#'+value.child_fielduid).find('option').remove();
+                        $('#'+value.child_fielduid).append('<option value="'+value.child_fieldoptionuid+'">'+value.child_fieldoptionvalue+'</option>');
+                    }else {
+                        $('#'+value.child_fielduid).append('<option value="'+value.child_fieldoptionuid+'">'+value.child_fieldoptionvalue+'</option>');
+                    }
+                    window.foundRelatedOptions='true';
+                }
+                window.childFields.push(value.child_fielduid);
+                window.childFields = $.unique(window.childFields);
+            });
+            if(window.foundRelatedOptions=='false') {
+                //@todo setting of options of related fields should depend on values of parent field relation
+                $.each( window.childFields, function( key, value ) {
+                    var fieldUrl = "/api/relatedOptions"+'?uid='+value;
+                    var getFields = $.getJSON( fieldUrl, function( jsonFields ) {
+
+                        $('#'+value).find('option').remove();
+                        $.each( jsonFields, function( fieldKey, jsonField ) {
+                            $('#'+value).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
+                        });
+                    }).done(function(){
+                        $('.dataentry').find('input, textarea,select').removeAttr('disabled');
+                        $('#loadingMessage').remove();
+                    }).error(function(){
+                        $('#loadingMessage').remove();
+                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');
+                    });
+                });
+            }
+        }
+        function updateOrganisationunits() {
+            var userLevelUid='{{ organisationunit.getOrganisationunitStructure().getLevel().getUid() }}';
+            var organisationunitTreeUrl = '/organisationunit/tree';
+            var organisationunitsTagId='#organisationUnit';
+            $(organisationunitsTagId).find('option').remove();
+            if($('#level').val()==userLevelUid) {
+                $(organisationunitsTagId).append(new Option("{{ organisationunit.getLongname() }}", "{{ organisationunit.getUid() }}"));
+                $(organisationunitsTagId).attr('disabled','disabled');
+                $('#selectedOrganisationunit').val( "{{ organisationunit.getUid() }}" );
+            }else {
+                $(organisationunitsTagId).removeAttr('disabled');
+                getData={'id': {{ organisationunit.getId() }} };
+                $('#selectedOrganisationunit').val( $('#organisationUnit').val() );
+                $.getJSON(organisationunitTreeUrl,getData , function( organisationunits ){
+                    window.loadedOrganisationunits=organisationunits;
+                    if (jQuery.isEmptyObject(organisationunits)){
+                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get duty posts, please check your network connection</small></div>');
+                    }else {
+                        $(organisationunitsTagId).append(new Option('--[Select Duty post]--', '',true,true));
+                        $.each(organisationunits, function(organisationunitIndex, organisationunit) {
+                            $(organisationunitsTagId).append(new Option(organisationunit['longname'], organisationunit['uid']));
+                        });
+                    }
+                }).done(function(){
+                    if (jQuery.isEmptyObject(window.loadedOrganisationunits)){
+                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get duty posts, please check your network connection</small></div>');
+                    }
+                    $('#loadingMessage').remove();
+                }).error(function(){
+                    $('#loadingMessage').remove();
+                    $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');
+                });
+            }
+        }
+        $( document ).ready(function() {
+            //@todo all fields and options should be loaded once and processed by browser
+            var fieldOptionRelationUrl = "/api/relatedOptions.json";
+            var getFields = $.getJSON( fieldOptionRelationUrl, function( jsonObject ) { window.fieldOptionRelations=jsonObject;}).done(function(){
+            }).error(function(){
+            });
+
+            $('#htmlForm').find('input, textarea,select').attr('disabled','disabled');
+            $('#messageArea').html('<div class="alert alert-success" id="loadingMessage"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Loading!</strong> Please wait..</small></div>');
+
+            var selectItems = $( "td" ).find( "select" );//Get all select fields
+            $.each( selectItems, function( key, value ) {
+                var fieldUrl = "/api"+'?uid='+value.id;
+//                console.log(fieldUrl);
+                var getFields = $.getJSON( fieldUrl, function( jsonFields ) { //Get field options of all select fields
+                    $('#'+value.id).append(new Option('--[Select '+value.name+']--', '',true,true));
+                    $.each( jsonFields, function( fieldKey, jsonField ) {
+                        $('#'+value.id).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
+                    });
+                    if($('#5289e934b733f')[0]){
+                        $('#5289e934b733f option[value=528b0adfa726a]').remove();
+                        $("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));
+                    }
+                }).done(function(){
+                    $('.dataentry').find('input, textarea,select').removeAttr('disabled');
+                    $('#loadingMessage').remove();
+                }).error(function(){
+                    $('#loadingMessage').remove();
+                    $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');
+                });
+            });
+            $( "#dataEntryForm" ).submit(function( event ) {
+                //if($( "#dataEntryForm").valid()) {
+                window.uniqueValuesString='';
+                $.each( $('#dataEntryForm').find(".unique_field"), function( key, value ) {
+                    window.uniqueValuesString = window.uniqueValuesString + value.id+'='+ $.trim($('#'+value.id).val())+'&';
+                });
+
+                window.uniqueValuesString = window.uniqueValuesString + 'unique_5289e934ab062'+'='+$('#5289e934ab062').val()+'&' + 'unique_5289e934b2b33'+'='+$('#5289e934b2b33').val()+'&' + 'unique_5289e934c02a1'+'='+$('#5289e934c02a1').val()+'&' + 'unique_5289e934a140e'+'='+$('#5289e934a140e').val()+'&';
+
+                window.recordUnique='';
+                $.get( "/public_record/checkUniqueness"+'?'+'formid='+'{{ formEntity.id }}&'+window.uniqueValuesString.replace(/&+$/,''), function( data ) {
+                    window.recordUnique=data;
+                }).done(function(){
+                    if( window.recordUnique==true ) {
+                        //Record is unique
+                        console.log('Record is unique');
+                        $('#loadingMessage').remove();
+                        event.preventDefault();
+                    }else {
+                        //Record with similar id exists
+                        $('#loadingMessage').remove();
+                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Warning!!</strong> Record with similar checknumber of filenumber exists</small></div>');
+                        console.log('Record exists');
+                        event.preventDefault();
+                    }
+                }).fail(function(){
+                    console.log('Failed to check record uniqueness');
+                    event.preventDefault();
+                });
+                //}`
+            });
+            $("#dataEntryForm").validate({
+                ignore:".date"
+            });
+            $( "#organisationUnit" ).change(function() {$('#selectedOrganisationunit').val( $('#organisationUnit').val() );});
+        });
+        $( ".date" ).datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showOn: "both",
+            buttonImage: "{{ asset('commons/images/calendar.gif') }}",
+            buttonImageOnly: true,
+            dateFormat: "dd/mm/yy",
+            showAnim: "clip",
+            maxDate: "+0D",
+            yearRange:'c-60:c+60'
+        });
+    </script>
+{% endblock %}
+
+
 {% block stylesheets %}
     {#{{ parent() }}#}
     <link rel="stylesheet" href="{{ asset('commons/css/dt_bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ asset('commons/css/datepicker.css') }}" />
+    <link rel="stylesheet" href="{{ asset('commons/css/jquery-ui.css') }}" />
 {% endblock stylesheets %}
 
 {% block message_alert %}
     {% if message %}
-        <div class="alert alert-error">
+
+        <div {% if success is defined and success==true and success!='false' %} class="alert alert-success" {% elseif success is defined and (success==false or success=='false') %}  class="alert alert-danger" {% else %} class="alert alert alert-info" {% endif %}>
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <small class="visible-phone"><strong>Warning!</strong> {{ message | raw }}</small>
-            <small class="hidden-phone"><strong>Warning!</strong> {{ message | raw }}</small>
+            <small class="visible-phone"><strong>{% if success is defined and success==true and success!='false' %} Success! {% elseif success is defined and (success==false or success=='false') %} Failure!  {% else %} Info! {% endif %}</strong> {{ message | raw }}</small>
+            <small class="hidden-phone"><strong>{% if success is defined and success==true and success!='false' %} Success! {% elseif success is defined and (success==false or success=='false') %} Failure!  {% else %} Info! {% endif %}</strong> {{ message | raw }}</small>
         </div>
     {% endif %}
 {% endblock message_alert %}
 
 {% block right_content -%}
-    {% if message %}
-         Return messages should be displaed here!!
-    {% else %}
-        {% set queryParams = app.request.query.all %}
-        <div class="container">
-            {% if channel=='dataentry' %}
-                <h1><small>Data Entry Forms</small></h1>
-            {% elseif channel=='traininginstance' %}
-                <h1><small>Training Instance</small></h1>
-            {% elseif channel=='leaverecords' %}
-                <h1><small>Update Records</small></h1>
-            {% elseif channel=='updaterecords' %}
-                <h1><small>View Records</small></h1>
-            {% elseif channel=='facilitatorInstanceRecord' %}
-                <h1><small>Form Lists for Training Internal Facilitators</small></h1>
-            {% elseif channel=='participantsInstanceRecord' %}
-                <h1><small>Form Lists for Training Participants</small></h1>
-            {% elseif channel=='instanceRecord' %}
-                {% if queryParams['partic_for_view'] is defined %}
-                    <h1><small>Add Participants</small></h1>
-                    <a class="btn btn-default" href="{{ path("record_viewparticipants",{'instance_id':queryParams['instance_id']} ) }}" title="back to list">back</a>
-                    </br>
-                    </br>
-                {% elseif queryParams['facilitator'] is defined %}
-                    <h1><small>Facilitators(Internal) To the Training Instance</small></h1>
-                    <a class="btn btn-default" href="{{ path('record_viewfacilitators',{'instance_id':queryParams['instance_id']} ) }}" title="back to list">back</a>
-                    </br>
-                    </br>
-                {% else %}
-                    <h1><small>Add Participants, Trainers(External) and Facilitators(Internal) To the Training Instance</small></h1>
 
-                    <span class=" btn-group">
-                        <a class="btn btn-mini btn-default" href="{{ path('trainers',{'instance_id':queryParams['instance_id'],'status':'all'}) }}" title="Add External Facilitators/ Trainers"><i class="icon-add"></i>&nbsp;Add External Trainers</a>
-                        <a class="btn btn-mini btn-default" href="{{ path("trainingevent") }}" class="btn btn-default" class="icon-left-arrow">&nbsp;Back</a>
-                    </span>
-                    </br></br><span style="color:#ccc;">Select forms to add facilitator and participants</span>
-                    </br></br>
-                {% endif %}
-            {% endif %}
+    <h1><small>{{ formEntity.getTitle() | raw }}</small></h1>
 
-            <table class="records_list dataTable table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody  id="reload">
-Start {{ entities }} End
-                {% for entity in entities %}
-                    <tr>
-                        {% if channel=="dataentry" %}
-                            <td><a href="{{ path('record_new', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
-
-                        {% elseif channel=='traininginstance' %}
-                            <td><a href="{{ path('record_viewinstance', { 'formid': entity.id }) }}">{{ entity.title }}</a></td>
-                        {% elseif channel=='leaverecords' %}
-                            <td><a href="{{ path('leave_viewrecords', { 'formid': entity.id }) }}">{{ entity.title }}</a></td>
-                        {% elseif channel=='instanceRecord' %}
-                            {% if queryParams['partic_for_view'] is defined %}
-                                <td><a href="{{ path('record_viewinstance', { 'formid': entity.id,'instance_id':queryParams['instance_id'],'id':'partic_for_view'    }) }}">{{ entity.title }}</a></td>
-                            {% elseif queryParams['facilitator'] is defined %}
-                                <td><a href="{{ path('record_viewinstance', { 'formid': entity.id,'instance_id':queryParams['instance_id'],'id':'facilitator'    }) }}">{{ entity.title }}</a></td>
-                            {% else %}
-                                <td><a href="{{ path('record_viewinstance', { 'formid': entity.id,'instance_id':queryParams['instance_id']}) }}">{{ entity.title }}</a></td>
-                            {% endif %}
-                        {% elseif channel=='updaterecords' %}
-                            <td><a href="{{ path('record_viewrecords', { 'formid': entity.id }) }}">{{ entity.title }}</a></td>
-                        {% elseif channel=='facilitatorInstanceRecord' %}
-                            <td><a href="{{ path('record_viewfacilitators', { 'formid': entity.id,'instance_id':queryParams['instance_id'],'id':'facilitators'  }) }}">{{ entity.title }}</a></td>
-                        {% elseif channel=='participantsInstanceRecord' %}
-                            <td><a href="{{ path('record_viewparticipants', { 'instance_id':queryParams['instance_id']}) }}">{{ entity.title }}</a></td>
-                        {% endif %}
-                        <td>
-                            <ul class="inline">
-                                {% if channel=='dataentry' %}
-                                    <li>
-                                        <a href="{{ path('record_new', { 'id': entity.id }) }}"><i class="icon-down-arrow icon-large" title="Show"></i></a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </td>
-                    </tr>
+    <form action="/public_record?formid{{ formEntity.getId() }}" id="dataEntryForm" method="post">
+        {% if isEntryLevel %}
+            <em style="font-style: normal;padding-right:25px;">Select Duty Post Level</em>
+            <select name="level"  id="level" required="required" onchange="updateOrganisationunits();">
+                <option  selected="selected" value="{{ organisationunit.getOrganisationunitStructure().getLevel().getUid() }}">{{ organisationunit.getOrganisationunitStructure().getLevel().getName() }}</option>
+                {% for organisationunitLevel in organisationunitLevels %}
+                    <option value="{{ organisationunitLevel.level }}">{{ organisationunitLevel.name }}</option>
                 {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div id="result" />
+            </select>
+            <br />
+            <em style="font-style: normal;min-width:350px;">Select Workstation/Facility</em>
+            <select name="organisationUnit" id="organisationUnit" disabled="disabled">
+                <option value="{{ organisationunit.getUid() }}">{{ organisationunit.getLongname() }}</option>
+            </select>
+            <input name="selectedOrganisationunit" id="selectedOrganisationunit" type="hidden" required="required" value="{{ organisationunit.getUid() }}">
+            <div id="htmlForm">
+                {{ formEntity.getHypertext() | raw }}
+            </div>
+        {% else %}
+            <input name="selectedOrganisationunit" id="selectedOrganisationunit" type="hidden" required="required" value="{{ organisationunit.getUid() }}">
+            <div id="htmlForm">
+                {{ formEntity.getHypertext() | raw }}
+            </div>
+        {% endif %}
 
-        <div class="modal fade" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-header">
-                <h1>Loading Data ...</h1>
-            </div>
-            <div class="modal-body">
-                <div class="progress progress-striped active">
-                    <div class="bar" style="width: 100%;"></div>
-                </div>
-            </div>
+        <div id="result" />
         </div>
-    {% endif %}
+        <p>
+            <input type="hidden" name="formId" value="{{ formEntity.getId() }}">
+            <button type="submit" name='Save' class="btn"> Save Records</button>
+
+        </p>
+
+    </form>
+
 {% endblock %}
