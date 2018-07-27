@@ -191,41 +191,42 @@
 
 {% block right_content -%}
 
-    <h1><small>{{ formEntity.getTitle() | raw }}</small></h1>
+    {{ organisationunit|raw }}
+    {#<h1><small>{{ formEntity.getTitle() | raw }}</small></h1>#}
 
-    <form action="/public_record?formid{{ formEntity.getId() }}" id="dataEntryForm" method="post">
-        {% if isEntryLevel %}
-            <em style="font-style: normal;padding-right:25px;">Select Duty Post Level</em>
-            <select name="level"  id="level" required="required" onchange="updateOrganisationunits();">
-                <option  selected="selected" value="{{ organisationunit.getOrganisationunitStructure().getLevel().getUid() }}">{{ organisationunit.getOrganisationunitStructure().getLevel().getName() }}</option>
-                {% for organisationunitLevel in organisationunitLevels %}
-                    <option value="{{ organisationunitLevel.level }}">{{ organisationunitLevel.name }}</option>
-                {% endfor %}
-            </select>
-            <br />
-            <em style="font-style: normal;min-width:350px;">Select Workstation/Facility</em>
-            <select name="organisationUnit" id="organisationUnit" disabled="disabled">
-                <option value="{{ organisationunit.getUid() }}">{{ organisationunit.getLongname() }}</option>
-            </select>
-            <input name="selectedOrganisationunit" id="selectedOrganisationunit" type="hidden" required="required" value="{{ organisationunit.getUid() }}">
-            <div id="htmlForm">
-                {{ formEntity.getHypertext() | raw }}
-            </div>
-        {% else %}
-            <input name="selectedOrganisationunit" id="selectedOrganisationunit" type="hidden" required="required" value="{{ organisationunit.getUid() }}">
-            <div id="htmlForm">
-                {{ formEntity.getHypertext() | raw }}
-            </div>
-        {% endif %}
+    {#<form action="/public_record?formid{{ formEntity.getId() }}" id="dataEntryForm" method="post">#}
+        {#{% if isEntryLevel %}#}
+            {#<em style="font-style: normal;padding-right:25px;">Select Duty Post Level</em>#}
+            {#<select name="level"  id="level" required="required" onchange="updateOrganisationunits();">#}
+                {#<option  selected="selected" value="{{ organisationunit.getOrganisationunitStructure().getLevel().getUid() }}">{{ organisationunit.getOrganisationunitStructure().getLevel().getName() }}</option>#}
+                {#{% for organisationunitLevel in organisationunitLevels %}#}
+                    {#<option value="{{ organisationunitLevel.level }}">{{ organisationunitLevel.name }}</option>#}
+                {#{% endfor %}#}
+            {#</select>#}
+            {#<br />#}
+            {#<em style="font-style: normal;min-width:350px;">Select Workstation/Facility</em>#}
+            {#<select name="organisationUnit" id="organisationUnit" disabled="disabled">#}
+                {#<option value="{{ organisationunit.getUid() }}">{{ organisationunit.getLongname() }}</option>#}
+            {#</select>#}
+            {#<input name="selectedOrganisationunit" id="selectedOrganisationunit" type="hidden" required="required" value="{{ organisationunit.getUid() }}">#}
+            {#<div id="htmlForm">#}
+                {#{{ formEntity.getHypertext() | raw }}#}
+            {#</div>#}
+        {#{% else %}#}
+            {#<input name="selectedOrganisationunit" id="selectedOrganisationunit" type="hidden" required="required" value="{{ organisationunit.getUid() }}">#}
+            {#<div id="htmlForm">#}
+                {#{{ formEntity.getHypertext() | raw }}#}
+            {#</div>#}
+        {#{% endif %}#}
 
-        <div id="result" />
-        </div>
-        <p>
-            <input type="hidden" name="formId" value="{{ formEntity.getId() }}">
-            <button type="submit" name='Save' class="btn"> Save Records</button>
+        {#<div id="result" />#}
+        {#</div>#}
+        {#<p>#}
+            {#<input type="hidden" name="formId" value="{{ formEntity.getId() }}">#}
+            {#<button type="submit" name='Save' class="btn"> Save Records</button>#}
 
-        </p>
+        {#</p>#}
 
-    </form>
+    {#</form>#}
 
 {% endblock %}
