@@ -69,12 +69,12 @@ class RecordController extends Controller
     {
 
         $id = 9;
-        echo $id;
-        exit();
+
         $em = $this->getDoctrine()->getManager();
 
         $formEntity = $em->getRepository('HrisFormBundle:Form')->find($id);
-
+        echo $formEntity;
+        exit();
 //        $user = $this->container->get('security.context')->getToken()->getUser();
 
         // Workaround to send message when user is redirected from one data entry page to another.
