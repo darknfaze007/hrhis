@@ -88,14 +88,15 @@ class RecordController extends Controller
             ->orderBy('organisationunitLevel.level', 'ASC')
             ->orderBy('organisationunitLevel.name', 'ASC')
             ->getQuery()->getResult();
-        var_dump($organisationunitLevels);
-        exit();
+
         $organisationunit = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunit')
             ->from('HrisOrganisationunitBundle:organisationunit', 'organisationunit')
             ->where('organisationunit.longname =\'Regions\'')
             ->orderBy('organisationunit.longname', 'ASC')
             ->getQuery()->getResult();
+        var_dump($organisationunit);
+        exit();
         $isEntryLevel = $organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
 
         return array(
