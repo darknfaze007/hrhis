@@ -1,56 +1,56 @@
 {#{% extends '::base.html.twig' %}#}
 {% block javascripts %}
     {#{{ parent() }}#}
-    {#<script type="text/javascript" src="{{ asset('commons/js/jquery-ui.js') }}"></script>#}
-    {#<script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.validate.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('commons/js/jquery-ui.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ asset('commons/js/jquery.validate.js') }}"></script>
     <script type="text/javascript">
         function changeRelatedFieldOptions(uid) {
-//            if(uid == '5289e934b733b'){
-//                $('#5289e934b733f option[value=528b0adfa726a]').attr('selected','selected');
-//            }
-//            if(uid == '5289e934b733f'){
-//                if($('#5289e934b733f :selected').text() == 'N/A'){
-//                    uid = '5289e934b733b';
-//                }
-//            }
-//            window.childFields = [];
-//            window.selectedFieldOption={};
-//            window.childFieldIncrement = {};
-//            window.foundRelatedOptions='false';
-//            $.each( window.fieldOptionRelations, function( key, value ) {
-//                // Check if selected field is in parent field optiosn and related child fields are in loaded form
-//                if(value.parent_fielduid==uid && value.parent_fieldoptionuid==$('#'+uid).val() && $($( "td" ).find( "select#"+value.child_fielduid )).size() > 0 ) {
-//                    if(typeof(childFieldIncrement[value.child_fielduid]) ==='undefined' ) {
-//                        childFieldIncrement[value.child_fielduid]='cleared'; //Clear field options
-//                        $('#'+value.child_fielduid).find('option').remove();
-//                        $('#'+value.child_fielduid).append('<option value="'+value.child_fieldoptionuid+'">'+value.child_fieldoptionvalue+'</option>');
-//                    }else {
-//                        $('#'+value.child_fielduid).append('<option value="'+value.child_fieldoptionuid+'">'+value.child_fieldoptionvalue+'</option>');
-//                    }
-//                    window.foundRelatedOptions='true';
-//                }
-//                window.childFields.push(value.child_fielduid);
-//                window.childFields = $.unique(window.childFields);
-//            });
-//            if(window.foundRelatedOptions=='false') {
-//                //@todo setting of options of related fields should depend on values of parent field relation
-//                $.each( window.childFields, function( key, value ) {
-//                    var fieldUrl = "/api/relatedOptions"+'?uid='+value;
-//                    var getFields = $.getJSON( fieldUrl, function( jsonFields ) {
-//
-//                        $('#'+value).find('option').remove();
-//                        $.each( jsonFields, function( fieldKey, jsonField ) {
-//                            $('#'+value).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
-//                        });
-//                    }).done(function(){
-//                        $('.dataentry').find('input, textarea,select').removeAttr('disabled');
-//                        $('#loadingMessage').remove();
-//                    }).error(function(){
-//                        $('#loadingMessage').remove();
-//                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');
-//                    });
-//                });
-//            }
+            if(uid == '5289e934b733b'){
+                $('#5289e934b733f option[value=528b0adfa726a]').attr('selected','selected');
+            }
+            if(uid == '5289e934b733f'){
+                if($('#5289e934b733f :selected').text() == 'N/A'){
+                    uid = '5289e934b733b';
+                }
+            }
+            window.childFields = [];
+            window.selectedFieldOption={};
+            window.childFieldIncrement = {};
+            window.foundRelatedOptions='false';
+            $.each( window.fieldOptionRelations, function( key, value ) {
+                // Check if selected field is in parent field optiosn and related child fields are in loaded form
+                if(value.parent_fielduid==uid && value.parent_fieldoptionuid==$('#'+uid).val() && $($( "td" ).find( "select#"+value.child_fielduid )).size() > 0 ) {
+                    if(typeof(childFieldIncrement[value.child_fielduid]) ==='undefined' ) {
+                        childFieldIncrement[value.child_fielduid]='cleared'; //Clear field options
+                        $('#'+value.child_fielduid).find('option').remove();
+                        $('#'+value.child_fielduid).append('<option value="'+value.child_fieldoptionuid+'">'+value.child_fieldoptionvalue+'</option>');
+                    }else {
+                        $('#'+value.child_fielduid).append('<option value="'+value.child_fieldoptionuid+'">'+value.child_fieldoptionvalue+'</option>');
+                    }
+                    window.foundRelatedOptions='true';
+                }
+                window.childFields.push(value.child_fielduid);
+                window.childFields = $.unique(window.childFields);
+            });
+            if(window.foundRelatedOptions=='false') {
+                //@todo setting of options of related fields should depend on values of parent field relation
+                $.each( window.childFields, function( key, value ) {
+                    var fieldUrl = "/api/relatedOptions"+'?uid='+value;
+                    var getFields = $.getJSON( fieldUrl, function( jsonFields ) {
+
+                        $('#'+value).find('option').remove();
+                        $.each( jsonFields, function( fieldKey, jsonField ) {
+                            $('#'+value).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
+                        });
+                    }).done(function(){
+                        $('.dataentry').find('input, textarea,select').removeAttr('disabled');
+                        $('#loadingMessage').remove();
+                    }).error(function(){
+                        $('#loadingMessage').remove();
+                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');
+                    });
+                });
+            }
         }
         function updateOrganisationunits() {
 
