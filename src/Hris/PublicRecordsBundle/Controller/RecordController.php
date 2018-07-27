@@ -79,8 +79,9 @@ class RecordController extends Controller
         $formId = 9;//$this->getRequest()->get('formid');
 
 
-
         $user = $this->container->get('security.context')->getToken()->getUser();
+        var_dump($user);
+        exit();
 //
 //        $onrgunitParent = $this->get('request')->request->get('orgunitParent');
         $orunitUid = $this->get('request')->request->get('selectedOrganisationunit');
