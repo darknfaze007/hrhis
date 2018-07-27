@@ -68,91 +68,125 @@ class RecordController extends Controller
     public function indexAction($channel)
     {
 
-
         $em = $this->getDoctrine()->getManager();
 
-        $entity = new Record();
-//        $record = $this->createForm(new RecordType(), $entity);
-//        $record->bind($request);
-        $message = '';
+        $formEntity = $em->getRepository('HrisFormBundle:Form')->find($id);
 
-        $formId = 9;//$this->getRequest()->get('formid');
+        //$user = $this->container->get('security.context')->getToken()->getUser();
 
+        // Workaround to send message when user is redirected from one data entry page to another.
+        $message = $this->getRequest()->get('message');
+        $success = $this->getRequest()->get('success');
+        $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
+            ->select('organisationunitLevel')
+            ->from('HrisOrganisationunitBundle:OrganisationunitLevel', 'organisationunitLevel')
+            ->where('organisationunitLevel.level>' . '1')
+            ->andWhere('organisationunitLevel.level>' . '1')
+            ->orderBy('organisationunitLevel.level', 'ASC')
+            ->orderBy('organisationunitLevel.name', 'ASC')
+            ->getQuery()->getResult();
+        $organisationunit = $this->getDoctrine()->getManager()->createQueryBuilder()
+            ->select('organisationunit')
+            ->from('HrisOrganisationunitBundle:organisationunit', 'organisationunit')
+            ->where('organisationunit.longname =\'Regions\'')
+            ->orderBy('organisationunit.longname', 'ASC')
+            ->getQuery()->getResult();
+        $isEntryLevel = true;//$organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-//        var_dump($user);
-//        exit();
+        return array(
+            'formEntity' => $formEntity,
+            'message' => $message,
+            'success' => $success,
+            'isEntryLevel' => $isEntryLevel,
+            'organisationunit' => $organisationunit,
+            'message' => $message,
+            'organisationunitLevels' => $organisationunitLevels,
+        );
+
+//        $em = $this->getDoctrine()->getManager();
 //
-//        $onrgunitParent = $this->get('request')->request->get('orgunitParent');
-        $orunitUid = $this->get('request')->request->get('selectedOrganisationunit');
-
-        if ($orunitUid != null) {
-            $orgunit = $em->getRepository('HrisOrganisationunitBundle:Organisationunit')->findOneBy(array('uid' => $orunitUid));
-        } else {
-            $orgunit = $user->getOrganisationunit();
-        }
-
-        $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
-
-        $uniqueFields = $form->getUniqueRecordFields();
-        $fields = $form->getSimpleField();
-
-        $instance = '';
-        foreach ($uniqueFields as $key => $field_unique) {
-            $instance .= $this->getRequest()->get($field_unique->getName());
-            if ($field_unique->getDataType()->getName() != "Date") $message .= $this->getRequest()->get($field_unique->getName()) . " ";
-        }
-
-
-        foreach ($fields as $key => $field) {
-            $recordValue = $this->get('request')->request->get($field->getName());
-
-            if ($field->getDataType()->getName() == "Date" && $recordValue != null) {
-                $recordValue = DateTime::createFromFormat('d/m/Y', $recordValue)->format('Y-m-d');
-                $recordValue = new \DateTime($recordValue);
-            }
-
-            /**
-             * Made dynamic, on which field column is used as key, i.e. uid, name or id.
-             */
-            // Translates to $field->getUid()
-            // or $field->getUid() depending on value of $recordKeyName
-            $recordFieldKey = ucfirst(Record::getFieldKey());
-            $valueKey = call_user_func_array(array($field, "get${recordFieldKey}"), array());
-
-            $recordArray[$valueKey] = $recordValue;
-        }
-
-        $entity->setValue($recordArray);
-        $entity->setForm($form);
-        $entity->setInstance(md5($instance));
-        $entity->setOrganisationunit($orgunit);
-        $entity->setUsername($user->getUsername());
-        $entity->setComplete(True);
-        $entity->setCorrect(True);
-        $entity->setHashistory(False);
-        $entity->setHastraining(False);
-
-
-        //if ($entity->isValid()) {
-        $em = $this->getDoctrine()->getManager();
-        try {
-
-            $em->persist($entity);
-            $em->flush();
-            $message .= "saved successfully";
-            $success = 'true';
-        } catch (DBALException $exception) {
-            $record = $em->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('instance' => $entity->getInstance()));
-            $message .= " is existing for " . $entity->getOrganisationunit()->getLongname();
-            $parent = $entity->getOrganisationunit()->getParent();
-            if (!empty($parent)) $message .= " in " . $entity->getOrganisationunit()->getParent()->getLongname() . "!";
-            $message .= ' <a href="' . $this->generateUrl('record_edit', array('id' => $record->getId(), 'message' => $message)) . '">Click here to edit existing record</a>';
-            $success = 'false';
-        }
-
-        return $this->redirect($this->generateUrl('record_new', array('id' => $form->getId(), 'message' => $message, 'success' => $success)));
-
+//        $entity = new Record();
+////        $record = $this->createForm(new RecordType(), $entity);
+////        $record->bind($request);
+//        $message = '';
+//
+//        $formId = 9;//$this->getRequest()->get('formid');
+//
+//
+//        $user = $this->container->get('security.context')->getToken()->getUser();
+////        var_dump($user);
+////        exit();
+////
+////        $onrgunitParent = $this->get('request')->request->get('orgunitParent');
+//        $orunitUid = $this->get('request')->request->get('selectedOrganisationunit');
+//
+//        if ($orunitUid != null) {
+//            $orgunit = $em->getRepository('HrisOrganisationunitBundle:Organisationunit')->findOneBy(array('uid' => $orunitUid));
+//        } else {
+//            $orgunit = $user->getOrganisationunit();
+//        }
+//
+//        $form = $em->getRepository('HrisFormBundle:Form')->find($formId);
+//
+//        $uniqueFields = $form->getUniqueRecordFields();
+//        $fields = $form->getSimpleField();
+//
+//        $instance = '';
+//        foreach ($uniqueFields as $key => $field_unique) {
+//            $instance .= $this->getRequest()->get($field_unique->getName());
+//            if ($field_unique->getDataType()->getName() != "Date") $message .= $this->getRequest()->get($field_unique->getName()) . " ";
+//        }
+//
+//
+//        foreach ($fields as $key => $field) {
+//            $recordValue = $this->get('request')->request->get($field->getName());
+//
+//            if ($field->getDataType()->getName() == "Date" && $recordValue != null) {
+//                $recordValue = DateTime::createFromFormat('d/m/Y', $recordValue)->format('Y-m-d');
+//                $recordValue = new \DateTime($recordValue);
+//            }
+//
+//            /**
+//             * Made dynamic, on which field column is used as key, i.e. uid, name or id.
+//             */
+//            // Translates to $field->getUid()
+//            // or $field->getUid() depending on value of $recordKeyName
+//            $recordFieldKey = ucfirst(Record::getFieldKey());
+//            $valueKey = call_user_func_array(array($field, "get${recordFieldKey}"), array());
+//
+//            $recordArray[$valueKey] = $recordValue;
+//        }
+//
+//        $entity->setValue($recordArray);
+//        $entity->setForm($form);
+//        $entity->setInstance(md5($instance));
+//        $entity->setOrganisationunit($orgunit);
+//        $entity->setUsername($user->getUsername());
+//        $entity->setComplete(True);
+//        $entity->setCorrect(True);
+//        $entity->setHashistory(False);
+//        $entity->setHastraining(False);
+//
+//
+//        //if ($entity->isValid()) {
+//        $em = $this->getDoctrine()->getManager();
+//        try {
+//
+//            $em->persist($entity);
+//            $em->flush();
+//            $message .= "saved successfully";
+//            $success = 'true';
+//        } catch (DBALException $exception) {
+//            $record = $em->getRepository('HrisPublicRecordsBundle:Record')->findOneBy(array('instance' => $entity->getInstance()));
+//            $message .= " is existing for " . $entity->getOrganisationunit()->getLongname();
+//            $parent = $entity->getOrganisationunit()->getParent();
+//            if (!empty($parent)) $message .= " in " . $entity->getOrganisationunit()->getParent()->getLongname() . "!";
+//            $message .= ' <a href="' . $this->generateUrl('record_edit', array('id' => $record->getId(), 'message' => $message)) . '">Click here to edit existing record</a>';
+//            $success = 'false';
+//        }
+//
+//        return $this->redirect($this->generateUrl('record_new', array('id' => $form->getId(), 'message' => $message, 'success' => $success)));
+//
 
     }
 
