@@ -73,7 +73,7 @@ class RecordController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $formEntity = $em->getRepository('HrisFormBundle:Form')->find($id);
-        echo $formEntity;
+        var_dump($formEntity);
         exit();
 //        $user = $this->container->get('security.context')->getToken()->getUser();
 
