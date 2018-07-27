@@ -73,13 +73,14 @@ class RecordController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $formEntity = $em->getRepository('HrisFormBundle:Form')->find($id);
-        var_dump($formEntity);
-        exit();
+
 //        $user = $this->container->get('security.context')->getToken()->getUser();
 
         // Workaround to send message when user is redirected from one data entry page to another.
         $message = $this->getRequest()->get('message');
         $success = $this->getRequest()->get('success');
+        var_dump($message);
+        exit();
         $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunitLevel')
             ->from('HrisOrganisationunitBundle:OrganisationunitLevel', 'organisationunitLevel')
