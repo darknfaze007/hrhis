@@ -103,7 +103,7 @@ class RecordController extends Controller
             'message' => $message,
             'success' => $success,
             'isEntryLevel' => $isEntryLevel,
-            'organisationunit' => $organisationunit,
+            'organisationunit' => $organisationunit[0],
             'message' => $message,
             'organisationunitLevels' => $organisationunitLevels,
         );
