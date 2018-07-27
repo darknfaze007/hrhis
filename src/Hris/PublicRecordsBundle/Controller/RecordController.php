@@ -68,6 +68,8 @@ class RecordController extends Controller
     public function indexAction($id)
     {
 
+        echo $id;
+        exit();
         $em = $this->getDoctrine()->getManager();
 
         $formEntity = $em->getRepository('HrisFormBundle:Form')->find($id);
