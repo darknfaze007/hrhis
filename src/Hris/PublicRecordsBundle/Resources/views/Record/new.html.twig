@@ -53,7 +53,9 @@
             }
         }
         function updateOrganisationunits() {
+
             var userLevelUid='{{ organisationunit.getOrganisationunitStructure().getLevel().getUid() }}';
+            console.log(userLevelUid);
             var organisationunitTreeUrl = '/organisationunit/tree';
             var organisationunitsTagId='#organisationUnit';
             $(organisationunitsTagId).find('option').remove();
