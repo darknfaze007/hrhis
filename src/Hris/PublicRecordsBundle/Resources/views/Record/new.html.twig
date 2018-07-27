@@ -56,116 +56,117 @@
         function updateOrganisationunits() {
 
             {#var userLevelUid='{{ organisationunit.getOrganisationunitStructure().getLevel().getUid() }}';#}
-            {#console.log(userLevelUid);#}
-            {#var organisationunitTreeUrl = '/organisationunit/tree';#}
-            {#var organisationunitsTagId='#organisationUnit';#}
-            {#$(organisationunitsTagId).find('option').remove();#}
-            {#if($('#level').val()==userLevelUid) {#}
-                {#$(organisationunitsTagId).append(new Option("{{ organisationunit.getLongname() }}", "{{ organisationunit.getUid() }}"));#}
-                {#$(organisationunitsTagId).attr('disabled','disabled');#}
-                {#$('#selectedOrganisationunit').val( "{{ organisationunit.getUid() }}" );#}
-            {#}else {#}
-                {#$(organisationunitsTagId).removeAttr('disabled');#}
-                {#getData={'id': {{ organisationunit.getId() }} };#}
-                {#$('#selectedOrganisationunit').val( $('#organisationUnit').val() );#}
-                {#$.getJSON(organisationunitTreeUrl,getData , function( organisationunits ){#}
-                    {#window.loadedOrganisationunits=organisationunits;#}
-                    {#if (jQuery.isEmptyObject(organisationunits)){#}
-                        {#$('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get duty posts, please check your network connection</small></div>');#}
-                    {#}else {#}
-                        {#$(organisationunitsTagId).append(new Option('--[Select Duty post]--', '',true,true));#}
-                        {#$.each(organisationunits, function(organisationunitIndex, organisationunit) {#}
-                            {#$(organisationunitsTagId).append(new Option(organisationunit['longname'], organisationunit['uid']));#}
-                        {#});#}
-                    {#}#}
-                {#}).done(function(){#}
-                    {#if (jQuery.isEmptyObject(window.loadedOrganisationunits)){#}
-                        {#$('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get duty posts, please check your network connection</small></div>');#}
-                    {#}#}
-                    {#$('#loadingMessage').remove();#}
-                {#}).error(function(){#}
-                    {#$('#loadingMessage').remove();#}
-                    {#$('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');#}
-                {#});#}
-            {#}#}
+            var userLevelUid= '';
+            console.log(userLevelUid);
+            var organisationunitTreeUrl = '/organisationunit/tree';
+            var organisationunitsTagId='#organisationUnit';
+            $(organisationunitsTagId).find('option').remove();
+            if($('#level').val()==userLevelUid) {
+                $(organisationunitsTagId).append(new Option("{{ organisationunit.getLongname() }}", "{{ organisationunit.getUid() }}"));
+                $(organisationunitsTagId).attr('disabled','disabled');
+                $('#selectedOrganisationunit').val( "{{ organisationunit.getUid() }}" );
+            }else {
+                $(organisationunitsTagId).removeAttr('disabled');
+                getData={'id': {{ organisationunit.getId() }} };
+                $('#selectedOrganisationunit').val( $('#organisationUnit').val() );
+                $.getJSON(organisationunitTreeUrl,getData , function( organisationunits ){
+                    window.loadedOrganisationunits=organisationunits;
+                    if (jQuery.isEmptyObject(organisationunits)){
+                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get duty posts, please check your network connection</small></div>');
+                    }else {
+                        $(organisationunitsTagId).append(new Option('--[Select Duty post]--', '',true,true));
+                        $.each(organisationunits, function(organisationunitIndex, organisationunit) {
+                            $(organisationunitsTagId).append(new Option(organisationunit['longname'], organisationunit['uid']));
+                        });
+                    }
+                }).done(function(){
+                    if (jQuery.isEmptyObject(window.loadedOrganisationunits)){
+                        $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get duty posts, please check your network connection</small></div>');
+                    }
+                    $('#loadingMessage').remove();
+                }).error(function(){
+                    $('#loadingMessage').remove();
+                    $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');
+                });
+            }
         }
         $( document ).ready(function() {
-            {#//@todo all fields and options should be loaded once and processed by browser#}
-            {#var fieldOptionRelationUrl = "/api/relatedOptions.json";#}
-            {#var getFields = $.getJSON( fieldOptionRelationUrl, function( jsonObject ) { window.fieldOptionRelations=jsonObject;}).done(function(){#}
-            {#}).error(function(){#}
-            {#});#}
+            //@todo all fields and options should be loaded once and processed by browser
+            var fieldOptionRelationUrl = "/api/relatedOptions.json";
+            var getFields = $.getJSON( fieldOptionRelationUrl, function( jsonObject ) { window.fieldOptionRelations=jsonObject;}).done(function(){
+            }).error(function(){
+            });
 
-            {#$('#htmlForm').find('input, textarea,select').attr('disabled','disabled');#}
-            {#$('#messageArea').html('<div class="alert alert-success" id="loadingMessage"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Loading!</strong> Please wait..</small></div>');#}
+            $('#htmlForm').find('input, textarea,select').attr('disabled','disabled');
+            $('#messageArea').html('<div class="alert alert-success" id="loadingMessage"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Loading!</strong> Please wait..</small></div>');
 
-            {#var selectItems = $( "td" ).find( "select" );//Get all select fields#}
-            {#$.each( selectItems, function( key, value ) {#}
-                {#var fieldUrl = "/api"+'?uid='+value.id;#}
-{#//                console.log(fieldUrl);#}
-                {#var getFields = $.getJSON( fieldUrl, function( jsonFields ) { //Get field options of all select fields#}
-                    {#$('#'+value.id).append(new Option('--[Select '+value.name+']--', '',true,true));#}
-                    {#$.each( jsonFields, function( fieldKey, jsonField ) {#}
-                        {#$('#'+value.id).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags#}
-                    {#});#}
-                    {#if($('#5289e934b733f')[0]){#}
-                        {#$('#5289e934b733f option[value=528b0adfa726a]').remove();#}
-                        {#$("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));#}
-                    {#}#}
-                {#}).done(function(){#}
-                    {#$('.dataentry').find('input, textarea,select').removeAttr('disabled');#}
-                    {#$('#loadingMessage').remove();#}
-                {#}).error(function(){#}
-                    {#$('#loadingMessage').remove();#}
-                    {#$('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');#}
-                {#});#}
-            {#});#}
-            {#$( "#dataEntryForm" ).submit(function( event ) {#}
-                {#//if($( "#dataEntryForm").valid()) {#}
-                    {#window.uniqueValuesString='';#}
-                    {#$.each( $('#dataEntryForm').find(".unique_field"), function( key, value ) {#}
-                        {#window.uniqueValuesString = window.uniqueValuesString + value.id+'='+ $.trim($('#'+value.id).val())+'&';#}
-                    {#});#}
+            var selectItems = $( "td" ).find( "select" );//Get all select fields
+            $.each( selectItems, function( key, value ) {
+                var fieldUrl = "/api"+'?uid='+value.id;
+//                console.log(fieldUrl);
+                var getFields = $.getJSON( fieldUrl, function( jsonFields ) { //Get field options of all select fields
+                    $('#'+value.id).append(new Option('--[Select '+value.name+']--', '',true,true));
+                    $.each( jsonFields, function( fieldKey, jsonField ) {
+                        $('#'+value.id).append(new Option(jsonField.value, jsonField.uid));//Append field options to select tags
+                    });
+                    if($('#5289e934b733f')[0]){
+                        $('#5289e934b733f option[value=528b0adfa726a]').remove();
+                        $("#5289e934b733f option").eq(1).before($("<option></option>").val("528b0adfa726a").text("N/A"));
+                    }
+                }).done(function(){
+                    $('.dataentry').find('input, textarea,select').removeAttr('disabled');
+                    $('#loadingMessage').remove();
+                }).error(function(){
+                    $('#loadingMessage').remove();
+                    $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Error Occurred!</strong> Unable to get all options, please check your network connection</small></div>');
+                });
+            });
+            $( "#dataEntryForm" ).submit(function( event ) {
+                //if($( "#dataEntryForm").valid()) {
+                    window.uniqueValuesString='';
+                    $.each( $('#dataEntryForm').find(".unique_field"), function( key, value ) {
+                        window.uniqueValuesString = window.uniqueValuesString + value.id+'='+ $.trim($('#'+value.id).val())+'&';
+                    });
 
-                {#window.uniqueValuesString = window.uniqueValuesString + 'unique_5289e934ab062'+'='+$('#5289e934ab062').val()+'&' + 'unique_5289e934b2b33'+'='+$('#5289e934b2b33').val()+'&' + 'unique_5289e934c02a1'+'='+$('#5289e934c02a1').val()+'&' + 'unique_5289e934a140e'+'='+$('#5289e934a140e').val()+'&';#}
+                window.uniqueValuesString = window.uniqueValuesString + 'unique_5289e934ab062'+'='+$('#5289e934ab062').val()+'&' + 'unique_5289e934b2b33'+'='+$('#5289e934b2b33').val()+'&' + 'unique_5289e934c02a1'+'='+$('#5289e934c02a1').val()+'&' + 'unique_5289e934a140e'+'='+$('#5289e934a140e').val()+'&';
 
-                    {#window.recordUnique='';#}
-                    {#$.get( "/public_record/checkUniqueness"+'?'+'formid='+'{{ formEntity.id }}&'+window.uniqueValuesString.replace(/&+$/,''), function( data ) {#}
-                        {#window.recordUnique=data;#}
-                    {#}).done(function(){#}
-                        {#if( window.recordUnique==true ) {#}
-                            {#//Record is unique#}
-                            {#console.log('Record is unique');#}
-                            {#$('#loadingMessage').remove();#}
-                            {#event.preventDefault();#}
-                        {#}else {#}
-                            {#//Record with similar id exists#}
-                            {#$('#loadingMessage').remove();#}
-                            {#$('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Warning!!</strong> Record with similar checknumber of filenumber exists</small></div>');#}
-                            {#console.log('Record exists');#}
-                            {#event.preventDefault();#}
-                        {#}#}
-                    {#}).fail(function(){#}
-                        {#console.log('Failed to check record uniqueness');#}
-                        {#event.preventDefault();#}
-                    {#});#}
-                {#//}`#}
-            {#});#}
-            {#$("#dataEntryForm").validate({#}
-                {#ignore:".date"#}
-            {#});#}
-            {#$( "#organisationUnit" ).change(function() {$('#selectedOrganisationunit').val( $('#organisationUnit').val() );});#}
+                    window.recordUnique='';
+                    $.get( "/public_record/checkUniqueness"+'?'+'formid='+'{{ formEntity.id }}&'+window.uniqueValuesString.replace(/&+$/,''), function( data ) {
+                        window.recordUnique=data;
+                    }).done(function(){
+                        if( window.recordUnique==true ) {
+                            //Record is unique
+                            console.log('Record is unique');
+                            $('#loadingMessage').remove();
+                            event.preventDefault();
+                        }else {
+                            //Record with similar id exists
+                            $('#loadingMessage').remove();
+                            $('#messageArea').html('<div class="alert alert-success" id="loadingMessage" style="color:#E92B2B;"><button type="button" class="close" data-dismiss="alert">×</button><small><strong>Warning!!</strong> Record with similar checknumber of filenumber exists</small></div>');
+                            console.log('Record exists');
+                            event.preventDefault();
+                        }
+                    }).fail(function(){
+                        console.log('Failed to check record uniqueness');
+                        event.preventDefault();
+                    });
+                //}`
+            });
+            $("#dataEntryForm").validate({
+                ignore:".date"
+            });
+            $( "#organisationUnit" ).change(function() {$('#selectedOrganisationunit').val( $('#organisationUnit').val() );});
         });
         $( ".date" ).datepicker( {
-            {#changeMonth: true,#}
-            {#changeYear: true,#}
-            {#showOn: "both",#}
-            {#buttonImage: "{{ asset('commons/images/calendar.gif') }}",#}
-            {#buttonImageOnly: true,#}
-            {#dateFormat: "dd/mm/yy",#}
-            {#showAnim: "clip",#}
-            {#maxDate: "+0D",#}
-            {#yearRange:'c-60:c+60'#}
+            changeMonth: true,
+            changeYear: true,
+            showOn: "both",
+            buttonImage: "{{ asset('commons/images/calendar.gif') }}",
+            buttonImageOnly: true,
+            dateFormat: "dd/mm/yy",
+            showAnim: "clip",
+            maxDate: "+0D",
+            yearRange:'c-60:c+60'
         });
     </script>
 {% endblock %}
@@ -191,7 +192,6 @@
 
 {% block right_content -%}
 
-    {{ organisationunit}}
     {#<h1><small>{{ formEntity.getTitle() | raw }}</small></h1>#}
 
     {#<form action="/public_record?formid{{ formEntity.getId() }}" id="dataEntryForm" method="post">#}
