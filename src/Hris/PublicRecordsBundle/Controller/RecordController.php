@@ -79,8 +79,7 @@ class RecordController extends Controller
         // Workaround to send message when user is redirected from one data entry page to another.
         $message = $this->getRequest()->get('message');
         $success = $this->getRequest()->get('success');
-        var_dump($success);
-        exit();
+
         $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunitLevel')
             ->from('HrisOrganisationunitBundle:OrganisationunitLevel', 'organisationunitLevel')
@@ -89,6 +88,8 @@ class RecordController extends Controller
             ->orderBy('organisationunitLevel.level', 'ASC')
             ->orderBy('organisationunitLevel.name', 'ASC')
             ->getQuery()->getResult();
+        var_dump($organisationunitLevels);
+        exit();
         $organisationunit = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunit')
             ->from('HrisOrganisationunitBundle:organisationunit', 'organisationunit')
