@@ -61,13 +61,14 @@ class RecordController extends Controller
     /**
      * Lists all Record entities.
      *
-     * @Route("/", name="sponsorship_form", defaults={"id"="9"}, name="sponsorship_form")
+     * @Route("/", name="sponsorship_form")
      * @Method("GET")
      * @Template("HrisPublicRecordsBundle:Record:new.html.twig")
      */
-    public function indexAction($id)
+    public function indexAction()
     {
 
+        $id = 9;
         echo $id;
         exit();
         $em = $this->getDoctrine()->getManager();
