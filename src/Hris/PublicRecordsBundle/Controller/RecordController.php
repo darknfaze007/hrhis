@@ -95,10 +95,10 @@ class RecordController extends Controller
             ->where('organisationunit.longname =\'Regions\'')
             ->orderBy('organisationunit.longname', 'ASC')
             ->getQuery()->getResult();
-        var_dump($organisationunit);
-        exit();
-        $isEntryLevel = $organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
 
+        $isEntryLevel = $organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
+        var_dump($isEntryLevel);
+        exit();
         return array(
             'formEntity' => $formEntity,
             'message' => $message,
