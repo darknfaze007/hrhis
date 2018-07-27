@@ -79,7 +79,7 @@ class RecordController extends Controller
         // Workaround to send message when user is redirected from one data entry page to another.
         $message = $this->getRequest()->get('message');
         $success = $this->getRequest()->get('success');
-        var_dump($message);
+        var_dump($success);
         exit();
         $organisationunitLevels = $this->getDoctrine()->getManager()->createQueryBuilder()
             ->select('organisationunitLevel')
