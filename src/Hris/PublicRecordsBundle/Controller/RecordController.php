@@ -97,7 +97,7 @@ class RecordController extends Controller
             ->getQuery()->getResult();
 
         $isEntryLevel = true;//$organisationunit->getOrganisationunitStructure()->getLevel()->getDataentrylevel();
-        var_dump($isEntryLevel);
+        var_dump($formEntity,$message,$success,$isEntryLevel,$organisationunit,$organisationunitLevels);
         exit();
         return array(
             'formEntity' => $formEntity,
